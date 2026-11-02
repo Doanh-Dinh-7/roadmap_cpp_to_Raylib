@@ -1,0 +1,1040 @@
+/**
+ * ==============================================================================
+ * ROADMAP C++ & RAYLIB - MAIN STYLESHEET
+ * ==============================================================================
+ * Style chuẩn dựa trên https://rudolphtran.github.io/code-up-your-brain
+ * Không sử dụng CSS framework ngoài. Hoàn toàn thuần khiết và tối ưu hiệu năng.
+ * ==============================================================================
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('variables.css');
+
+/* ==============================================================================
+   1. CSS RESET & GLOBAL BASE
+   ============================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text-main);
+  background-color: var(--color-bg-page);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+ul, ol {
+  list-style-position: inside;
+}
+
+/* ==============================================================================
+   2. TYPOGRAPHY
+   ============================================================================== */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-main);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--space-3);
+}
+
+h4 {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-2);
+}
+
+p {
+  margin-bottom: var(--space-4);
+  color: var(--color-text-secondary);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+strong, b {
+  color: var(--color-text-main);
+  font-weight: var(--font-weight-semibold);
+}
+
+code:not(pre code) {
+  font-family: var(--font-family-mono);
+  font-size: 0.9em;
+  background-color: var(--color-bg-tag);
+  color: var(--color-primary-hover);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-soft);
+}
+
+/* ==============================================================================
+   3. LAYOUT & CONTAINERS
+   ============================================================================== */
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+.container--narrow {
+  max-width: var(--container-narrow-width);
+}
+
+.section {
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
+}
+
+.section--alt {
+  background-color: var(--color-bg-surface);
+  border-top: 1px solid var(--color-border-soft);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.section-header {
+  text-align: center;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: var(--space-10);
+}
+
+.section-header__tag {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-2);
+}
+
+.section-header__title {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-3);
+}
+
+.section-header__desc {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+}
+
+/* ==============================================================================
+   4. SITE HEADER & NAVIGATION
+   ============================================================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border-soft);
+  transition: all var(--transition-normal);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+}
+
+.brand__logo-img {
+  height: 44px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  display: block;
+}
+
+.brand__logo-box {
+  width: 38px;
+  height: 38px;
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-extrabold);
+  font-size: var(--font-size-lg);
+  box-shadow: 0 2px 6px rgba(229, 57, 53, 0.3);
+}
+
+.brand__text {
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-md);
+  color: var(--color-text-main);
+  line-height: 1.2;
+}
+
+.brand__sub {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-regular);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.site-nav__list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: var(--space-5);
+}
+
+.site-nav__link {
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  padding: var(--space-2) 0;
+  position: relative;
+}
+
+.site-nav__link:hover,
+.site-nav__link.is-active {
+  color: var(--color-primary);
+}
+
+.site-nav__link.is-active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-pill);
+}
+
+.nav-toggle-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-2);
+}
+
+/* ==============================================================================
+   5. HERO SECTION
+   ============================================================================== */
+.hero {
+  padding: var(--space-16) 0 var(--space-12);
+  background: radial-gradient(circle at top right, rgba(229, 57, 53, 0.05) 0%, transparent 45%),
+              linear-gradient(180deg, var(--color-bg-surface) 0%, var(--color-bg-page) 100%);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.hero__content {
+  text-align: center;
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: var(--radius-pill);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-5);
+}
+
+.hero__title {
+  font-size: var(--font-size-hero);
+  line-height: 1.15;
+  margin-bottom: var(--space-5);
+}
+
+.hero__title-accent {
+  color: var(--color-primary);
+}
+
+.hero__description {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-8);
+}
+
+.hero__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  background: var(--color-bg-surface);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-soft);
+  box-shadow: var(--shadow-sm);
+  margin-top: var(--space-8);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-item__number {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-primary);
+  line-height: 1.1;
+}
+
+.stat-item__label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: var(--space-1);
+}
+
+/* ==============================================================================
+   6. BUTTONS
+   ============================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.75rem 1.5rem;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-md);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  line-height: 1.2;
+}
+
+.btn--primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  box-shadow: 0 2px 4px rgba(229, 57, 53, 0.2);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-primary-hover);
+  color: var(--color-text-light);
+  box-shadow: 0 4px 10px rgba(229, 57, 53, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn--secondary {
+  background-color: var(--color-bg-surface);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn--secondary:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary-hover);
+}
+
+.btn--outline {
+  background-color: transparent;
+  color: var(--color-text-main);
+  border-color: var(--color-border-medium);
+}
+
+.btn--outline:hover {
+  background-color: var(--color-bg-subtle);
+  border-color: var(--color-text-muted);
+}
+
+.btn--sm {
+  padding: 0.4rem 0.85rem;
+  font-size: var(--font-size-xs);
+  border-radius: var(--radius-sm);
+}
+
+/* ==============================================================================
+   7. BADGES & TAGS
+   ============================================================================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-pill);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge--primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+}
+
+.badge--outline-red {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  border: 1px solid rgba(229, 57, 53, 0.2);
+}
+
+.badge--easy {
+  background-color: var(--color-easy-bg);
+  color: var(--color-easy-text);
+}
+
+.badge--medium {
+  background-color: var(--color-medium-bg);
+  color: var(--color-medium-text);
+}
+
+.badge--hard {
+  background-color: var(--color-hard-bg);
+  color: var(--color-hard-text);
+}
+
+.badge--tag {
+  background-color: var(--color-bg-tag);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-medium);
+  text-transform: none;
+}
+
+/* ==============================================================================
+   8. STAGE CARD (Giai đoạn trên index.html - Mỗi card 1 dòng)
+   ============================================================================== */
+.stage-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.stage-card {
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-soft);
+  border-left: var(--border-card-accent);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  align-items: center;
+  gap: var(--space-6);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+}
+
+.stage-card:hover {
+  transform: translateX(6px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-medium);
+  border-left-color: var(--color-primary);
+}
+
+.stage-card__aside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-right: var(--space-5);
+  border-right: 1px solid var(--color-border-soft);
+  gap: var(--space-2);
+}
+
+.stage-card__number {
+  font-size: 2.75rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.stage-card__range {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+.stage-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.stage-card__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-main);
+  margin-bottom: 0;
+  line-height: 1.3;
+}
+
+.stage-card__desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-base);
+  margin-bottom: 0;
+}
+
+.stage-card__focus {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg-page);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--color-border-soft);
+  display: inline-block;
+  margin-top: var(--space-1);
+}
+
+.stage-card__focus strong {
+  color: var(--color-primary);
+}
+
+.stage-card__action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.stage-card__action .btn {
+  white-space: nowrap;
+}
+
+/* ==============================================================================
+   9. LESSON CARD (Danh sách buổi trong stage-XX.html)
+   ============================================================================== */
+.lesson-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.lesson-card {
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-soft);
+  border-left: var(--border-card-accent);
+  padding: var(--space-5) var(--space-6);
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-6);
+  transition: all var(--transition-normal);
+}
+
+.lesson-card:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-medium);
+  border-left-color: var(--color-primary);
+}
+
+.lesson-card__number-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 65px;
+}
+
+.lesson-card__number-label {
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.lesson-card__number {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.lesson-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.lesson-card__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-main);
+  margin-bottom: var(--space-1);
+}
+
+.lesson-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+/* ==============================================================================
+   10. BREADCRUMB
+   ============================================================================== */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-6);
+  color: var(--color-text-muted);
+}
+
+.breadcrumb__link {
+  color: var(--color-text-secondary);
+}
+
+.breadcrumb__link:hover {
+  color: var(--color-primary);
+}
+
+.breadcrumb__separator {
+  color: var(--color-border-medium);
+  user-select: none;
+}
+
+.breadcrumb__current {
+  color: var(--color-text-main);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ==============================================================================
+   11. CODE BLOCK & SYNTAX HIGHLIGHTING (Giả lập CSS đơn giản)
+   ============================================================================== */
+.code-block {
+  background-color: var(--color-code-bg);
+  border-radius: var(--radius-md);
+  margin: var(--space-4) 0;
+  overflow: hidden;
+  border: 1px solid var(--color-code-border);
+}
+
+.code-block__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-code-header-bg);
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--color-code-border);
+}
+
+.code-block__lang {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  color: #9CDCFE;
+  font-weight: var(--font-weight-medium);
+  text-transform: lowercase;
+}
+
+.code-block__copy {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #CCCCCC;
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family-base);
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all var(--transition-fast);
+}
+
+.code-block__copy:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.code-block__copy.is-copied {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-text);
+  border-color: var(--color-success-text);
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.code-block code {
+  font-family: var(--font-family-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-code-text);
+  white-space: pre;
+}
+
+/* Syntax Highlighting Classes */
+.code-block .kw { color: var(--color-code-keyword); font-weight: 600; }
+.code-block .type { color: var(--color-code-type); }
+.code-block .str { color: var(--color-code-string); }
+.code-block .com { color: var(--color-code-comment); font-style: italic; }
+.code-block .num { color: var(--color-code-number); }
+.code-block .fn { color: var(--color-code-function); }
+
+/* ==============================================================================
+   12. COLLAPSE / ACCORDION ĐÁP ÁN
+   ============================================================================== */
+.collapse-box {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  margin-top: var(--space-4);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+
+.collapse-box:hover {
+  border-color: var(--color-border-medium);
+}
+
+.collapse-trigger {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  background-color: var(--color-bg-surface);
+  border: none;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-main);
+  transition: background-color var(--transition-fast);
+}
+
+.collapse-trigger:hover {
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary);
+}
+
+.collapse-icon {
+  display: inline-block;
+  transition: transform var(--transition-normal);
+  color: var(--color-primary);
+  font-size: 0.8rem;
+}
+
+.collapse-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-smooth);
+}
+
+.collapse-inner {
+  padding: 1.25rem;
+  border-top: 1px solid var(--color-border-soft);
+  background-color: #FAFAFA;
+}
+
+.collapse-box.is-open .collapse-icon {
+  transform: rotate(90deg);
+}
+
+/* ==============================================================================
+   13. NOTE BOX & CALLOUT
+   ============================================================================== */
+.note-box {
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  margin: var(--space-5) 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+}
+
+.note-box--tip {
+  background-color: var(--color-accent-quote-bg);
+  border-left: 4px solid var(--color-accent-quote-border);
+  color: var(--color-accent-quote-text);
+}
+
+.note-box--tip strong {
+  color: var(--color-accent-quote-text);
+}
+
+.note-box--warning {
+  background-color: #FFFBEB;
+  border-left: 4px solid #F59E0B;
+  color: #92400E;
+}
+
+/* ==============================================================================
+   14. LESSON DETAIL PAGE STRUCTURE
+   ============================================================================== */
+.lesson-header {
+  padding: var(--space-8) 0 var(--space-6);
+  border-bottom: 1px solid var(--color-border-soft);
+  margin-bottom: var(--space-8);
+}
+
+.exercise-item {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.exercise-item__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.exercise-item__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-main);
+  margin-bottom: 0;
+}
+
+/* ==============================================================================
+   15. SITE FOOTER
+   ============================================================================== */
+.site-footer,
+.footer {
+  margin-top: auto;
+  background-color: var(--color-bg-surface);
+  border-top: 1px solid var(--color-border-soft);
+  padding: var(--space-10) 0 var(--space-6);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  padding-bottom: var(--space-8);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.footer-content h4,
+.footer-heading {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-main);
+  margin-bottom: var(--space-4);
+  position: relative;
+  padding-bottom: var(--space-2);
+}
+
+.footer-content h4::after,
+.footer-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 28px;
+  height: 3px;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-pill);
+}
+
+.contact-info-compact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.contact-item i {
+  color: var(--color-primary);
+  width: 18px;
+  text-align: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.contact-item a {
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.contact-item a:hover {
+  color: var(--color-primary);
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  padding-top: var(--space-6);
+}
+
+.site-footer__text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* ==============================================================================
+   16. RESPONSIVE BREAKPOINTS
+   ============================================================================== */
+@media (max-width: 1023px) {
+  .hero__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero {
+    padding: var(--space-10) 0 var(--space-8);
+  }
+
+  .hero__title {
+    font-size: var(--font-size-3xl);
+  }
+
+  .hero__stats {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .stage-card {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .stage-card__aside {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border-soft);
+    padding-bottom: var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .stage-card__number {
+    font-size: 2rem;
+  }
+
+  .stage-card__action {
+    justify-content: flex-start;
+    border-top: 1px solid var(--color-border-soft);
+    padding-top: var(--space-3);
+  }
+
+  .stage-card__action .btn {
+    width: 100%;
+  }
+
+  .lesson-card {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .lesson-card__number-box {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: var(--space-2);
+  }
+
+  .site-nav__list {
+    display: none; /* Khi cần toggle mobile menu */
+  }
+
+  .site-nav__list.is-mobile-open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: var(--color-bg-surface);
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--color-border-soft);
+    box-shadow: var(--shadow-md);
+  }
+
+  .nav-toggle-btn {
+    display: block;
+  }
+}
+

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 11: Mini Project Guess Number Game — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 11: Mini Project hoàn thiện tựa game đầu tay Number Guessing Game trên console C++, tổng kết toàn bộ kiến thức Giai đoạn 01.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-01.html" class="site-nav__link is-active">Giai đoạn 01</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#rubric" class="site-nav__link">Đánh giá</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-01.html" class="breadcrumb__link">Giai đoạn 01</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 11: Mini Project Number Guessing Game</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 11</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--hard">Mini Project 01</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Mini Project: Number Guessing Game (Game Đoán Số Console)
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Tự tay hoàn thiện một game tương tác hoàn chỉnh trên Console C++, ứng dụng sinh số ngẫu nhiên RNG và cơ chế phản hồi gợi ý.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="../stage-01.html" class="btn btn--outline btn--sm">Danh sách buổi</a>
+          <a href="../stage-02.html" class="btn btn--primary btn--sm">Sang Giai đoạn 02 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+      
+      <!-- PHẦN 1: MÔ TẢ ĐỀ TÀI & KIẾN TRÚC TRÒ CHƠI -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Đề tài &amp; Quy trình thiết kế Game (20 Phút)</h2>
+        <p>
+          Chúc mừng bạn đã đến buổi học cuối cùng của Giai đoạn 01! Trong buổi học này, chúng ta sẽ kết nối tất cả các mảnh ghép: <strong>Nhập xuất dữ liệu $\rightarrow$ Biến &amp; Ép kiểu $\rightarrow$ Toán tử so sánh $\rightarrow$ Cấu trúc rẽ nhánh</strong> để xây dựng một game kinh điển: <em>Đoán số ngẫu nhiên có phản hồi gợi ý</em>.
+        </p>
+
+        <h3>1.1 Luật chơi (Game Rules)</h3>
+        <ol style="margin-bottom: var(--space-4); line-height: 1.7; padding-left: 1.25rem;">
+          <li>Hệ thống máy tính bí mật sinh một số nguyên ngẫu nhiên bí mật nằm trong đoạn từ <code>1</code> đến <code>100</code>.</li>
+          <li>Người chơi quan sát giao diện giới thiệu và nhập vào con số mà mình phán đoán.</li>
+          <li>
+            Chương trình so sánh số người chơi với số bí mật:
+            <ul style="list-style-type: disc; margin-top: 4px;">
+              <li>Nếu <code>guess &gt; secret</code>: Thông báo <em>"Quá LỚN! Con số bí mật nhỏ hơn số bạn đoán."</em></li>
+              <li>Nếu <code>guess &lt; secret</code>: Thông báo <em>"Quá NHỎ! Con số bí mật lớn hơn số bạn đoán."</em></li>
+              <li>Nếu <code>guess == secret</code>: Bùng nổ lời chúc mừng chiến thắng!</li>
+            </ul>
+          </li>
+        </ol>
+
+        <h3>1.2 Kỹ thuật sinh số ngẫu nhiên trong C++</h3>
+        <p>Để máy tính tạo ra một số bí mật bất ngờ mỗi lần chơi, chúng ta dùng hàm <code>rand()</code> trong thư viện <code>&lt;cstdlib&gt;</code> kết hợp với hạt giống thời gian <code>srand(time(nullptr))</code> trong thư viện <code>&lt;ctime&gt;</code>:</p>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">rng_example.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép">
+              <i class="far fa-copy"></i>
+              <span>Sao chép</span>
+            </button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cstdlib&gt;</span> <span class="com">// Chứa rand() và srand()</span>
+<span class="kw">#include</span> <span class="str">&lt;ctime&gt;</span>   <span class="com">// Chứa hàm time()</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="com">// Khởi tạo hạt giống ngẫu nhiên theo thời gian thực hiện tại</span>
+    <span class="fn">srand</span>(<span class="kw">static_cast</span>&lt;<span class="type">unsigned int</span>&gt;(<span class="fn">time</span>(<span class="kw">nullptr</span>)));
+
+    <span class="com">// Công thức sinh số ngẫu nhiên trong khoảng [min, max]:</span>
+    <span class="com">// rand() % (max - min + 1) + min</span>
+    <span class="type">int</span> secret = <span class="fn">rand</span>() % <span class="num">100</span> + <span class="num">1</span>; <span class="com">// Khoảng [1, 100]</span>
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Số ngẫu nhiên tạo ra: "</span> &lt;&lt; secret &lt;&lt; <span class="type">std</span>::<span class="type">endl</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="note-box note-box--tip">
+          <strong>💡 Giải thích toán học về phép chia dư <code>%</code>:</strong><br>
+          Bất kỳ số nguyên nào chia dư cho 100 cũng chỉ có thể cho ra kết quả từ <code>0</code> đến <code>99</code>. Khi cộng thêm <code>1</code>, ta sẽ đưa miền giá trị về chính xác đoạn từ <code>1</code> đến <code>100</code>!
+        </div>
+      </section>
+
+      <!-- PHẦN 2: TRIỂN KHAI SOURCE CODE DỰ ÁN -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Triển khai Mini Project tại lớp (45 Phút)</h2>
+        <p>Học viên cùng giảng viên xây dựng toàn bộ mã nguồn của trò chơi trong file <code>main.cpp</code>:</p>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Source code hoàn chỉnh: Guess Number Game v1.0</h4>
+            <span class="badge badge--primary">Mini Project</span>
+          </div>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output Gameplay</span>
+            </div>
+            <pre><code>Output:
+=========================================
+      GAME ĐOÁN SỐ MAY MẮN (1 - 100)     
+=========================================
+Máy tính đã nghĩ ra một số bí mật!
+Hãy nhập con số bạn dự đoán: 
+
+Input:
+75
+
+Output:
+-----------------------------------------
+❌ TIẾC QUÁ! Số bạn đoán QUÁ LỚN.
+Gợi ý: Số bí mật nhỏ hơn 75.
+Số bí mật thực tế là: 42
+=========================================</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">guess_game.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép toàn bộ code">
+                <i class="far fa-copy"></i>
+                <span>Sao chép toàn bộ code</span>
+              </button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cstdlib&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;ctime&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="com">// 1. Khởi tạo RNG</span>
+    <span class="fn">srand</span>(<span class="kw">static_cast</span>&lt;<span class="type">unsigned int</span>&gt;(<span class="fn">time</span>(<span class="kw">nullptr</span>)));
+    <span class="kw">const</span> <span class="type">int</span> SECRET_NUMBER = <span class="fn">rand</span>() % <span class="num">100</span> + <span class="num">1</span>;
+    <span class="type">int</span> playerGuess;
+
+    <span class="com">// 2. Banner chào mừng</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"=========================================\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"      GAME ĐOÁN SỐ MAY MẮN (1 - 100)     \n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"=========================================\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Máy tính đã nghĩ ra một số bí mật!\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Hãy nhập con số bạn dự đoán: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; playerGuess;
+
+    <span class="com">// 3. Xử lý logic và phản hồi gợi ý</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n-----------------------------------------\n"</span>;
+    <span class="kw">if</span> (playerGuess == SECRET_NUMBER) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"🎉 XUẤT SẮC! BẠN ĐÃ ĐOÁN CHÍNH XÁC!\n"</span>;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Số bí mật chính là: "</span> &lt;&lt; SECRET_NUMBER &lt;&lt; <span class="str">"\n"</span>;
+    } <span class="kw">else</span> <span class="kw">if</span> (playerGuess &gt; SECRET_NUMBER) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"❌ TIẾC QUÁ! Số bạn đoán QUÁ LỚN.\n"</span>;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Gợi ý: Số bí mật nhỏ hơn "</span> &lt;&lt; playerGuess &lt;&lt; <span class="str">".\n"</span>;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Số bí mật thực tế là: "</span> &lt;&lt; SECRET_NUMBER &lt;&lt; <span class="str">"\n"</span>;
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"❌ TIẾC QUÁ! Số bạn đoán QUÁ NHỎ.\n"</span>;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Gợi ý: Số bí mật lớn hơn "</span> &lt;&lt; playerGuess &lt;&lt; <span class="str">".\n"</span>;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Số bí mật thực tế là: "</span> &lt;&lt; SECRET_NUMBER &lt;&lt; <span class="str">"\n"</span>;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"=========================================\n"</span>;
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ NÂNG CẤP DỰ ÁN -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập nâng cấp tính năng (Homework)</h2>
+        <p>Học viên mở rộng project <code>Guess Number Game</code> theo 3 mức độ:</p>
+
+        <!-- Bài 1: Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Nâng cấp 1 [Easy]: Manh mối gợi ý Chẵn/Lẻ</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Trước khi người chơi nhập số, hãy in ra một manh mối: <em>"Manh mối: Số bí mật là một số CHẴN"</em> hoặc <em>"Manh mối: Số bí mật là một số LẺ"</em> để người chơi có thêm cơ sở phán đoán.
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Output Manh mối</span>
+            </div>
+            <pre><code>Output:
+💡 Gợi ý đầu tiên: Con số bí mật là một số CHẴN!</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem mã nguồn giải mẫu gợi ý</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">hint_feature.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">if</span> (SECRET_NUMBER % <span class="num">2</span> == <span class="num">0</span>) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"💡 Gợi ý đầu tiên: Con số bí mật là một số CHẴN!\n"</span>;
+} <span class="kw">else</span> {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"💡 Gợi ý đầu tiên: Con số bí mật là một số LẺ!\n"</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài 2: Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Nâng cấp 2 [Medium]: Hệ thống tính khoảng cách sai lệch (Near Miss)</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Nếu người chơi đoán sai, hãy tính khoảng cách lệch <code>diff = abs(playerGuess - SECRET_NUMBER)</code>. 
+            Nếu <code>diff &lt;= 5</code>, in thêm thông báo cổ vũ: <em>"Ôi bạn ơi, bạn đoán SUÝT TRÚNG rồi! Chỉ lệch trong vòng 5 đơn vị!"</em>.
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Output Cảnh báo</span>
+            </div>
+            <pre><code>Output:
+🔥 NÓNG RỰC! Bạn đoán cực kỳ sát rồi (lệch không quá 5 đơn vị)!</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem mã nguồn giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Lưu ý:</strong> Sử dụng hàm <code>abs(x)</code> trong thư viện <code>&lt;cmath&gt;</code> để lấy giá trị tuyệt đối của hiệu số.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">near_miss.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;cmath&gt;</span> <span class="com">// Chứa hàm abs()</span>
+
+<span class="type">int</span> diff = <span class="fn">abs</span>(playerGuess - SECRET_NUMBER);
+<span class="kw">if</span> (diff &gt; <span class="num">0</span> &amp;&amp; diff &lt;= <span class="num">5</span>) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"🔥 NÓNG RỰC! Bạn đoán cực kỳ sát rồi (lệch không quá 5 đơn vị)!\n"</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài 3: Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Nâng cấp 3 [Hard]: Tùy chọn 3 mức độ khó (Difficulty Selector)</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Trước khi bắt đầu, cho người chơi chọn độ khó:
+            <br><code>1</code>. Dễ (Đoán số từ 1 đến 20)
+            <br><code>2</code>. Trung bình (Đoán số từ 1 đến 50)
+            <br><code>3</code>. Khó (Đoán số từ 1 đến 100)
+            <br>Áp dụng câu lệnh <code>switch(choice)</code> hoặc <code>if - else if</code> để sinh miền số tương ứng.
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output Độ khó</span>
+            </div>
+            <pre><code>Input:
+Chọn độ khó:
+[1] Dễ (1-20)
+[2] Vừa (1-50)
+[3] Khó (1-100)
+Lựa chọn của bạn: 2
+
+Output:
+Đã thiết lập số bí mật trong khoảng 1 đến 50!</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem mã nguồn giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">difficulty_selector.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="type">int</span> modeChoice;
+<span class="type">int</span> maxRange = <span class="num">100</span>;
+
+<span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chọn độ khó:\n[1] Dễ (1-20)\n[2] Vừa (1-50)\n[3] Khó (1-100)\nLựa chọn của bạn: "</span>;
+<span class="type">std</span>::<span class="type">cin</span> &gt;&gt; modeChoice;
+
+<span class="kw">switch</span> (modeChoice) {
+    <span class="kw">case</span> <span class="num">1</span>:
+        maxRange = <span class="num">20</span>;
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">2</span>:
+        maxRange = <span class="num">50</span>;
+        <span class="kw">break</span>;
+    <span class="kw">default</span>:
+        maxRange = <span class="num">100</span>;
+        <span class="kw">break</span>;
+}
+
+<span class="type">int</span> secret = <span class="fn">rand</span>() % maxRange + <span class="num">1</span>;
+<span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Đã thiết lập số bí mật trong khoảng 1 đến "</span> &lt;&lt; maxRange &lt;&lt; <span class="str">"!\n"</span>;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- KẾT THÚC GIAI ĐOẠN 01 -->
+      <div style="background: var(--color-primary-light); border: 1px solid rgba(229, 57, 53, 0.2); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center; margin-bottom: var(--space-8);">
+        <h3 style="color: var(--color-primary); margin-bottom: var(--space-2);">🎉 Chúc Mừng Bạn Đã Hoàn Thành Giai Đoạn 01!</h3>
+        <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+          Bạn đã nắm vững nền tảng biến, nhập xuất, toán tử và rẽ nhánh. Trong <strong>Giai đoạn 02</strong>, chúng ta sẽ học về <strong>Vòng lặp (Loops)</strong> để biến Game Đoán Số thành trò chơi có nhiều lượt đoán, tính điểm và vòng lặp game thực thụ!
+        </p>
+        <a href="../stage-02.html" class="btn btn--primary">Tiếp tục hành trình: Khám phá Giai đoạn 02 →</a>
+      </div>
+
+      <!-- NAVIGATION -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft);">
+        <a href="../stage-01.html" class="btn btn--outline">← Danh sách 11 buổi Giai đoạn 01</a>
+        <a href="../stage-02.html" class="btn btn--secondary">Giai đoạn 02: Cấu trúc điều khiển &amp; Thuật toán →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <span>090 198 05 69</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <span>innomindskills@gmail.com</span>
+            </div>
+            <div class="contact-item">
+              <i class="fab fa-facebook"></i>
+              <a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">
+                Facebook
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="site-footer__text">
+          © 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.
+        </div>
+        <div class="site-footer__links">
+          <a href="#" class="site-nav__link">Về đầu trang ↑</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>
+

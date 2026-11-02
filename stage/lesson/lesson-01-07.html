@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 07: Toán Tử So Sánh, Logic &amp; Đoản Mạch C++ — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 07: Nắm vững các toán tử so sánh quan hệ, logic AND OR NOT, cơ chế đoản mạch Short-circuit và thứ tự ưu tiên toán tử trong C++.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-01.html" class="site-nav__link is-active">Giai đoạn 01</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-01.html" class="breadcrumb__link">Giai đoạn 01</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 07: Toán tử so sánh &amp; Logic</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 07</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--medium">Tư duy logic</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Toán Tử So Sánh, Logic &amp; Thứ Tự Ưu Tiên Biểu Thức
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Xây dựng các biểu thức điều kiện logic phức hợp, hiểu thấu đáo cơ chế đoản mạch (Short-circuit) và thứ tự ưu tiên toán tử trong game.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-01-06.html" class="btn btn--outline btn--sm">← Buổi 06</a>
+          <a href="lesson-01-08.html" class="btn btn--primary btn--sm">Buổi 08 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+      
+      <!-- PHẦN 1: LÝ THUYẾT TRỌNG TÂM -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi (20 Phút)</h2>
+
+        <h3>1.1 Các toán tử quan hệ (Relational Operators)</h3>
+        <p>Luôn trả về kết quả kiểu boolean (<code>true</code> hoặc <code>false</code>):</p>
+        <ul style="line-height: 1.7;">
+          <li><code>==</code>: So sánh bằng; <code>!=</code>: So sánh khác nhau.</li>
+          <li><code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>: So sánh lớn hơn, bé hơn, lớn hơn hoặc bằng, bé hơn hoặc bằng.</li>
+        </ul>
+
+        <h3>1.2 Các toán tử logic &amp; Bảng chân trị (Truth Table)</h3>
+        <ul style="line-height: 1.7;">
+          <li><code>&amp;&amp;</code> (AND): Trả về <code>true</code> khi và chỉ khi <strong>cả 2 vế</strong> đều đúng.</li>
+          <li><code>||</code> (OR): Trả về <code>true</code> chỉ cần <strong>ít nhất 1 vế</strong> đúng.</li>
+          <li><code>!</code> (NOT): Đảo ngược giá trị logic (<code>!true</code> thành <code>false</code>).</li>
+        </ul>
+
+        <div class="note-box note-box--tip">
+          <strong>⚡ Cơ chế đoản mạch (Short-Circuit Evaluation):</strong><br>
+          - Với <code>A &amp;&amp; B</code>: Nếu <code>A</code> là <code>false</code>, C++ sẽ KHÔNG tính toán <code>B</code> vì kết quả chắc chắn là sai.<br>
+          - Với <code>A || B</code>: Nếu <code>A</code> là <code>true</code>, C++ sẽ KHÔNG tính toán <code>B</code> vì kết quả chắc chắn là đúng.<br>
+          $\rightarrow$ Giúp tối ưu hóa tốc độ xử lý hàng trăm điều kiện trong Game Loop!
+        </div>
+      </section>
+
+      <!-- PHẦN 2: THỰC HÀNH TẠI LỚP (LIVE CODING) -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Thực hành tại lớp — Live Coding (45 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Thực hành: Kiểm tra điều kiện mở Rương Thần (Treasure Chest Unlock)</h4>
+            <span class="badge badge--medium">Medium</span>
+          </div>
+          <p>
+            Rương báu chỉ mở được khi: Người chơi có chìa khóa vàng (<code>hasGoldenKey == true</code>) VÀ Cấp độ level &gt;= 15 HOẶC người chơi là GM quản trị viên (<code>isAdmin == true</code>).
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Bạn có chìa khóa vàng không? (1: Có, 0: Không): 1
+Nhập Level của bạn: 16
+Bạn có phải là Admin GM không? (1: Đúng, 0: Sai): 0
+
+Output:
+Kết quả kiểm tra mở rương: 🔓 THÀNH CÔNG! Rương kho báu đã mở!</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem mã nguồn giải mẫu live-coding</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">chest_condition.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">bool</span> hasGoldenKey;
+    <span class="type">int</span> playerLevel;
+    <span class="type">bool</span> isAdmin;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Bạn có chìa khóa vàng không? (1: Có, 0: Không): "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; hasGoldenKey;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập Level của bạn: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; playerLevel;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Bạn có phải là Admin GM không? (1: Đúng, 0: Sai): "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; isAdmin;
+
+    <span class="com">// Biểu thức logic phức hợp</span>
+    <span class="type">bool</span> canOpen = (hasGoldenKey &amp;&amp; playerLevel &gt;= <span class="num">15</span>) || isAdmin;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nKết quả kiểm tra mở rương: "</span> 
+              &lt;&lt; (canOpen ? <span class="str">"🔓 THÀNH CÔNG! Rương kho báu đã mở!"</span> : <span class="str">"🔒 THẤT BẠI! Bạn không đủ điều kiện mở rương."</span>) 
+              &lt;&lt; <span class="str">"\n"</span>;
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (3 Cấp độ)</h2>
+
+        <!-- Bài 1: Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Kiểm tra nhân vật có nằm trong vùng an toàn (Safe Zone)</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Vùng an toàn là đoạn tọa độ từ <code>X = 100</code> đến <code>X = 500</code>. Nhập vào tọa độ <code>playerX</code>. 
+            In ra <code>1</code> (An toàn) nếu <code>playerX &gt;= 100 &amp;&amp; playerX &lt;= 500</code>, ngược lại in ra <code>0</code> (Vùng nguy hiểm).
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Nhập tọa độ X của nhân vật: 250
+
+Output:
+Trạng thái an toàn: 1 (1: An toàn, 0: Vùng quái vật)</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">safe_zone.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> playerX;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập tọa độ X của nhân vật: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; playerX;
+
+    <span class="type">bool</span> isSafe = (playerX &gt;= <span class="num">100</span>) &amp;&amp; (playerX &lt;= <span class="num">500</span>);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Trạng thái an toàn: "</span> &lt;&lt; isSafe &lt;&lt; <span class="str">" (1: An toàn, 0: Vùng quái vật)\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài 2: Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Điều kiện thi triển chiêu cuối (Ultimate Skill Check)</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Nhân vật chỉ được dùng chiêu cuối (Ultimate) khi: Năng lượng Mana &gt;= 100 VÀ Chiêu thức không đang hồi phục (<code>isCooldown == false</code>) VÀ Nhân vật không bị choáng (<code>isStunned == false</code>).
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Nhập Mana hiện tại: 120
+Chiêu có đang hồi không? (1: Có, 0: Không): 0
+Nhân vật có bị choáng không? (1: Có, 0: Không): 0
+
+Output:
+-> Có thể dùng chiêu cuối không: SẴN SÀNG KÍCH HOẠT! 🔥</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">ultimate_skill.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> mana;
+    <span class="type">bool</span> isCooldown, isStunned;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập Mana hiện tại: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; mana;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chiêu có đang hồi không? (1: Có, 0: Không): "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; isCooldown;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhân vật có bị choáng không? (1: Có, 0: Không): "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; isStunned;
+
+    <span class="type">bool</span> canCast = (mana &gt;= <span class="num">100</span>) &amp;&amp; (!isCooldown) &amp;&amp; (!isStunned);
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n-> Có thể dùng chiêu cuối không: "</span> 
+              &lt;&lt; (canCast ? <span class="str">"SẴN SÀNG KÍCH HOẠT! 🔥"</span> : <span class="str">"CHƯA THỂ DÙNG CHIÊU! ❌"</span>) &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài 3: Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Kiểm tra va chạm hộp 2D (Axis-Aligned Bounding Box - AABB)</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Cho hình chữ nhật A (tọa độ <code>x1, y1</code>, rộng <code>w1</code>, cao <code>h1</code>) và hình chữ nhật B (tọa độ <code>x2, y2</code>, rộng <code>w2</code>, cao <code>h2</code>). 
+            Viết một biểu thức logic kiểm tra xem 2 hình chữ nhật có va chạm lồng vào nhau hay không (Thuật toán va chạm AABB nền tảng của mọi Game 2D).
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Nhập tọa độ x2, y2 của hộp vật thể 2: 30 30
+
+Output:
+Kết quả va chạm: 💥 CÓ VA CHẠM (COLLISION)!</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Nguyên lý:</strong> Hai hộp va chạm khi và chỉ khi chúng đồng thời giao nhau trên cả 2 trục X và Y.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">aabb_collision.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">float</span> x1 = <span class="num">10</span>, y1 = <span class="num">10</span>, w1 = <span class="num">50</span>, h1 = <span class="num">50</span>;
+    <span class="type">float</span> x2, y2, w2 = <span class="num">40</span>, h2 = <span class="num">40</span>;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập tọa độ x2, y2 của hộp vật thể 2: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; x2 &gt;&gt; y2;
+
+    <span class="com">// Thuật toán kiểm tra va chạm AABB</span>
+    <span class="type">bool</span> isColliding = (x1 &lt; x2 + w2) &amp;&amp;
+                       (x1 + w1 &gt; x2) &amp;&amp;
+                       (y1 &lt; y2 + h2) &amp;&amp;
+                       (y1 + h1 &gt; y2);
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Kết quả va chạm: "</span> 
+              &lt;&lt; (isColliding ? <span class="str">"💥 CÓ VA CHẠM (COLLISION)!"</span> : <span class="str">"An toàn, không va chạm."</span>) 
+              &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft); margin-top: var(--space-10);">
+        <a href="lesson-01-06.html" class="btn btn--outline">← Buổi 06: Toán tử số học &amp; Toán tử gán</a>
+        <a href="lesson-01-08.html" class="btn btn--primary">Buổi 08: Cấu trúc rẽ nhánh if và if-else →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <span>090 198 05 69</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <span>innomindskills@gmail.com</span>
+            </div>
+            <div class="contact-item">
+              <i class="fab fa-facebook"></i>
+              <a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">
+                Facebook
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="site-footer__text">
+          © 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.
+        </div>
+        <div class="site-footer__links">
+          <a href="#" class="site-nav__link">Về đầu trang ↑</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>
+

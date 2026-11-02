@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 09: Cấu Trúc Else If &amp; Switch/Case C++ — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 09: Xử lý bài toán đa nhánh, tối ưu hóa hệ thống Main Menu trò chơi với cấu trúc switch/case và else if trong C++.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-01.html" class="site-nav__link is-active">Giai đoạn 01</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-01.html" class="breadcrumb__link">Giai đoạn 01</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 09: Else If &amp; Switch/Case</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 09</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--medium">Điều khiển luồng</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Cấu Trúc Rẽ Nhánh Else If và Switch/Case
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Làm chủ việc phân nhánh nhiều điều kiện với chuỗi <code>else if</code> và xây dựng hệ thống menu chọn lựa chuyên nghiệp với <code>switch/case</code>.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-01-08.html" class="btn btn--outline btn--sm">← Buổi 08</a>
+          <a href="lesson-01-10.html" class="btn btn--primary btn--sm">Buổi 10 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+      
+      <!-- PHẦN 1: LÝ THUYẾT TRỌNG TÂM -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi (20 Phút)</h2>
+
+        <h3>1.1 Chuỗi `else if` cho bài toán khoảng giá trị</h3>
+        <p>Khi có nhiều điều kiện độc lập cần kiểm tra lần lượt từ trên xuống dưới:</p>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">rank_check.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép">
+              <i class="far fa-copy"></i>
+              <span>Sao chép</span>
+            </button>
+          </div>
+          <pre><code><span class="kw">if</span> (score &gt;= <span class="num">1000</span>) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Hạng: Cao Thủ (Master)\n"</span>;
+} <span class="kw">else</span> <span class="kw">if</span> (score &gt;= <span class="num">500</span>) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Hạng: Kim Cương (Diamond)\n"</span>;
+} <span class="kw">else</span> {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Hạng: Tân Thủ (Bronze)\n"</span>;
+}</code></pre>
+        </div>
+
+        <h3>1.2 Cấu trúc `switch/case` cho bài toán chọn lựa cụ thể</h3>
+        <p>
+          Rất thích hợp khi biến so sánh là kiểu số nguyên (<code>int</code>) hoặc ký tự (<code>char</code>) với các giá trị rời rạc cố định:
+        </p>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">switch_demo.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép">
+              <i class="far fa-copy"></i>
+              <span>Sao chép</span>
+            </button>
+          </div>
+          <pre><code><span class="kw">switch</span> (biến_lựa_chọn) {
+    <span class="kw">case</span> <span class="num">1</span>:
+        <span class="com">// Khối lệnh khi chọn 1</span>
+        <span class="kw">break</span>; <span class="com">// BẮT BUỘC: Thoát khỏi switch</span>
+    <span class="kw">case</span> <span class="num">2</span>:
+        <span class="com">// Khối lệnh khi chọn 2</span>
+        <span class="kw">break</span>;
+    <span class="kw">default</span>:
+        <span class="com">// Chạy khi không khớp với bất kỳ case nào ở trên</span>
+        <span class="kw">break</span>;
+}</code></pre>
+        </div>
+
+        <div class="note-box note-box--warning">
+          <strong>⚠️ Chú ý từ khóa `break;`:</strong><br>
+          Nếu bạn quên viết <code>break;</code>, chương trình sẽ tiếp tục chạy tuột xuống các case bên dưới (hiện tượng Fall-through), dẫn đến hành vi sai logic nghiêm trọng trong Game Menu!
+        </div>
+      </section>
+
+      <!-- PHẦN 2: THỰC HÀNH TẠI LỚP (LIVE CODING) -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Thực hành tại lớp — Live Coding (45 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Thực hành: Xây dựng hệ thống Main Menu Game tương tác</h4>
+            <span class="badge badge--medium">Medium</span>
+          </div>
+          <p>
+            Vẽ màn hình menu gồm 4 mục: <code>[1] Bắt đầu chơi</code>, <code>[2] Cài đặt</code>, <code>[3] Giới thiệu</code>, <code>[4] Thoát game</code>. 
+            Người dùng nhập số lựa chọn từ 1 đến 4, chương trình sử dụng <code>switch/case</code> để phản hồi màn hình tương ứng hoặc báo lỗi nếu nhập số ngoài vùng.
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Nhập lựa chọn của bạn (1-4): 1
+
+Output:
+⚔️ Đang tải thế giới... Khởi hành cuộc phiêu lưu!</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem mã nguồn giải mẫu live-coding</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">main_menu.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> choice;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"======================================\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"       RAYLIB RPG CHRONICLES          \n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"======================================\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"[1] Bắt đầu trò chơi mới\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"[2] Cài đặt âm thanh &amp; đồ họa\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"[3] Bảng vàng vinh danh\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"[4] Thoát trò chơi\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"======================================\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập lựa chọn của bạn (1-4): "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; choice;
+
+    <span class="kw">switch</span> (choice) {
+        <span class="kw">case</span> <span class="num">1</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n⚔️ Đang tải thế giới... Khởi hành cuộc phiêu lưu!\n"</span>;
+            <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="num">2</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n⚙️ Mở bảng Cài đặt: Âm lượng 100%, Độ phân giải 1280x720.\n"</span>;
+            <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="num">3</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n🏆 Top 1 Server: DragonHunter - 99999 Pts.\n"</span>;
+            <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="num">4</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n👋 Hẹn gặp lại bạn ở chuyến hành trình tiếp theo!\n"</span>;
+            <span class="kw">break</span>;
+        <span class="kw">default</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n❌ Lựa chọn không hợp lệ! Vui lòng chỉ nhập từ 1 đến 4.\n"</span>;
+            <span class="kw">break</span>;
+    }
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (3 Cấp độ)</h2>
+
+        <!-- Bài 1: Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Điều hướng phím di chuyển nhân vật (WASD Controller)</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Nhập vào một ký tự phím bấm <code>key</code>: <code>'W'</code> hoặc <code>'w'</code> (Đi lên), <code>'S'</code> hoặc <code>'s'</code> (Đi xuống), <code>'A'</code> hoặc <code>'a'</code> (Sang trái), <code>'D'</code> hoặc <code>'d'</code> (Sang phải). 
+            Sử dụng <code>switch/case</code> gộp nhánh để in ra hướng di chuyển tương ứng.
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Nhấn phím di chuyển (W/A/S/D): w
+
+Output:
+⬆️ Nhân vật di chuyển LÊN TRÊN</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">wasd_switch.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">char</span> key;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhấn phím di chuyển (W/A/S/D): "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; key;
+
+    <span class="kw">switch</span> (key) {
+        <span class="kw">case</span> <span class="str">'W'</span>:
+        <span class="kw">case</span> <span class="str">'w'</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"⬆️ Nhân vật di chuyển LÊN TRÊN\n"</span>;
+            <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="str">'S'</span>:
+        <span class="kw">case</span> <span class="str">'s'</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"⬇️ Nhân vật di chuyển XUỐNG DƯỚI\n"</span>;
+            <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="str">'A'</span>:
+        <span class="kw">case</span> <span class="str">'a'</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"⬅️ Nhân vật di chuyển SANG TRÁI\n"</span>;
+            <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="str">'D'</span>:
+        <span class="kw">case</span> <span class="str">'d'</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"➡️ Nhân vật di chuyển SANG PHẢI\n"</span>;
+            <span class="kw">break</span>;
+        <span class="kw">default</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Phím không hợp lệ!\n"</span>;
+            <span class="kw">break</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài 2: Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Khởi tạo thuộc tính Lớp Nhân Vật (Character Class Pick)</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Cho người chơi chọn 1 trong 3 lớp: 
+            <br><code>1</code>. Warrior (Máu: 200, Công: 25, Mana: 20)
+            <br><code>2</code>. Mage (Máu: 80, Công: 55, Mana: 120)
+            <br><code>3</code>. Archer (Máu: 120, Công: 40, Mana: 50)
+            <br>Áp dụng <code>switch/case</code> gán các biến <code>hp</code>, <code>atk</code>, <code>mana</code> tương ứng và in ra bảng tổng kết.
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Chọn hệ phái: [1] Warrior | [2] Mage | [3] Archer: 2
+
+Output:
+Bạn đã chọn: Pháp Sư (Mage)
+❤️ HP: 80 | ⚔️ ATK: 55 | 🔮 MANA: 120</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">pick_class.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> choice;
+    <span class="type">std</span>::<span class="type">string</span> className;
+    <span class="type">int</span> hp, atk, mana;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chọn hệ phái: [1] Warrior | [2] Mage | [3] Archer: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; choice;
+
+    <span class="kw">switch</span> (choice) {
+        <span class="kw">case</span> <span class="num">1</span>:
+            className = <span class="str">"Chiến Binh (Warrior)"</span>;
+            hp = <span class="num">200</span>; atk = <span class="num">25</span>; mana = <span class="num">20</span>;
+            <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="num">2</span>:
+            className = <span class="str">"Pháp Sư (Mage)"</span>;
+            hp = <span class="num">80</span>; atk = <span class="num">55</span>; mana = <span class="num">120</span>;
+            <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="num">3</span>:
+            className = <span class="str">"Cung Thủ (Archer)"</span>;
+            hp = <span class="num">120</span>; atk = <span class="num">40</span>; mana = <span class="num">50</span>;
+            <span class="kw">break</span>;
+        <span class="kw">default</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Hệ phái không tồn tại!\n"</span>;
+            <span class="kw">return</span> <span class="num">1</span>;
+    }
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nBạn đã chọn: "</span> &lt;&lt; className &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"❤️ HP: "</span> &lt;&lt; hp &lt;&lt; <span class="str">" | ⚔️ ATK: "</span> &lt;&lt; atk &lt;&lt; <span class="str">" | 🔮 MANA: "</span> &lt;&lt; mana &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài 3: Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Máy tính bỏ túi dành cho Game Master (GM Calculator)</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Nhập vào 2 số thực <code>num1</code>, <code>num2</code> và 1 toán tử <code>op</code> (kiểu char: <code>'+'</code>, <code>'-'</code>, <code>'*'</code>, <code>'/'</code>). 
+            Áp dụng <code>switch(op)</code> để tính và in kết quả. Với phép chia, kiểm tra điều kiện <code>num2 == 0</code> để tránh lỗi sập chương trình (Divide by Zero Crash).
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Nhập biểu thức (VD: 15.5 * 3): 20 / 4
+
+Output:
+Kết quả: 5</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">gm_calculator.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">float</span> num1, num2;
+    <span class="type">char</span> op;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập biểu thức (VD: 15.5 * 3): "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; num1 &gt;&gt; op &gt;&gt; num2;
+
+    <span class="kw">switch</span> (op) {
+        <span class="kw">case</span> <span class="str">'+'</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Kết quả: "</span> &lt;&lt; (num1 + num2) &lt;&lt; <span class="str">"\n"</span>;
+            <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="str">'-'</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Kết quả: "</span> &lt;&lt; (num1 - num2) &lt;&lt; <span class="str">"\n"</span>;
+            <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="str">'*'</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Kết quả: "</span> &lt;&lt; (num1 * num2) &lt;&lt; <span class="str">"\n"</span>;
+            <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="str">'/'</span>:
+            <span class="kw">if</span> (num2 == <span class="num">0</span>) {
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"LỖI: Không thể chia cho 0!\n"</span>;
+            } <span class="kw">else</span> {
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Kết quả: "</span> &lt;&lt; (num1 / num2) &lt;&lt; <span class="str">"\n"</span>;
+            }
+            <span class="kw">break</span>;
+        <span class="kw">default</span>:
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Toán tử không hợp lệ!\n"</span>;
+            <span class="kw">break</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft); margin-top: var(--space-10);">
+        <a href="lesson-01-08.html" class="btn btn--outline">← Buổi 08: Cấu trúc rẽ nhánh if và if-else</a>
+        <a href="lesson-01-10.html" class="btn btn--primary">Buổi 10: Sửa bài tập cấu trúc rẽ nhánh →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <span>090 198 05 69</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <span>innomindskills@gmail.com</span>
+            </div>
+            <div class="contact-item">
+              <i class="fab fa-facebook"></i>
+              <a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">
+                Facebook
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="site-footer__text">
+          © 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.
+        </div>
+        <div class="site-footer__links">
+          <a href="#" class="site-nav__link">Về đầu trang ↑</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 05: Sửa Bài &amp; Củng Cố Biến, Nhập Xuất — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 05: Chữa các lỗi tràn số (Integer Overflow), định dạng dữ liệu đầu ra chuyên nghiệp với iomanip và củng cố tư duy IPO trong C++.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-01.html" class="site-nav__link is-active">Giai đoạn 01</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-01.html" class="breadcrumb__link">Giai đoạn 01</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 05: Sửa bài &amp; Củng cố biến, nhập xuất</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 05</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--medium">Thực hành &amp; Debug</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Sửa Bài và Củng Cố Biến, Kiểu Dữ Liệu, Nhập Xuất
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Nhận diện hiện tượng tràn số (Integer Overflow), định dạng giao diện bảng điểm với <code>&lt;iomanip&gt;</code> và làm sạch tư duy giải bài tập.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-01-04.html" class="btn btn--outline btn--sm">← Buổi 04</a>
+          <a href="lesson-01-06.html" class="btn btn--primary btn--sm">Buổi 06 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+      
+      <!-- PHẦN 1: LÝ THUYẾT TRỌNG TÂM -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi (20 Phút)</h2>
+        <p>
+          Sau 4 buổi đầu tiên, học viên thường gặp phải các lỗi logic tiềm ẩn khi xử lý dữ liệu số lớn và khi in kết quả ra màn hình.
+        </p>
+
+        <h3>1.1 Hiện tượng Tràn số nguyên (Integer Overflow)</h3>
+        <p>
+          Kiểu <code>int</code> 4 byte chỉ chứa tối đa số <code>2,147,483,647</code>. Nếu bạn cộng thêm 1, biến sẽ bị "cuộn vòng" (wrap-around) thành số âm <code>-2,147,483,648</code>!
+          <br>$\rightarrow$ <strong>Giải pháp trong Game:</strong> Dùng kiểu <code>long long</code> (8 byte, lên tới 9 tỷ tỷ) khi quản lý số lượng tiền tệ, kinh nghiệm tích lũy hoặc thời gian miligiây.
+        </p>
+
+        <h3>1.2 Định dạng bảng dữ liệu với thư viện `&lt;iomanip&gt;`</h3>
+        <p>Để căn lề và định dạng số thập phân đẹp mắt, C++ cung cấp 3 công cụ đắc lực:</p>
+        <ul style="line-height: 1.7;">
+          <li><code>std::setw(n)</code>: Đặt độ rộng hiển thị của cột là <code>n</code> ký tự.</li>
+          <li><code>std::fixed</code>: Hiển thị số thực ở dạng thông thường (tránh bị nhảy sang ký hiệu khoa học như <code>1e+06</code>).</li>
+          <li><code>std::setprecision(k)</code>: Cố định đúng <code>k</code> chữ số sau dấu phẩy thập phân.</li>
+        </ul>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">iomanip_demo.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép">
+              <i class="far fa-copy"></i>
+              <span>Sao chép</span>
+            </button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;iomanip&gt;</span> <span class="com">// Thư viện thao tác định dạng</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">float</span> playerFPS = <span class="num">59.98765f</span>;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="type">std</span>::<span class="type">fixed</span> &lt;&lt; <span class="type">std</span>::<span class="type">setprecision</span>(<span class="num">2</span>);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"FPS trung bình: "</span> &lt;&lt; playerFPS &lt;&lt; <span class="str">"\n"</span>; <span class="com">// In ra 59.99</span>
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: THỰC HÀNH TẠI LỚP (LIVE CODING) -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Thực hành tại lớp — Chữa bài tập tổng hợp (45 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Thực hành: Dựng Bảng Xếp Hạng (Leaderboard) căn lề hoàn hảo</h4>
+            <span class="badge badge--medium">Medium</span>
+          </div>
+          <p>
+            Nhập thông tin 2 người chơi dẫn đầu: Tên người chơi 1, Điểm số (float), Tên người chơi 2, Điểm số (float). 
+            Sử dụng <code>std::setw</code> và <code>std::setprecision(1)</code> để in ra bảng xếp hạng có các cột thẳng hàng tăm tắp.
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Output</span>
+            </div>
+            <pre><code>Output:
+====================================
+TOP     TÊN NGƯỜI CHƠI      ĐIỂM SỐ
+------------------------------------
+#1      DragonSlayer         9850.5
+#2      ShadowNinja          7420.0
+====================================</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem mã nguồn giải mẫu live-coding</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">leaderboard.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;iomanip&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> p1Name = <span class="str">"DragonSlayer"</span>;
+    <span class="type">float</span> p1Score = <span class="num">9850.54f</span>;
+
+    <span class="type">std</span>::<span class="type">string</span> p2Name = <span class="str">"ShadowNinja"</span>;
+    <span class="type">float</span> p2Score = <span class="num">7420.00f</span>;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"====================================\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="type">std</span>::<span class="type">left</span> &lt;&lt; <span class="type">std</span>::<span class="type">setw</span>(<span class="num">8</span>) &lt;&lt; <span class="str">"TOP"</span> 
+              &lt;&lt; <span class="type">std</span>::<span class="type">setw</span>(<span class="num">18</span>) &lt;&lt; <span class="str">"TÊN NGƯỜI CHƠI"</span> 
+              &lt;&lt; <span class="type">std</span>::<span class="type">right</span> &lt;&lt; <span class="type">std</span>::<span class="type">setw</span>(<span class="num">10</span>) &lt;&lt; <span class="str">"ĐIỂM SỐ"</span> &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"------------------------------------\n"</span>;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="type">std</span>::<span class="type">fixed</span> &lt;&lt; <span class="type">std</span>::<span class="type">setprecision</span>(<span class="num">1</span>);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="type">std</span>::<span class="type">left</span> &lt;&lt; <span class="type">std</span>::<span class="type">setw</span>(<span class="num">8</span>) &lt;&lt; <span class="str">"#1"</span> 
+              &lt;&lt; <span class="type">std</span>::<span class="type">setw</span>(<span class="num">18</span>) &lt;&lt; p1Name 
+              &lt;&lt; <span class="type">std</span>::<span class="type">right</span> &lt;&lt; <span class="type">std</span>::<span class="type">setw</span>(<span class="num">10</span>) &lt;&lt; p1Score &lt;&lt; <span class="str">"\n"</span>;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="type">std</span>::<span class="type">left</span> &lt;&lt; <span class="type">std</span>::<span class="type">setw</span>(<span class="num">8</span>) &lt;&lt; <span class="str">"#2"</span> 
+              &lt;&lt; <span class="type">std</span>::<span class="type">setw</span>(<span class="num">18</span>) &lt;&lt; p2Name 
+              &lt;&lt; <span class="type">std</span>::<span class="type">right</span> &lt;&lt; <span class="type">std</span>::<span class="type">setw</span>(<span class="num">10</span>) &lt;&lt; p2Score &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"====================================\n"</span>;
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (3 Cấp độ)</h2>
+
+        <!-- Bài 1: Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Chuyển đổi nhiệt độ môi trường Game (Celsius sang Fahrenheit)</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Nhập vào nhiệt độ môi trường bản đồ theo độ Celsius (<code>float c</code>). Tính và in ra độ Fahrenheit (<code>float f</code>) với định dạng cố định 1 chữ số thập phân. 
+            Công thức: <code>f = (c * 9.0f / 5.0f) + 32.0f</code>.
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Nhập nhiệt độ môi trường (°C): 32.5
+
+Output:
+Nhiệt độ tương đương: 90.5 °F</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">temperature.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;iomanip&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">float</span> c;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập nhiệt độ môi trường (°C): "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; c;
+
+    <span class="type">float</span> f = (c * <span class="num">9.0f</span> / <span class="num">5.0f</span>) + <span class="num">32.0f</span>;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="type">std</span>::<span class="type">fixed</span> &lt;&lt; <span class="type">std</span>::<span class="type">setprecision</span>(<span class="num">1</span>);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhiệt độ tương đương: "</span> &lt;&lt; f &lt;&lt; <span class="str">" °F\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài 2: Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Ngăn chặn tràn số tài khoản khi nạp Kim Cương khổng lồ</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Nhập vào số kim cương ban đầu <code>diamonds = 1500000000</code> và số kim cương nạp thêm <code>recharge = 1000000000</code>. 
+            Giải thích vì sao nếu dùng <code>int</code> sẽ bị âm số, và viết chương trình sử dụng đúng kiểu dữ liệu <code>long long</code> để lưu kết quả chính xác 2.5 tỷ kim cương.
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Nhập số kim cương hiện tại (VD: 1500000000): 1500000000
+Nhập số kim cương nạp thêm (VD: 1000000000): 1000000000
+
+Output:
+Tổng kim cương an toàn không tràn số: 2500000000 💎</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">overflow_fix.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">long long</span> currentDiamonds;
+    <span class="type">long long</span> addDiamonds;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập số kim cương hiện tại (VD: 1500000000): "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; currentDiamonds;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập số kim cương nạp thêm (VD: 1000000000): "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; addDiamonds;
+
+    <span class="type">long long</span> total = currentDiamonds + addDiamonds;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nTổng kim cương an toàn không tràn số: "</span> &lt;&lt; total &lt;&lt; <span class="str">" 💎\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài 3: Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Tính vector vận tốc đạn pháo theo góc phóng (Trigonometry)</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Pháo binh bắn một viên đạn với vận tốc tổng hợp <code>speed = 100.0f</code> và góc bắn <code>angleDeg</code> (tính bằng độ từ 0 đến 90 độ). 
+            Sử dụng thư viện <code>&lt;cmath&gt;</code> để tính thành phần vận tốc ngang <code>vx = speed * cos(rad)</code> và vận tốc dọc <code>vy = speed * sin(rad)</code>. 
+            (Lưu ý: <code>rad = angleDeg * 3.14159265f / 180.0f</code>).
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Nhập tốc độ ban đầu của đạn pháo: 100
+Nhập góc bắn (0 - 90 độ): 45
+
+Output:
+Vector vận tốc của viên đạn:
+- Vận tốc ngang (Vx): 70.71 px/frame
+- Vận tốc dọc (Vy)  : 70.71 px/frame</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">bullet_vector.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cmath&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;iomanip&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="kw">const</span> <span class="type">float</span> PI = <span class="num">3.14159265f</span>;
+    <span class="type">float</span> speed, angleDeg;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập tốc độ ban đầu của đạn pháo: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; speed;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập góc bắn (0 - 90 độ): "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; angleDeg;
+
+    <span class="type">float</span> angleRad = angleDeg * (PI / <span class="num">180.0f</span>);
+    <span class="type">float</span> vx = speed * <span class="fn">cos</span>(angleRad);
+    <span class="type">float</span> vy = speed * <span class="fn">sin</span>(angleRad);
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="type">std</span>::<span class="type">fixed</span> &lt;&lt; <span class="type">std</span>::<span class="type">setprecision</span>(<span class="num">2</span>);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nVector vận tốc của viên đạn:\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"- Vận tốc ngang (Vx): "</span> &lt;&lt; vx &lt;&lt; <span class="str">" px/frame\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"- Vận tốc dọc (Vy)  : "</span> &lt;&lt; vy &lt;&lt; <span class="str">" px/frame\n"</span>;
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft); margin-top: var(--space-10);">
+        <a href="lesson-01-04.html" class="btn btn--outline">← Buổi 04: Hằng số &amp; Ép kiểu dữ liệu</a>
+        <a href="lesson-01-06.html" class="btn btn--primary">Buổi 06: Toán tử số học &amp; Toán tử gán →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <span>090 198 05 69</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <span>innomindskills@gmail.com</span>
+            </div>
+            <div class="contact-item">
+              <i class="fab fa-facebook"></i>
+              <a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">
+                Facebook
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="site-footer__text">
+          © 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.
+        </div>
+        <div class="site-footer__links">
+          <a href="#" class="site-nav__link">Về đầu trang ↑</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>
+

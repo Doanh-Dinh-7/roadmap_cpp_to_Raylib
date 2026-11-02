@@ -1,0 +1,143 @@
+/**
+ * ==============================================================================
+ * ROADMAP C++ & RAYLIB - DESIGN SYSTEM CSS VARIABLES
+ * ==============================================================================
+ * Phiên bản: 1.0.0
+ * Phong cách: Code Up Your Brain / Minimalist Tech Education
+ * ==============================================================================
+ */
+
+:root {
+  /* ==========================================================================
+     1. COLOR PALETTE
+     ========================================================================== */
+  /* Primary Red Theme */
+  --color-primary: #E53935;
+  --color-primary-hover: #C62828;
+  --color-primary-active: #B71C1C;
+  --color-primary-light: #FFEBEE;
+  --color-primary-subtle: #FFF5F5;
+
+  /* Neutrals & Text */
+  --color-text-main: #1A1A1A;
+  --color-text-secondary: #555555;
+  --color-text-muted: #888888;
+  --color-text-light: #FFFFFF;
+
+  /* Surfaces & Backgrounds */
+  --color-bg-page: #F8F9FA;
+  --color-bg-surface: #FFFFFF;
+  --color-bg-card: #FFFFFF;
+  --color-bg-tag: #F1F3F5;
+  --color-bg-subtle: #F1F5F9;
+
+  /* Borders & Dividers */
+  --color-border-soft: #E9ECEF;
+  --color-border-medium: #DEE2E6;
+  --color-border-focus: #E53935;
+
+  /* Code Block Theme (Dark Mode Console/IDE) */
+  --color-code-bg: #1E1E1E;
+  --color-code-header-bg: #2D2D2D;
+  --color-code-text: #D4D4D4;
+  --color-code-border: #333333;
+  --color-code-keyword: #569CD6;
+  --color-code-type: #4EC9B0;
+  --color-code-string: #CE9178;
+  --color-code-comment: #6A9955;
+  --color-code-number: #B5CEA8;
+  --color-code-function: #DCDCAA;
+
+  /* Semantics & Accents */
+  --color-accent-quote-bg: #F3E8FF;
+  --color-accent-quote-border: #A855F7;
+  --color-accent-quote-text: #6B21A8;
+
+  --color-easy-bg: #CCFBF1;
+  --color-easy-text: #0F766E;
+  --color-medium-bg: #FEF3C7;
+  --color-medium-text: #B45309;
+  --color-hard-bg: #FFE4E6;
+  --color-hard-text: #BE123C;
+
+  --color-success-bg: #DCFCE7;
+  --color-success-text: #15803D;
+
+  /* ==========================================================================
+     2. TYPOGRAPHY
+     ========================================================================== */
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', Courier, monospace;
+
+  /* Font Sizes */
+  --font-size-xs: 0.75rem;     /* 12px */
+  --font-size-sm: 0.875rem;    /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-md: 1.125rem;    /* 18px */
+  --font-size-lg: 1.25rem;     /* 20px */
+  --font-size-xl: 1.375rem;    /* 22px */
+  --font-size-2xl: 1.75rem;    /* 28px */
+  --font-size-3xl: 2rem;       /* 32px */
+  --font-size-4xl: 2.5rem;     /* 40px */
+  --font-size-hero: 3rem;      /* 48px */
+
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Line Heights */
+  --line-height-tight: 1.2;
+  --line-height-snug: 1.35;
+  --line-height-base: 1.65;
+  --line-height-relaxed: 1.75;
+
+  /* ==========================================================================
+     3. SPACING & SIZING (8-Point Grid)
+     ========================================================================== */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+  --space-20: 5rem;    /* 80px */
+
+  /* Container Widths */
+  --container-max-width: 1180px;
+  --container-narrow-width: 860px;
+  --container-padding: 1.5rem; /* 24px */
+
+  /* ==========================================================================
+     4. BORDERS & SHADOWS
+     ========================================================================== */
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+
+  /* Accent Border */
+  --border-card-accent: 5px solid var(--color-primary);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.03);
+  --shadow-hover: 0 14px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(229, 57, 53, 0.08);
+
+  /* ==========================================================================
+     5. TRANSITIONS & ANIMATIONS
+     ========================================================================== */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-smooth: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+

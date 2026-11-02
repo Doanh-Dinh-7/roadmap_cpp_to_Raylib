@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roadmap Lập Trình Game C++ &amp; Raylib (78 Buổi)</title>
+    <meta
+      name="description"
+      content="Lộ trình đào tạo toàn diện lập trình Game C++ và thư viện Raylib 78 buổi chuẩn từ tư duy thuật toán đến đồ án cá nhân."
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- ==================== SITE HEADER ==================== -->
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a href="index.html" class="brand">
+          <img
+            src="assets/images/logo.png"
+            alt="InnoMind Logo"
+            class="brand__logo-img"
+          />
+          <div>
+            <div class="brand__text">InnoMind • Game Dev</div>
+            <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+          </div>
+        </a>
+
+        <nav class="site-nav" aria-label="Điều hướng chính">
+          <ul class="site-nav__list">
+            <li>
+              <a href="index.html" class="site-nav__link is-active"
+                >Trang chủ</a
+              >
+            </li>
+            <li><a href="#stages" class="site-nav__link">8 Giai đoạn</a></li>
+            <li><a href="#pedagogy" class="site-nav__link">Phương pháp</a></li>
+            <li><a href="#tools" class="site-nav__link">Công cụ</a></li>
+            <li><a href="#rubric" class="site-nav__link">Đánh giá</a></li>
+          </ul>
+          <button
+            class="nav-toggle-btn"
+            aria-label="Mở menu điều hướng"
+            aria-expanded="false"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero">
+      <div class="container hero__content">
+        <div class="hero__badge">
+          Lộ trình đào tạo chuẩn • 90 Phút / Buổi • 117 Giờ thực chiến
+        </div>
+        <h1 class="hero__title">
+          Lộ Trình Lập Trình Game <br />
+          <span class="hero__title-accent">C++ &amp; Raylib Toàn Diện</span>
+        </h1>
+        <p class="hero__description">
+          Đi từ tư duy máy tính, cú pháp C++, giải thuật, lập trình hướng đối
+          tượng (OOP) tới kỹ thuật xây dựng Game 2D hoàn chỉnh với thư viện
+          Raylib.
+        </p>
+
+        <div
+          class="hero__actions"
+          style="
+            display: flex;
+            gap: var(--space-4);
+            justify-content: center;
+            flex-wrap: wrap;
+          "
+        >
+          <a href="#stages" class="btn btn--primary">Khám phá 8 Giai đoạn ↓</a>
+          <a href="stage/stage-01.html" class="btn btn--secondary"
+            >Bắt đầu Giai đoạn 01 →</a
+          >
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="hero__stats">
+          <div class="stat-item">
+            <div class="stat-item__number">08</div>
+            <div class="stat-item__label">Giai đoạn học</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item__number">78</div>
+            <div class="stat-item__label">Buổi học (90')</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item__number">117h</div>
+            <div class="stat-item__label">Giờ thực hành</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-item__number">01</div>
+            <div class="stat-item__label">Đồ án Game cá nhân</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 8 STAGES SECTION ==================== -->
+    <main id="stages" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-header__tag">Chương trình đào tạo</div>
+          <h2 class="section-header__title">
+            8 Giai Đoạn Từ Zero Đến Đồ Án Game
+          </h2>
+        </div>
+
+        <div class="stage-grid">
+          <!-- Stage 01 -->
+          <article class="stage-card">
+            <div class="stage-card__aside">
+              <div class="stage-card__number">01</div>
+              <span class="badge badge--primary">11 Buổi</span>
+              <span class="stage-card__range">Buổi 01–11</span>
+            </div>
+            <div class="stage-card__body">
+              <h3 class="stage-card__title">
+                GIAI ĐOẠN 01 — NHẬP MÔN LẬP TRÌNH VÀ C++
+              </h3>
+              <p class="stage-card__desc">
+                Làm quen tư duy máy tính, cài đặt IDE, mô hình IPO, biến, các
+                kiểu dữ liệu, hằng số, ép kiểu, toán tử số học, logic và cấu
+                trúc rẽ nhánh <code>if-else</code>, <code>switch/case</code>.
+              </p>
+              <div class="stage-card__focus">
+                <strong>Trọng tâm:</strong> Tính chu vi/diện tích, kiểm tra
+                chẵn/lẻ, Mini Project: Guess Number Game console.
+              </div>
+            </div>
+            <div class="stage-card__action">
+              <a href="stage/stage-01.html" class="btn btn--secondary"
+                >Xem danh sách buổi →</a
+              >
+            </div>
+          </article>
+
+          <!-- Stage 02 -->
+          <article class="stage-card">
+            <div class="stage-card__aside">
+              <div class="stage-card__number">02</div>
+              <span class="badge badge--primary">11 Buổi</span>
+              <span class="stage-card__range">Buổi 12–22</span>
+            </div>
+            <div class="stage-card__body">
+              <h3 class="stage-card__title">
+                GIAI ĐOẠN 02 — CẤU TRÚC ĐIỀU KHIỂN &amp; THUẬT TOÁN
+              </h3>
+              <p class="stage-card__desc">
+                Vòng lặp <code>while</code>, <code>for</code>,
+                <code>do-while</code>, vòng lặp lồng nhau, kiểm soát luồng với
+                <code>break/continue</code>, thiết kế lưu đồ thuật toán
+                (Flowchart) và bẻ gãy bài toán phức tạp.
+              </p>
+              <div class="stage-card__focus">
+                <strong>Trọng tâm:</strong> Tính tổng/giai thừa, số nguyên tố,
+                vẽ hình bằng ký tự, hoàn thiện Game đoán số nhiều cấp độ.
+              </div>
+            </div>
+            <div class="stage-card__action">
+              <a href="stage/stage-02.html" class="btn btn--secondary"
+                >Xem danh sách buổi →</a
+              >
+            </div>
+          </article>
+
+          <!-- Stage 03 -->
+          <article class="stage-card">
+            <div class="stage-card__aside">
+              <div class="stage-card__number">03</div>
+              <span class="badge badge--primary">11 Buổi</span>
+              <span class="stage-card__range">Buổi 23–33</span>
+            </div>
+            <div class="stage-card__body">
+              <h3 class="stage-card__title">
+                GIAI ĐOẠN 03 — HÀM VÀ CẤU TRÚC DỮ LIỆU
+              </h3>
+              <p class="stage-card__desc">
+                Tổ chức hàm (Functions), truyền tham số trị/tham chiếu, phạm vi
+                biến, mảng 1 chiều, mảng 2 chiều (bàn cờ game), thuật toán tìm
+                kiếm, sắp xếp và xử lý chuỗi ký tự <code>std::string</code>.
+              </p>
+              <div class="stage-card__focus">
+                <strong>Trọng tâm:</strong> Mảng bàn cờ 2D, quản lý điểm số,
+                mini game Tic Tac Toe (Cờ ca-rô 3x3 console).
+              </div>
+            </div>
+            <div class="stage-card__action">
+              <a href="stage/stage-03.html" class="btn btn--secondary"
+                >Xem danh sách buổi →</a
+              >
+            </div>
+          </article>
+
+          <!-- Stage 04 -->
+          <article class="stage-card">
+            <div class="stage-card__aside">
+              <div class="stage-card__number">04</div>
+              <span class="badge badge--primary">11 Buổi</span>
+              <span class="stage-card__range">Buổi 34–44</span>
+            </div>
+            <div class="stage-card__body">
+              <h3 class="stage-card__title">GIAI ĐOẠN 04 — C++ NÂNG CAO</h3>
+              <p class="stage-card__desc">
+                Cấu trúc dữ liệu tự định nghĩa <code>struct</code>, bản chất con
+                trỏ (Pointers), cấp phát bộ nhớ động trên Heap, mảng động
+                <code>std::vector</code>, đọc/ghi file văn bản (lưu trữ
+                Highscore và State game).
+              </p>
+              <div class="stage-card__focus">
+                <strong>Trọng tâm:</strong> Bản đồ lưới 2D di chuyển nhân vật,
+                quản lý quái vật, nhặt vật phẩm, lưu game ra file.
+              </div>
+            </div>
+            <div class="stage-card__action">
+              <a href="stage/stage-04.html" class="btn btn--secondary"
+                >Xem danh sách buổi →</a
+              >
+            </div>
+          </article>
+
+          <!-- Stage 05 -->
+          <article class="stage-card">
+            <div class="stage-card__aside">
+              <div class="stage-card__number">05</div>
+              <span class="badge badge--primary">13 Buổi</span>
+              <span class="stage-card__range">Buổi 45–57</span>
+            </div>
+            <div class="stage-card__body">
+              <h3 class="stage-card__title">
+                GIAI ĐOẠN 05 — LẬP TRÌNH HƯỚNG ĐỐI TƯỢNG (OOP)
+              </h3>
+              <p class="stage-card__desc">
+                4 trụ cột OOP trong C++: Đóng gói (Class/Object), Kế thừa
+                (Inheritance), Đa hình (Polymorphism với virtual function) và
+                Trừu tượng hóa. Tổ chức mã nguồn chuẩn tách rời file header
+                <code>.h</code> và triển khai <code>.cpp</code>.
+              </p>
+              <div class="stage-card__focus">
+                <strong>Trọng tâm:</strong> Mini Project Turn-based Battle Game
+                (Warrior, Mage, Archer đấu Quái vật với HP/Atk/Def/Skill).
+              </div>
+            </div>
+            <div class="stage-card__action">
+              <a href="stage/stage-05.html" class="btn btn--secondary"
+                >Xem danh sách buổi →</a
+              >
+            </div>
+          </article>
+
+          <!-- Stage 06 -->
+          <article class="stage-card">
+            <div class="stage-card__aside">
+              <div class="stage-card__number">06</div>
+              <span class="badge badge--primary">11 Buổi</span>
+              <span class="stage-card__range">Buổi 58–68</span>
+            </div>
+            <div class="stage-card__body">
+              <h3 class="stage-card__title">
+                GIAI ĐOẠN 06 — LÀM QUEN VỚI RAYLIB
+              </h3>
+              <p class="stage-card__desc">
+                Cài đặt môi trường đồ họa Raylib trong C++, kiến trúc Game Loop
+                chuẩn (Init $\rightarrow$ Update $\rightarrow$ Draw
+                $\rightarrow$ Unload), vẽ hình khối hình học, xử lý bàn
+                phím/chuột, chuyển động vector và va chạm hình học (AABB).
+              </p>
+              <div class="stage-card__focus">
+                <strong>Trọng tâm:</strong> Game bóng né vật thể rơi (Dodge
+                Game) có tính điểm, màn hình Game Over và chơi lại.
+              </div>
+            </div>
+            <div class="stage-card__action">
+              <a href="stage/stage-06.html" class="btn btn--secondary"
+                >Xem danh sách buổi →</a
+              >
+            </div>
+          </article>
+
+          <!-- Stage 07 -->
+          <article class="stage-card">
+            <div class="stage-card__aside">
+              <div class="stage-card__number">07</div>
+              <span class="badge badge--primary">05 Buổi</span>
+              <span class="stage-card__range">Buổi 69–73</span>
+            </div>
+            <div class="stage-card__body">
+              <h3 class="stage-card__title">
+                GIAI ĐOẠN 07 — GAME MECHANICS &amp; GAMEPLAY
+              </h3>
+              <p class="stage-card__desc">
+                Xử lý đồ họa Texture2D, hoạt ảnh cắt sprite sheet (Sprite
+                Animation), tích hợp âm thanh &amp; nhạc nền (Sound / Music), hệ
+                thống quản lý trạng thái game (Menu $\rightarrow$ Gameplay
+                $\rightarrow$ Pause $\rightarrow$ Victory/Defeat).
+              </p>
+              <div class="stage-card__focus">
+                <strong>Trọng tâm:</strong> Nhân vật di chuyển mượt mà, bắn đạn,
+                va chạm nổ hiệu ứng âm thanh sống động.
+              </div>
+            </div>
+            <div class="stage-card__action">
+              <a href="stage/stage-07.html" class="btn btn--secondary"
+                >Xem danh sách buổi →</a
+              >
+            </div>
+          </article>
+
+          <!-- Stage 08 -->
+          <article class="stage-card">
+            <div class="stage-card__aside">
+              <div class="stage-card__number">08</div>
+              <span class="badge badge--primary">05 Buổi</span>
+              <span class="stage-card__range">Buổi 74–78</span>
+            </div>
+            <div class="stage-card__body">
+              <h3 class="stage-card__title">GIAI ĐOẠN 08 — FINAL PROJECT</h3>
+              <p class="stage-card__desc">
+                Hiện thực hóa một sản phẩm game 2D độc lập: Lập kế hoạch, triển
+                khai Core Gameplay, bổ sung item/kẻ thù, tối ưu hóa (Polish),
+                cân bằng thông số game, sửa lỗi và thuyết trình demo tốt nghiệp.
+              </p>
+              <div class="stage-card__focus">
+                <strong>Đề tài gợi ý:</strong> Platformer (Mario), Space Shooter
+                (Bắn ruồi), Dungeon Adventure, Brick Breaker.
+              </div>
+            </div>
+            <div class="stage-card__action">
+              <a href="stage/stage-08.html" class="btn btn--secondary"
+                >Xem danh sách buổi →</a
+              >
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== METHODOLOGY & PEDAGOGY ==================== -->
+    <section id="pedagogy" class="section section--alt">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-header__tag">Phương pháp sư phạm</div>
+          <h2 class="section-header__title">
+            Cấu Trúc Buổi Học 90 Phút &amp; Phân Cấp Bài Tập
+          </h2>
+          <p class="section-header__desc">
+            Tỷ trọng thực hành cao, ưu tiên học viên tự tay viết mã, debug lỗi
+            thực tế và trình bày tư duy logic của mình.
+          </p>
+        </div>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-6);
+          "
+        >
+          <!-- Cấu trúc buổi học -->
+          <div
+            style="
+              background: var(--color-bg-surface);
+              padding: var(--space-6);
+              border-radius: var(--radius-lg);
+              border: 1px solid var(--color-border-soft);
+              box-shadow: var(--shadow-sm);
+            "
+          >
+            <h3
+              style="
+                color: var(--color-primary);
+                font-size: var(--font-size-lg);
+                margin-bottom: var(--space-4);
+              "
+            >
+              ⏱️ Cấu trúc 90 Phút Kiến Thức Mới
+            </h3>
+            <ul
+              style="
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                gap: var(--space-3);
+                padding-left: 0;
+              "
+            >
+              <li
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  border-bottom: 1px dashed var(--color-border-soft);
+                  padding-bottom: 6px;
+                "
+              >
+                <span
+                  ><strong>Ôn tập &amp; Kết nối:</strong> Khởi động bài cũ</span
+                >
+                <span class="badge badge--tag">10 phút</span>
+              </li>
+              <li
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  border-bottom: 1px dashed var(--color-border-soft);
+                  padding-bottom: 6px;
+                "
+              >
+                <span
+                  ><strong>Lý thuyết cốt lõi:</strong> Trực quan, ngắn gọn</span
+                >
+                <span class="badge badge--tag">20 phút</span>
+              </li>
+              <li
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  border-bottom: 1px dashed var(--color-border-soft);
+                  padding-bottom: 6px;
+                "
+              >
+                <span><strong>Live Coding:</strong> Giảng viên làm mẫu</span>
+                <span class="badge badge--primary">45 phút</span>
+              </li>
+              <li
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  border-bottom: 1px dashed var(--color-border-soft);
+                  padding-bottom: 6px;
+                "
+              >
+                <span><strong>Thử thách độc lập:</strong> Áp dụng tại lớp</span>
+                <span class="badge badge--tag">10 phút</span>
+              </li>
+              <li style="display: flex; justify-content: space-between">
+                <span
+                  ><strong>Tổng kết &amp; Giao bài:</strong> Nhắc nhở bug phổ
+                  biến</span
+                >
+                <span class="badge badge--tag">5 phút</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Phân cấp bài tập -->
+          <div
+            style="
+              background: var(--color-bg-surface);
+              padding: var(--space-6);
+              border-radius: var(--radius-lg);
+              border: 1px solid var(--color-border-soft);
+              box-shadow: var(--shadow-sm);
+            "
+          >
+            <h3
+              style="
+                color: var(--color-primary);
+                font-size: var(--font-size-lg);
+                margin-bottom: var(--space-4);
+              "
+            >
+              🎯 Tỷ Trọng Phân Cấp Bài Tập
+            </h3>
+            <div
+              style="display: flex; flex-direction: column; gap: var(--space-4)"
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  gap: var(--space-3);
+                "
+              >
+                <span
+                  class="badge badge--easy"
+                  style="min-width: 70px; justify-content: center"
+                  >Easy (40%)</span
+                >
+                <p style="margin: 0; font-size: var(--font-size-sm)">
+                  Bài tập ngắn gọn, dùng để củng cố nhớ cú pháp và vận dụng trực
+                  tiếp.
+                </p>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  gap: var(--space-3);
+                "
+              >
+                <span
+                  class="badge badge--medium"
+                  style="min-width: 70px; justify-content: center"
+                  >Med (40%)</span
+                >
+                <p style="margin: 0; font-size: var(--font-size-sm)">
+                  Kết hợp nhiều khối kiến thức, đòi hỏi phân tích bài toán và
+                  chọn thuật toán.
+                </p>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  gap: var(--space-3);
+                "
+              >
+                <span
+                  class="badge badge--hard"
+                  style="min-width: 70px; justify-content: center"
+                  >Hard (20%)</span
+                >
+                <p style="margin: 0; font-size: var(--font-size-sm)">
+                  Bài toán mở rộng, tư duy sâu, tối ưu bộ nhớ hoặc cơ chế đồ
+                  họa/OOP phức tạp.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TOOLS & ENVIRONMENT ==================== -->
+    <section id="tools" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-header__tag">Hệ sinh thái</div>
+          <h2 class="section-header__title">
+            Công Cụ &amp; Môi Trường Lập Trình
+          </h2>
+          <p class="section-header__desc">
+            Bộ công cụ tiêu chuẩn chuyên nghiệp, nhẹ và tương thích tốt trên
+            Windows/Linux/macOS.
+          </p>
+        </div>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: var(--space-4);
+          "
+        >
+          <div
+            style="
+              background: var(--color-bg-surface);
+              padding: var(--space-5);
+              border-radius: var(--radius-md);
+              border: 1px solid var(--color-border-soft);
+              text-align: center;
+            "
+          >
+            <h4
+              style="color: var(--color-primary); margin-bottom: var(--space-2)"
+            >
+              C++ (C++14+)
+            </h4>
+            <p
+              style="
+                font-size: var(--font-size-xs);
+                color: var(--color-text-secondary);
+                margin: 0;
+              "
+            >
+              Ngôn ngữ cốt lõi rèn luyện tư duy logic, quản lý bộ nhớ và hiệu
+              năng cao.
+            </p>
+          </div>
+          <div
+            style="
+              background: var(--color-bg-surface);
+              padding: var(--space-5);
+              border-radius: var(--radius-md);
+              border: 1px solid var(--color-border-soft);
+              text-align: center;
+            "
+          >
+            <h4
+              style="color: var(--color-primary); margin-bottom: var(--space-2)"
+            >
+              Raylib Library
+            </h4>
+            <p
+              style="
+                font-size: var(--font-size-xs);
+                color: var(--color-text-secondary);
+                margin: 0;
+              "
+            >
+              Thư viện đồ họa 2D thuần khiết, đơn giản, không phụ thuộc cồng
+              kềnh.
+            </p>
+          </div>
+          <div
+            style="
+              background: var(--color-bg-surface);
+              padding: var(--space-5);
+              border-radius: var(--radius-md);
+              border: 1px solid var(--color-border-soft);
+              text-align: center;
+            "
+          >
+            <h4
+              style="color: var(--color-primary); margin-bottom: var(--space-2)"
+            >
+              VS Code
+            </h4>
+            <p
+              style="
+                font-size: var(--font-size-xs);
+                color: var(--color-text-secondary);
+                margin: 0;
+              "
+            >
+              Trình soạn thảo mã nguồn nhẹ, kết hợp các extension C/C++ tiện
+              lợi.
+            </p>
+          </div>
+          <div
+            style="
+              background: var(--color-bg-surface);
+              padding: var(--space-5);
+              border-radius: var(--radius-md);
+              border: 1px solid var(--color-border-soft);
+              text-align: center;
+            "
+          >
+            <h4
+              style="color: var(--color-primary); margin-bottom: var(--space-2)"
+            >
+              GCC &amp; MinGW-w64
+            </h4>
+            <p
+              style="
+                font-size: var(--font-size-xs);
+                color: var(--color-text-secondary);
+                margin: 0;
+              "
+            >
+              Bộ trình biên dịch chuẩn quốc tế cho C/C++ trên môi trường
+              Windows.
+            </p>
+          </div>
+          <div
+            style="
+              background: var(--color-bg-surface);
+              padding: var(--space-5);
+              border-radius: var(--radius-md);
+              border: 1px solid var(--color-border-soft);
+              text-align: center;
+            "
+          >
+            <h4
+              style="color: var(--color-primary); margin-bottom: var(--space-2)"
+            >
+              Git &amp; GitHub
+            </h4>
+            <p
+              style="
+                font-size: var(--font-size-xs);
+                color: var(--color-text-secondary);
+                margin: 0;
+              "
+            >
+              Quản lý phiên bản mã nguồn, theo dõi tiến độ nộp bài và lưu trữ đồ
+              án.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== FINAL PROJECT RUBRIC ==================== -->
+    <section id="rubric" class="section section--alt">
+      <div class="container container--narrow">
+        <div class="section-header">
+          <div class="section-header__tag">Đầu ra khóa học</div>
+          <h2 class="section-header__title">
+            Tiêu Chuẩn Đánh Giá Final Project (100%)
+          </h2>
+          <p class="section-header__desc">
+            Đồ án tốt nghiệp được chấm điểm minh bạch theo 5 tiêu chí năng lực
+            cốt lõi.
+          </p>
+        </div>
+
+        <div
+          style="
+            background: var(--color-bg-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border-soft);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+          "
+        >
+          <table
+            style="
+              width: 100%;
+              border-collapse: collapse;
+              text-align: left;
+              font-size: var(--font-size-sm);
+            "
+          >
+            <thead>
+              <tr
+                style="
+                  background: var(--color-bg-subtle);
+                  border-bottom: 1px solid var(--color-border-medium);
+                "
+              >
+                <th
+                  style="
+                    padding: var(--space-4);
+                    font-weight: var(--font-weight-bold);
+                    width: 25%;
+                  "
+                >
+                  Tiêu chí
+                </th>
+                <th
+                  style="
+                    padding: var(--space-4);
+                    font-weight: var(--font-weight-bold);
+                    width: 15%;
+                    text-align: center;
+                  "
+                >
+                  Trọng số
+                </th>
+                <th
+                  style="
+                    padding: var(--space-4);
+                    font-weight: var(--font-weight-bold);
+                  "
+                >
+                  Nội dung đánh giá chi tiết
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--color-border-soft)">
+                <td
+                  style="
+                    padding: var(--space-4);
+                    font-weight: var(--font-weight-semibold);
+                    color: var(--color-primary);
+                  "
+                >
+                  Logic &amp; Gameplay
+                </td>
+                <td style="padding: var(--space-4); text-align: center">
+                  <span class="badge badge--primary">30%</span>
+                </td>
+                <td
+                  style="
+                    padding: var(--space-4);
+                    color: var(--color-text-secondary);
+                  "
+                >
+                  Luật chơi rõ ràng, core loop hoàn chỉnh, mục tiêu phân định
+                  thắng/thua cụ thể.
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--color-border-soft)">
+                <td
+                  style="
+                    padding: var(--space-4);
+                    font-weight: var(--font-weight-semibold);
+                    color: var(--color-primary);
+                  "
+                >
+                  Kỹ năng C++ / OOP
+                </td>
+                <td style="padding: var(--space-4); text-align: center">
+                  <span class="badge badge--primary">25%</span>
+                </td>
+                <td
+                  style="
+                    padding: var(--space-4);
+                    color: var(--color-text-secondary);
+                  "
+                >
+                  Code sạch, tách file .h/.cpp, vận dụng đúng đắn tính kế thừa,
+                  đa hình OOP.
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--color-border-soft)">
+                <td
+                  style="
+                    padding: var(--space-4);
+                    font-weight: var(--font-weight-semibold);
+                    color: var(--color-primary);
+                  "
+                >
+                  Trải nghiệm chơi (Game UX)
+                </td>
+                <td style="padding: var(--space-4); text-align: center">
+                  <span class="badge badge--primary">20%</span>
+                </td>
+                <td
+                  style="
+                    padding: var(--space-4);
+                    color: var(--color-text-secondary);
+                  "
+                >
+                  Điều khiển nhạy, không delay phím, game mượt 60 FPS, không
+                  crash hay lỗi vặt.
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--color-border-soft)">
+                <td
+                  style="
+                    padding: var(--space-4);
+                    font-weight: var(--font-weight-semibold);
+                    color: var(--color-primary);
+                  "
+                >
+                  UI, Đồ họa, Âm thanh
+                </td>
+                <td style="padding: var(--space-4); text-align: center">
+                  <span class="badge badge--primary">15%</span>
+                </td>
+                <td
+                  style="
+                    padding: var(--space-4);
+                    color: var(--color-text-secondary);
+                  "
+                >
+                  Giao diện hiển thị điểm/máu rõ ràng; hình ảnh sprite và âm
+                  thanh phù hợp chủ đề.
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style="
+                    padding: var(--space-4);
+                    font-weight: var(--font-weight-semibold);
+                    color: var(--color-primary);
+                  "
+                >
+                  Trình bày &amp; Demo
+                </td>
+                <td style="padding: var(--space-4); text-align: center">
+                  <span class="badge badge--primary">10%</span>
+                </td>
+                <td
+                  style="
+                    padding: var(--space-4);
+                    color: var(--color-text-secondary);
+                  "
+                >
+                  Tự tin giải thích kiến trúc source code, trả lời phản biện và
+                  demo trực tiếp.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SITE FOOTER ==================== -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <div class="brand" style="margin-bottom: var(--space-3)">
+              <img
+                src="assets/images/logo.png"
+                alt="InnoMind Logo"
+                class="brand__logo-img"
+              />
+              <div>
+                <div class="brand__text">InnoMind Academy</div>
+                <div class="brand__sub">
+                  NextGen Skills for Future Innovators
+                </div>
+              </div>
+            </div>
+            <p
+              style="
+                font-size: var(--font-size-sm);
+                color: var(--color-text-secondary);
+                max-width: 400px;
+                margin: 0;
+              "
+            >
+              Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp;
+              Raylib thực chiến 78 buổi.
+            </p>
+          </div>
+
+          <div class="footer-contact">
+            <h4>Liên hệ</h4>
+            <div class="contact-info-compact">
+              <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <span>090 198 05 69</span>
+              </div>
+              <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <span>innomindskills@gmail.com</span>
+              </div>
+              <div class="contact-item">
+                <i class="fab fa-facebook"></i>
+                <a
+                  href="https://www.facebook.com/hocvienkynangthehemoiinnomind"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Facebook
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div class="site-footer__text">
+            © 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp;
+            Raylib.
+          </div>
+          <div class="site-footer__links">
+            <a href="#stages" class="site-nav__link">Về đầu trang ↑</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 04: Hằng Số &amp; Ép Kiểu (Type Casting) C++ — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 04: Làm chủ từ khóa const định nghĩa hằng số game, kỹ thuật ép kiểu static_cast và né tránh cạm bẫy chia nguyên trong C++.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-01.html" class="site-nav__link is-active">Giai đoạn 01</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-01.html" class="breadcrumb__link">Giai đoạn 01</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 04: Hằng số &amp; Ép kiểu dữ liệu</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 04</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--easy">Căn bản</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Hằng Số (Constants) &amp; Ép Kiểu Dữ Liệu (Type Casting)
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Sử dụng <code>const</code> để bảo vệ các thông số vật lý game bất biến và thành thạo kỹ thuật ép kiểu tường minh <code>static_cast</code> để tránh lỗi làm tròn số học.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-01-03.html" class="btn btn--outline btn--sm">← Buổi 03</a>
+          <a href="lesson-01-05.html" class="btn btn--primary btn--sm">Buổi 05 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+      
+      <!-- PHẦN 1: LÝ THUYẾT TRỌNG TÂM -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi (20 Phút)</h2>
+        <p>
+          Trong quá trình làm game, có rất nhiều đại lượng không bao giờ được phép thay đổi trong suốt vòng đời của game (như kích thước cửa sổ game, trọng lực Trái Đất, số khung hình mục tiêu 60 FPS).
+        </p>
+
+        <h3>1.1 Hằng số với từ khóa `const`</h3>
+        <p>
+          Khi đặt từ khóa <code>const</code> trước kiểu dữ liệu, giá trị của biến phải được gán ngay khi khởi tạo và trình biên dịch sẽ chặn đứng mọi hành vi cố tình ghi đè giá trị này.
+        </p>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">constants.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép">
+              <i class="far fa-copy"></i>
+              <span>Sao chép</span>
+            </button>
+          </div>
+          <pre><code><span class="kw">const</span> <span class="type">int</span> SCREEN_WIDTH = <span class="num">800</span>;
+<span class="kw">const</span> <span class="type">int</span> SCREEN_HEIGHT = <span class="num">450</span>;
+<span class="kw">const</span> <span class="type">float</span> GRAVITY = <span class="num">9.8f</span>;
+<span class="kw">const</span> <span class="type">int</span> TARGET_FPS = <span class="num">60</span>;
+
+<span class="com">// SCREEN_WIDTH = 1024; // LỖI BIÊN DỊCH: Không thể thay đổi hằng số!</span></code></pre>
+        </div>
+
+        <h3>1.2 Cạm bẫy phép chia nguyên &amp; Kỹ thuật Ép kiểu (Type Casting)</h3>
+        <p>
+          Trong C++, khi lấy số nguyên chia cho số nguyên, kết quả nhận được luôn là <strong>phần nguyên</strong>, toàn bộ phần thập phân bị cắt cụt (truncated):
+        </p>
+        <ul style="line-height: 1.7;">
+          <li><code>5 / 2</code> cho kết quả là <code>2</code> (chứ không phải <code>2.5</code>).</li>
+          <li>Để nhận được số thực, ít nhất 1 trong 2 toán hạng phải là số thực: <code>5.0f / 2</code> hoặc ép kiểu với <code>static_cast&lt;float&gt;</code>.</li>
+        </ul>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">casting_demo.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép">
+              <i class="far fa-copy"></i>
+              <span>Sao chép</span>
+            </button>
+          </div>
+          <pre><code><span class="type">int</span> totalKills = <span class="num">7</span>;
+<span class="type">int</span> totalMatches = <span class="num">2</span>;
+
+<span class="com">// Sai lầm: kdr = 3.0f do phép chia nguyên xảy ra trước khi gán</span>
+<span class="type">float</span> wrongKDR = totalKills / totalMatches; 
+
+<span class="com">// Chuẩn mực C++: Ép kiểu tường minh bằng static_cast</span>
+<span class="type">float</span> correctKDR = <span class="kw">static_cast</span>&lt;<span class="type">float</span>&gt;(totalKills) / totalMatches; <span class="com">// Kết quả: 3.5f</span></code></pre>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: THỰC HÀNH TẠI LỚP (LIVE CODING) -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Thực hành tại lớp — Live Coding (45 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Thực hành: Tính thanh phần trăm máu (HP Bar Percentage)</h4>
+            <span class="badge badge--easy">Easy</span>
+          </div>
+          <p>
+            Nhập lượng máu hiện tại <code>currentHP</code> (kiểu <code>int</code>) và lượng máu tối đa <code>maxHP = 150</code> (kiểu hằng số <code>const int</code>). 
+            Tính chính xác tỷ lệ phần trăm máu của boss hiển thị ra thanh máu với 2 chữ số thập phân.
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Nhập máu hiện tại của Boss: 75
+
+Output:
+[THANH MÁU BOSS] 75 / 150 (50.00%)</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem mã nguồn giải mẫu live-coding</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">hp_percentage.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="kw">const</span> <span class="type">int</span> MAX_HP = <span class="num">150</span>;
+    <span class="type">int</span> currentHP;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập máu hiện tại của Boss: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; currentHP;
+
+    <span class="com">// Ép kiểu sang float trước khi chia để giữ phần thập phân</span>
+    <span class="type">float</span> percent = (<span class="kw">static_cast</span>&lt;<span class="type">float</span>&gt;(currentHP) / MAX_HP) * <span class="num">100.0f</span>;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"[THANH MÁU BOSS] "</span> &lt;&lt; currentHP &lt;&lt; <span class="str">" / "</span> &lt;&lt; MAX_HP 
+              &lt;&lt; <span class="str">" ("</span> &lt;&lt; percent &lt;&lt; <span class="str">"%)\n"</span>;
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (3 Cấp độ)</h2>
+
+        <!-- Bài 1: Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Chuyển đổi mã ký tự bàn phím sang số nguyên ASCII</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Nhập vào một ký tự bất kỳ từ bàn phím (ví dụ <code>'A'</code>, <code>'z'</code>, <code>'0'</code>). 
+            Sử dụng <code>static_cast&lt;int&gt;</code> để in ra mã ASCII số học tương ứng của ký tự đó.
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Nhấn một phím ký tự bất kỳ: A
+
+Output:
+Ký tự 'A' có mã ASCII là: 65</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">ascii_converter.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">char</span> key;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhấn một phím ký tự bất kỳ: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; key;
+
+    <span class="type">int</span> asciiCode = <span class="kw">static_cast</span>&lt;<span class="type">int</span>&gt;(key);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ký tự '"</span> &lt;&lt; key &lt;&lt; <span class="str">"' có mã ASCII là: "</span> &lt;&lt; asciiCode &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài 2: Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Tính chỉ số KDA trung bình trong MOBA Game</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Nhập vào 3 chỉ số nguyên: Số mạng tiêu diệt <code>kills</code>, Số mạng hỗ trợ <code>assists</code> và Số lần bị hạ gục <code>deaths</code>. 
+            Tính chỉ số KDA theo công thức: <code>KDA = (kills + assists) / max(1, deaths)</code>. Kết quả phải là số thực có phần thập phân.
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Nhập Kills: 7
+Nhập Deaths: 2
+Nhập Assists: 5
+
+Output:
+Chỉ số KDA của bạn: 6</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">kda_calc.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> kills, assists, deaths;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập Kills: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; kills;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập Deaths: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; deaths;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập Assists: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; assists;
+
+    <span class="type">int</span> divisor = (deaths == <span class="num">0</span>) ? <span class="num">1</span> : deaths;
+    <span class="type">float</span> kda = <span class="kw">static_cast</span>&lt;<span class="type">float</span>&gt;(kills + assists) / divisor;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chỉ số KDA của bạn: "</span> &lt;&lt; kda &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài 3: Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Tọa độ Camera căn giữa nhân vật màn hình 2D</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Khai báo 2 hằng số màn hình <code>const int VIEW_WIDTH = 1280</code> và <code>const int VIEW_HEIGHT = 720</code>. 
+            Nhập vào tọa độ thế giới (World Coordinate) của nhân vật: <code>playerWorldX</code>, <code>playerWorldY</code> (số thực). 
+            Tính tọa độ góc trên-trái của Camera <code>camX, camY</code> sao cho nhân vật luôn nằm chính giữa màn hình hiển thị.
+          </p>
+
+          
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Input:
+Nhập tọa độ nhân vật World X: 1500
+Nhập tọa độ nhân vật World Y: 800
+
+Output:
+Camera cần đặt tại góc (860, 440) để nhân vật nằm giữa tâm.</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Công thức:</strong> <code>camX = playerWorldX - (VIEW_WIDTH / 2.0f)</code>; <code>camY = playerWorldY - (VIEW_HEIGHT / 2.0f)</code>.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">camera_center.cpp</span>
+                    <button class="code-block__copy"><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="kw">const</span> <span class="type">int</span> VIEW_WIDTH = <span class="num">1280</span>;
+    <span class="kw">const</span> <span class="type">int</span> VIEW_HEIGHT = <span class="num">720</span>;
+
+    <span class="type">float</span> playerWorldX, playerWorldY;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập tọa độ nhân vật World X: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; playerWorldX;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhập tọa độ nhân vật World Y: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; playerWorldY;
+
+    <span class="type">float</span> camX = playerWorldX - (VIEW_WIDTH / <span class="num">2.0f</span>);
+    <span class="type">float</span> camY = playerWorldY - (VIEW_HEIGHT / <span class="num">2.0f</span>);
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nCamera cần đặt tại góc ("</span> &lt;&lt; camX &lt;&lt; <span class="str">", "</span> &lt;&lt; camY &lt;&lt; <span class="str">") để nhân vật nằm giữa tâm.\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft); margin-top: var(--space-10);">
+        <a href="lesson-01-03.html" class="btn btn--outline">← Buổi 03: Biến &amp; Các kiểu dữ liệu cơ bản</a>
+        <a href="lesson-01-05.html" class="btn btn--primary">Buổi 05: Sửa bài &amp; Củng cố biến, nhập xuất →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <span>090 198 05 69</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <span>innomindskills@gmail.com</span>
+            </div>
+            <div class="contact-item">
+              <i class="fab fa-facebook"></i>
+              <a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">
+                Facebook
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="site-footer__text">
+          © 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.
+        </div>
+        <div class="site-footer__links">
+          <a href="#" class="site-nav__link">Về đầu trang ↑</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>
+
