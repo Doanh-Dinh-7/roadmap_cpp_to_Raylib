@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 18: Lệnh Điều Khiển Luồng: break và continue — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 18: Học lệnh break và continue trong C++, phân biệt cách dùng, ứng dụng tìm kiếm trong game và xử lý tile map với vòng lặp điều khiển.">
+  <link rel="icon" type="image/png" href="../../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-02.html" class="site-nav__link is-active">Giai đoạn 02</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-02.html" class="breadcrumb__link">Giai đoạn 02</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 18: break và continue</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 18</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--tag">Flow Control</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Lệnh Điều Khiển Luồng: <code>break</code> và <code>continue</code>
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Phân biệt và sử dụng đúng break / continue trong vòng lặp;
+            ứng dụng tìm kiếm sớm và bỏ qua phần tử trong game.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-02-06.html" class="btn btn--outline btn--sm">← Buổi 17</a>
+          <a href="lesson-02-08.html" class="btn btn--primary btn--sm">Buổi 19 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+
+      <!-- PHẦN 1: LÝ THUYẾT -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi — break &amp; continue (20 Phút)</h2>
+
+        <h3>1.1 Lệnh <code>break</code></h3>
+        <p>
+          <code>break</code> <strong>thoát ngay lập tức</strong> khỏi vòng lặp hoặc <code>switch</code> gần nhất đang chứa nó.
+          Chỉ thoát <strong>1 cấp</strong> — nếu có 2 vòng lồng nhau, <code>break</code> trong vòng trong chỉ thoát vòng trong.
+        </p>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">break_example.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="com">// Tim so nguyen to dau tien trong doan [2, 50]</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">2</span>; i &lt;= <span class="num">50</span>; i++) {
+    <span class="kw">bool</span> isPrime = <span class="kw">true</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">2</span>; j * j &lt;= i; j++) {
+        <span class="kw">if</span> (i % j == <span class="num">0</span>) {
+            isPrime = <span class="kw">false</span>;
+            <span class="kw">break</span>; <span class="com">// Thoat vong trong ngay khi tim thay uoc</span>
+        }
+    }
+    <span class="kw">if</span> (isPrime) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So nguyen to nho nhat &gt;= 2: "</span> &lt;&lt; i &lt;&lt; <span class="type">std</span>::<span class="type">endl</span>;
+        <span class="kw">break</span>; <span class="com">// Thoat vong ngoai sau khi tim thay</span>
+    }
+}
+<span class="com">// Output: So nguyen to nho nhat &gt;= 2: 2</span></code></pre>
+        </div>
+
+        <h3>1.2 Lệnh <code>continue</code></h3>
+        <p>
+          <code>continue</code> <strong>bỏ qua phần còn lại</strong> của thân vòng lặp hiện tại và
+          chuyển thẳng đến lần lặp tiếp theo (kiểm tra điều kiện vòng lặp).
+        </p>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">continue_example.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="com">// In chi so le tu 1 den 20</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= <span class="num">20</span>; i++) {
+    <span class="kw">if</span> (i % <span class="num">2</span> == <span class="num">0</span>) <span class="kw">continue</span>; <span class="com">// Bo qua so chan</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; i &lt;&lt; <span class="str">" "</span>;
+}
+<span class="com">// Output: 1 3 5 7 9 11 13 15 17 19</span></code></pre>
+        </div>
+
+        <h3>1.3 So Sánh break vs continue</h3>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Lệnh</th>
+                <th>Tác dụng</th>
+                <th>Ví dụ ứng dụng game</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>break</code></td>
+                <td>Thoát hẳn vòng lặp</td>
+                <td>Tìm thấy kẻ thù → dừng tìm kiếm ngay</td>
+              </tr>
+              <tr>
+                <td><code>continue</code></td>
+                <td>Bỏ qua lần lặp hiện tại</td>
+                <td>Bỏ qua ô trống trong tile map</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note-box note-box--warning">
+          <strong>⚠️ Lưu ý:</strong> <code>break</code> trong <code>switch</code> và <code>break</code> trong vòng lặp có cùng cú pháp
+          nhưng chức năng khác nhau: trong switch nó kết thúc một case, trong vòng lặp nó thoát hoàn toàn.
+        </div>
+      </section>
+
+      <!-- PHẦN 2: BÀI TẬP TRÊN LỚP -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Bài tập trên lớp (25 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Mô Phỏng Tìm Kiếm Vật Phẩm Trong Túi Đồ</h4>
+            <span class="badge badge--primary">Thực hành</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Cho mảng 10 số nguyên mô phỏng giá trị vật phẩm trong túi đồ.
+            Dùng vòng lặp tìm vật phẩm đầu tiên có giá trị lớn hơn 100.
+            In ra vị trí tìm thấy và dừng tìm kiếm bằng <code>break</code>.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">inventory_search_starter.cpp</span>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> inventory[<span class="num">10</span>] = {<span class="num">30</span>, <span class="num">75</span>, <span class="num">12</span>, <span class="num">150</span>, <span class="num">88</span>, <span class="num">200</span>, <span class="num">45</span>, <span class="num">99</span>, <span class="num">110</span>, <span class="num">5</span>};
+
+    <span class="com">// TODO: Viet vong lap tim vat pham dau tien co gia tri &gt; 100</span>
+    <span class="com">// In ra: "Tim thay tai vi tri X, gia tri: Y"</span>
+    <span class="com">// Dung break de thoat sau khi tim thay</span>
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem đáp án</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">inventory_search_solution.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> inventory[<span class="num">10</span>] = {<span class="num">30</span>, <span class="num">75</span>, <span class="num">12</span>, <span class="num">150</span>, <span class="num">88</span>, <span class="num">200</span>, <span class="num">45</span>, <span class="num">99</span>, <span class="num">110</span>, <span class="num">5</span>};
+    <span class="kw">bool</span> found = <span class="kw">false</span>;
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">10</span>; i++) {
+        <span class="kw">if</span> (inventory[i] &gt; <span class="num">100</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tim thay tai vi tri "</span> &lt;&lt; i
+                      &lt;&lt; <span class="str">", gia tri: "</span> &lt;&lt; inventory[i] &lt;&lt; <span class="str">"\n"</span>;
+            found = <span class="kw">true</span>;
+            <span class="kw">break</span>; <span class="com">// Dung tim ngay khi thay vat pham dau tien</span>
+        }
+    }
+
+    <span class="kw">if</span> (!found) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Khong tim thay vat pham nao co gia tri &gt; 100\n"</span>;
+    }
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+<span class="com">// Output: Tim thay tai vi tri 3, gia tri: 150</span></code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (Tự luyện tập)</h2>
+        <p>Hoàn thành 3 bài tập sau ở nhà, nộp trước buổi học tiếp theo:</p>
+
+        <!-- Bài Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: In Số Từ 1-100 Bỏ Qua Bội Số Của 7</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Dùng vòng <code>for</code> từ 1 đến 100. Với mỗi số, nếu chia hết cho 7 thì dùng <code>continue</code>
+            để bỏ qua, ngược lại in ra. Đếm và in tổng số lượng số được in.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem đáp án</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">solution_easy.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> count = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= <span class="num">100</span>; i++) {
+        <span class="kw">if</span> (i % <span class="num">7</span> == <span class="num">0</span>) <span class="kw">continue</span>; <span class="com">// Bo qua boi so cua 7</span>
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; i &lt;&lt; <span class="str">" "</span>;
+        count++;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nTong so luong so duoc in: "</span> &lt;&lt; count &lt;&lt; <span class="str">"\n"</span>;
+    <span class="com">// 100 - 14 = 86 so</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Nhập Dãy Số Đến Khi Gặp -1</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Viết chương trình nhập dãy số liên tục từ bàn phím:
+            dùng <code>continue</code> để bỏ qua và không in số âm (khác -1),
+            dùng <code>break</code> để dừng khi gặp -1.
+            In ra các số dương đã nhập và tổng của chúng.
+          </p>
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Input / Output</span>
+            </div>
+            <pre><code>Nhap so (nhap -1 de dung): 5
+Nhap so (nhap -1 de dung): -3
+Bo qua so am: -3
+Nhap so (nhap -1 de dung): 8
+Nhap so (nhap -1 de dung): -1
+So duong da nhap: 5 8
+Tong: 13</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem đáp án</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">solution_medium.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> num, sum = <span class="num">0</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So duong da nhap: "</span>;
+
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nNhap so (nhap -1 de dung): "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; num;
+
+        <span class="kw">if</span> (num == -<span class="num">1</span>) <span class="kw">break</span>; <span class="com">// Dung khi gap -1</span>
+
+        <span class="kw">if</span> (num &lt; <span class="num">0</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Bo qua so am: "</span> &lt;&lt; num;
+            <span class="kw">continue</span>; <span class="com">// Bo qua so am khac -1</span>
+        }
+
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; num &lt;&lt; <span class="str">" "</span>;
+        sum += num;
+    }
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nTong: "</span> &lt;&lt; sum &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Thuật Toán Tìm Kiếm Tuyến Tính (Linear Search)</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Viết hàm tìm kiếm tuyến tính trong mảng 15 phần tử:
+            nhập giá trị cần tìm từ bàn phím, dùng <code>break</code> thoát sớm khi tìm thấy.
+            Báo cáo "Tìm thấy ở vị trí X" hoặc "Không tìm thấy".
+            Đo đếm số bước so sánh đã thực hiện.
+          </p>
+          <div class="note-box note-box--info">
+            <strong>📌 Ý nghĩa thuật toán:</strong> Linear Search = O(n) trung bình, nhưng với <code>break</code>
+            ta thoát sớm → trung bình chỉ cần n/2 phép so sánh. Đây là cơ sở để hiểu tại sao
+            <strong>sắp xếp dữ liệu trước + Binary Search</strong> lại quan trọng trong game.
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem đáp án</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">solution_hard.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> arr[<span class="num">15</span>] = {<span class="num">42</span>, <span class="num">17</span>, <span class="num">93</span>, <span class="num">5</span>, <span class="num">78</span>, <span class="num">31</span>, <span class="num">64</span>, <span class="num">22</span>, <span class="num">89</span>, <span class="num">11</span>, <span class="num">56</span>, <span class="num">3</span>, <span class="num">99</span>, <span class="num">47</span>, <span class="num">28</span>};
+    <span class="kw">int</span> target, steps = <span class="num">0</span>, foundAt = -<span class="num">1</span>;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap gia tri can tim: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; target;
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">15</span>; i++) {
+        steps++;
+        <span class="kw">if</span> (arr[i] == target) {
+            foundAt = i;
+            <span class="kw">break</span>; <span class="com">// Thoat som khi tim thay</span>
+        }
+    }
+
+    <span class="kw">if</span> (foundAt != -<span class="num">1</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tim thay "</span> &lt;&lt; target &lt;&lt; <span class="str">" tai vi tri "</span> &lt;&lt; foundAt &lt;&lt; <span class="str">"\n"</span>;
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Khong tim thay "</span> &lt;&lt; target &lt;&lt; <span class="str">" trong mang\n"</span>;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So buoc so sanh da thuc hien: "</span> &lt;&lt; steps &lt;&lt; <span class="str">"/15\n"</span>;
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ĐIỀU HƯỚNG CUỐI TRANG -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft);">
+        <a href="lesson-02-06.html" class="btn btn--outline">← Buổi 17: Vẽ hình ký tự</a>
+        <a href="lesson-02-08.html" class="btn btn--secondary">Buổi 19: Luyện tập tổng hợp →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span></div>
+            <div class="contact-item"><i class="fas fa-phone"></i><span>090 198 05 69</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><span>innomindskills@gmail.com</span></div>
+            <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">Facebook</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="site-footer__text">© 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.</div>
+        <div class="site-footer__links"><a href="#" class="site-nav__link">Về đầu trang ↑</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

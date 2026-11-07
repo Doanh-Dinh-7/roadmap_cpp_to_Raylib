@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 20: Flowchart (Lưu Đồ Thuật Toán) & Quy Trình Phân Tích — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 20: Học cách trực quan hóa thuật toán bằng Flowchart, 5 ký hiệu chuẩn và quy trình 4 bước thiết kế thuật toán trong lập trình game C++.">
+  <link rel="icon" type="image/png" href="../../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-02.html" class="site-nav__link is-active">Giai đoạn 02</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-02.html" class="breadcrumb__link">Giai đoạn 02</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 20: Flowchart & Quy Trình Phân Tích</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 20</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--medium">Thuật toán</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Flowchart (Lưu Đồ Thuật Toán) &amp; Quy Trình Phân Tích
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Hiểu và sử dụng thành thạo 5 ký hiệu Flowchart chuẩn, áp dụng quy trình 4 bước thiết kế thuật toán từ đề bài đến code C++.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-02-08.html" class="btn btn--outline btn--sm">← Buổi 19</a>
+          <a href="lesson-02-10.html" class="btn btn--primary btn--sm">Buổi 21 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+
+      <!-- PHẦN 1: LÝ THUYẾT -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi (25 Phút)</h2>
+        <p>
+          <strong>Flowchart (Lưu đồ thuật toán)</strong> là công cụ trực quan hóa thuật toán bằng các ký hiệu hình học chuẩn. Thay vì giải thích bằng lời, ta <em>vẽ</em> từng bước xử lý, giúp dễ dàng phát hiện lỗi logic trước khi viết code.
+        </p>
+
+        <h3>1.1 Năm ký hiệu Flowchart chính</h3>
+        <div class="note-box note-box--info">
+          <strong>📐 Bảng ký hiệu chuẩn:</strong>
+          <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Ký hiệu</th>
+                <th>Hình dạng</th>
+                <th>Ý nghĩa</th>
+                <th>Ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Start / End</td>
+                <td>Hình oval (elip)</td>
+                <td>Bắt đầu / Kết thúc chương trình</td>
+                <td><code>BẮT ĐẦU</code>, <code>KẾT THÚC</code></td>
+              </tr>
+              <tr>
+                <td>Input / Output</td>
+                <td>Hình bình hành</td>
+                <td>Nhập / Xuất dữ liệu</td>
+                <td><code>Nhập n</code>, <code>In "tong"</code></td>
+              </tr>
+              <tr>
+                <td>Process</td>
+                <td>Hình chữ nhật</td>
+                <td>Thao tác xử lý, tính toán</td>
+                <td><code>tong += i</code>, <code>i = 1</code></td>
+              </tr>
+              <tr>
+                <td>Decision</td>
+                <td>Hình thoi</td>
+                <td>Điều kiện rẽ nhánh (Yes/No)</td>
+                <td><code>i &lt;= n?</code></td>
+              </tr>
+              <tr>
+                <td>Flow</td>
+                <td>Mũi tên</td>
+                <td>Luồng điều khiển</td>
+                <td>→ Có / → Không</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+
+        <h3>1.2 Quy trình 4 bước thiết kế thuật toán</h3>
+        <div class="note-box note-box--tip">
+          <strong>🔄 Quy trình chuẩn:</strong>
+          <ol style="margin: var(--space-3) 0 0; padding-left: 1.25rem; line-height: 1.8;">
+            <li><strong>Bước 1 — Đọc đề:</strong> Xác định rõ <em>Input</em> (đầu vào) và <em>Output</em> (đầu ra) mong muốn.</li>
+            <li><strong>Bước 2 — Liệt kê:</strong> Viết ra từng bước xử lý bằng ngôn ngữ tự nhiên (tiếng Việt).</li>
+            <li><strong>Bước 3 — Vẽ Flowchart:</strong> Chuyển các bước thành sơ đồ ký hiệu hình học chuẩn.</li>
+            <li><strong>Bước 4 — Viết code:</strong> Dịch Flowchart thành code C++ tương ứng.</li>
+          </ol>
+        </div>
+
+        <h3>1.3 Ứng dụng Game: Flowchart Game Loop</h3>
+        <div class="note-box note-box--tip">
+          <strong>🎮 Kết nối Game Dev:</strong> Mọi game đều chạy theo một vòng lặp cố định gọi là <em>Game Loop</em>. Flowchart giúp ta thiết kế luồng này trước khi code:<br><br>
+          <code>Init → Handle Input → Update State → Draw → Check End Condition → Loop lại</code>
+        </div>
+
+        <h3>1.4 Ví dụ hoàn chỉnh: Tính tổng 1 + 2 + ... + n</h3>
+        <p>Flowchart mô tả thuật toán tính tổng từ 1 đến n:</p>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">Flowchart (ASCII)</span>
+          </div>
+          <pre><code style="font-family: 'Courier New', monospace; line-height: 1.6;">      ┌─────────────┐
+      │   BẮT ĐẦU   │
+      └──────┬──────┘
+             │
+      ┌──────▼──────┐
+      │   Nhập n    │
+      └──────┬──────┘
+             │
+      ┌──────▼──────┐
+      │   i = 1     │
+      │  tong = 0   │
+      └──────┬──────┘
+             │
+      ┌──────▼──────┐
+   ┌──┤  i &lt;= n?    ├──Không──┐
+   │  └─────────────┘         │
+  Có                          │
+   │  ┌──────────────┐        │
+   └─▶│  tong += i   │        │
+      │     i++      │        │
+      └──────┬───────┘        │
+             │                │
+             └────────────────┘
+                              │
+                    ┌─────────▼──────┐
+                    │  In "tong"     │
+                    └────────┬───────┘
+                             │
+                    ┌────────▼───────┐
+                    │   KẾT THÚC    │
+                    └────────────────┘</code></pre>
+        </div>
+
+        <p>Code C++ tương ứng với Flowchart trên:</p>
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">tinh_tong.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n, tong = <span class="num">0</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap n: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; n;
+
+    <span class="com">// Vong lap tuong ung voi Decision trong Flowchart</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+        tong += i;         <span class="com">// Process: tong += i</span>
+    }                      <span class="com">// i++ la update cuoi moi vong</span>
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong 1 den "</span> &lt;&lt; n &lt;&lt; <span class="str">" = "</span> &lt;&lt; tong &lt;&lt; <span class="type">std</span>::<span class="type">endl</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="note-box note-box--info">
+          <strong>💡 Nhận xét:</strong> Mỗi ký hiệu Flowchart ánh xạ trực tiếp sang một cấu trúc code:
+          <ul style="margin: var(--space-2) 0 0; padding-left: 1.25rem;">
+            <li>Hình thoi <code>i &lt;= n?</code> → điều kiện <code>for</code> / <code>while</code></li>
+            <li>Hình chữ nhật <code>tong += i</code> → dòng xử lý trong thân lặp</li>
+            <li>Hình bình hành <code>Nhập n</code> → <code>std::cin &gt;&gt; n</code></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: BÀI TẬP TRÊN LỚP -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Bài tập trên lớp — Live Coding (40 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Thực hành: Tìm số lớn nhất trong 3 số</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Vẽ Flowchart cho bài toán <em>"Tìm số lớn nhất trong 3 số a, b, c nhập từ bàn phím"</em>. Sau đó chuyển Flowchart thành code C++ hoàn chỉnh.
+          </p>
+
+          <div class="note-box note-box--tip">
+            <strong>Gợi ý quy trình:</strong>
+            <ol style="margin: var(--space-2) 0 0; padding-left: 1.25rem;">
+              <li><strong>Input:</strong> 3 số nguyên a, b, c</li>
+              <li><strong>Output:</strong> Số lớn nhất trong 3 số</li>
+              <li>Dùng biến <code>max</code> khởi tạo bằng <code>a</code>, rồi so sánh lần lượt với <code>b</code> và <code>c</code></li>
+              <li>Mỗi so sánh là một hình thoi trong Flowchart</li>
+            </ol>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">Flowchart (mô tả)</span>
+                  </div>
+                  <pre><code style="font-family: 'Courier New', monospace; line-height: 1.6;">BẮT ĐẦU
+  │
+  ▼
+Nhập a, b, c
+  │
+  ▼
+max = a
+  │
+  ▼
+b &gt; max? ──Có──▶ max = b
+  │                  │
+  Không             │
+  │◀─────────────────┘
+  ▼
+c &gt; max? ──Có──▶ max = c
+  │                  │
+  Không             │
+  │◀─────────────────┘
+  ▼
+In "max"
+  │
+  ▼
+KẾT THÚC</code></pre>
+                </div>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">so_lon_nhat.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a, b, c;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap 3 so a, b, c: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+
+    <span class="kw">int</span> max = a;           <span class="com">// Khoi tao max bang a</span>
+    <span class="kw">if</span> (b &gt; max) max = b;  <span class="com">// So sanh voi b</span>
+    <span class="kw">if</span> (c &gt; max) max = c;  <span class="com">// So sanh voi c</span>
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So lon nhat la: "</span> &lt;&lt; max &lt;&lt; <span class="type">std</span>::<span class="type">endl</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (Tự luyện tập)</h2>
+        <p>Học viên hoàn thành các bài tập sau, <strong>mỗi bài phải vẽ Flowchart trước</strong> rồi mới viết code:</p>
+
+        <!-- Bài Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Kiểm tra số chẵn hay lẻ</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Vẽ Flowchart kiểm tra một số nguyên n nhập từ bàn phím là chẵn hay lẻ. Sau đó chuyển Flowchart thành code C++ và test với n = 7, n = 12.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Gợi ý Flowchart:</strong> Hình thoi duy nhất: <code>n % 2 == 0?</code> → Có: in "Chan" / Không: in "Le".</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">chan_le.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap so n: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; n;
+
+    <span class="kw">if</span> (n % <span class="num">2</span> == <span class="num">0</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; n &lt;&lt; <span class="str">" la so CHAN." </span>&lt;&lt; <span class="type">std</span>::<span class="type">endl</span>;
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; n &lt;&lt; <span class="str">" la so LE." </span>&lt;&lt; <span class="type">std</span>::<span class="type">endl</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Tính giai thừa n! bằng vòng lặp</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Vẽ Flowchart tính giai thừa <code>n!</code> bằng vòng lặp (không dùng đệ quy). Chuyển thành code C++ và test với n = 10. Lưu ý: 10! = 3.628.800.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Gợi ý:</strong> Dùng <code>long long</code> để chứa giá trị lớn. Flowchart tương tự tính tổng nhưng thay <code>tong +=</code> bằng <code>gt *=</code>.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">giai_thua.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap n: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; n;
+
+    <span class="kw">long long</span> gt = <span class="num">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+        gt *= i;
+    }
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; n &lt;&lt; <span class="str">"! = "</span> &lt;&lt; gt &lt;&lt; <span class="type">std</span>::<span class="type">endl</span>;
+    <span class="com">// Test: n=10 → 3628800</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Flowchart Game Đoán Số (nhiều lượt)</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Vẽ Flowchart hoàn chỉnh cho <strong>game đoán số nhiều lượt</strong>: người chơi đoán nhiều lần, mỗi lần nhận phản hồi "lớn hơn" / "nhỏ hơn", dừng khi đoán đúng. Yêu cầu: mô tả rõ ràng các nút quyết định (Decision) và vòng lặp trong Flowchart.
+          </p>
+
+          <div class="note-box note-box--warning">
+            <strong>⚠️ Yêu cầu Flowchart phải có:</strong>
+            <ul style="margin: var(--space-2) 0 0; padding-left: 1.25rem;">
+              <li>Nút Decision: <code>guess == secret?</code></li>
+              <li>Nút Decision: <code>guess &lt; secret?</code></li>
+              <li>Vòng lặp quay lại từ "In phản hồi" → "Nhập đoán mới"</li>
+              <li>Điểm thoát: khi đoán đúng</li>
+            </ul>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem gợi ý &amp; Mô tả Flowchart mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">Flowchart Game Đoán Số (ASCII)</span>
+                  </div>
+                  <pre><code style="font-family: 'Courier New', monospace; line-height: 1.6;">BẮT ĐẦU
+  │
+  ▼
+Sinh secret = rand() % 100 + 1
+  │
+  ▼  ◀──────────────────────────┐
+Nhập guess                      │
+  │                             │
+  ▼                             │
+guess == secret? ──Có──▶ In "Chuc mung!" ──▶ KẾT THÚC
+  │
+ Không
+  │
+  ▼
+guess &lt; secret? ──Có──▶ In "Lon hon!"
+  │                          │
+ Không                       │
+  │                          │
+  ▼                          │
+In "Nho hon!"                │
+  │◀────────────────────────┘
+  │
+  └────────────────────────────┘ (quay lai nhap)</code></pre>
+                </div>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">doan_so_nhieu_luot.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cstdlib&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;ctime&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">srand</span>(<span class="fn">time</span>(<span class="num">0</span>));
+    <span class="kw">int</span> secret = <span class="fn">rand</span>() % <span class="num">100</span> + <span class="num">1</span>;
+    <span class="kw">int</span> guess;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Doan so tu 1 den 100:"</span> &lt;&lt; <span class="type">std</span>::<span class="type">endl</span>;
+
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap doan cua ban: "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; guess;
+
+        <span class="kw">if</span> (guess == secret) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chuc mung! Ban doan dung!"</span> &lt;&lt; <span class="type">std</span>::<span class="type">endl</span>;
+        } <span class="kw">else if</span> (guess &lt; secret) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Lon hon! Thu lai."</span> &lt;&lt; <span class="type">std</span>::<span class="type">endl</span>;
+        } <span class="kw">else</span> {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nho hon! Thu lai."</span> &lt;&lt; <span class="type">std</span>::<span class="type">endl</span>;
+        }
+    } <span class="kw">while</span> (guess != secret);
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION CUỐI TRANG -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft); margin-top: var(--space-10);">
+        <a href="lesson-02-08.html" class="btn btn--outline">← Buổi 19: Luyện tập tổng hợp</a>
+        <a href="lesson-02-10.html" class="btn btn--primary">Buổi 21: Thực hành Flowchart →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span></div>
+            <div class="contact-item"><i class="fas fa-phone"></i><span>090 198 05 69</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><span>innomindskills@gmail.com</span></div>
+            <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">Facebook</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="site-footer__text">© 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.</div>
+        <div class="site-footer__links"><a href="#" class="site-nav__link">Về đầu trang ↑</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

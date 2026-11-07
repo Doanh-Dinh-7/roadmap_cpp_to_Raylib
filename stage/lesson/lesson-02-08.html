@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 19: Luyện Tập Tổng Hợp Cấu Trúc Điều Khiển &amp; Vòng Lặp — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 19: Luyện tập tổng hợp số nguyên tố, giai thừa, dãy Fibonacci và twin primes — ứng dụng toàn bộ cấu trúc điều khiển và vòng lặp trong C++.">
+  <link rel="icon" type="image/png" href="../../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-02.html" class="site-nav__link is-active">Giai đoạn 02</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-02.html" class="breadcrumb__link">Giai đoạn 02</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 19: Luyện Tập Tổng Hợp</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 19</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--tag">Tổng hợp</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Luyện Tập Tổng Hợp — Cấu Trúc Điều Khiển &amp; Vòng Lặp
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Vận dụng linh hoạt toàn bộ if/for/while/break/continue để giải các bài toán kinh điển:
+            số nguyên tố, giai thừa, Fibonacci và twin primes.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-02-07.html" class="btn btn--outline btn--sm">← Buổi 18</a>
+          <a href="lesson-02-09.html" class="btn btn--primary btn--sm">Buổi 20 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+
+      <!-- PHẦN 1: LÝ THUYẾT -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Ôn tập &amp; Bài toán kinh điển (20 Phút)</h2>
+        <p>
+          Buổi hôm nay tổng hợp toàn bộ kiến thức Giai đoạn 02 (Buổi 12–19):
+          kết hợp <strong>if lồng trong vòng lặp</strong>, <strong>break/continue</strong> và
+          <strong>vòng lặp lồng nhau</strong> để giải 4 bài toán thuật toán kinh điển nhất trong lập trình.
+        </p>
+
+        <div class="note-box note-box--info">
+          <strong>📌 Quy trình giải bài:</strong>
+          Đọc đề → Xác định output cần in → Xác định biến cần lưu → Chọn vòng lặp phù hợp → Viết code → Test.
+        </div>
+
+        <h3>1.1 Kiểm Tra Số Nguyên Tố</h3>
+        <p>
+          Số nguyên tố là số lớn hơn 1 và chỉ chia hết cho 1 và chính nó.
+          Thuật toán: thử chia từ 2 đến √n — nếu tìm được ước thì không phải nguyên tố.
+        </p>
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">prime_check.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">int</span> n; <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; n;
+<span class="kw">bool</span> isPrime = (n &gt;= <span class="num">2</span>);
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">2</span>; i * i &lt;= n; i++) {
+    <span class="kw">if</span> (n % i == <span class="num">0</span>) { isPrime = <span class="kw">false</span>; <span class="kw">break</span>; }
+}
+<span class="type">std</span>::<span class="type">cout</span> &lt;&lt; (isPrime ? <span class="str">"La so nguyen to"</span> : <span class="str">"Khong phai so nguyen to"</span>);</code></pre>
+        </div>
+
+        <h3>1.2 Tính Giai Thừa n!</h3>
+        <p>
+          Giai thừa: n! = 1 × 2 × 3 × ... × n. Đặc biệt: 0! = 1.
+          Dùng vòng lặp nhân dồn vào biến <code>result</code>.
+        </p>
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">factorial.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">int</span> n; <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; n;
+<span class="kw">long long</span> result = <span class="num">1</span>; <span class="com">// Dung long long vi giai thua tang rat nhanh</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">2</span>; i &lt;= n; i++) {
+    result *= i;
+}
+<span class="type">std</span>::<span class="type">cout</span> &lt;&lt; n &lt;&lt; <span class="str">"! = "</span> &lt;&lt; result &lt;&lt; <span class="str">"\n"</span>;</code></pre>
+        </div>
+
+        <h3>1.3 Dãy Fibonacci</h3>
+        <p>
+          F(0) = 0, F(1) = 1, F(n) = F(n-1) + F(n-2).
+          Dùng 2 biến <code>a, b</code> trượt dần — không cần mảng.
+        </p>
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">fibonacci.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">int</span> n; <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; n; <span class="com">// In n so Fibonacci dau tien</span>
+<span class="kw">int</span> a = <span class="num">0</span>, b = <span class="num">1</span>;
+<span class="type">std</span>::<span class="type">cout</span> &lt;&lt; a &lt;&lt; <span class="str">" "</span> &lt;&lt; b &lt;&lt; <span class="str">" "</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">2</span>; i &lt; n; i++) {
+    <span class="kw">int</span> c = a + b;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; c &lt;&lt; <span class="str">" "</span>;
+    a = b;
+    b = c;
+}
+<span class="com">// Output (n=8): 0 1 1 2 3 5 8 13</span></code></pre>
+        </div>
+
+        <h3>1.4 Tổng Dãy Số</h3>
+        <p>
+          Dùng biến tích lũy (<em>accumulator</em>) <code>sum</code> để cộng dồn:
+          tổng bình phương, tổng chẵn/lẻ, tổng có điều kiện.
+        </p>
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">sum_of_squares.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">int</span> n; <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; n;
+<span class="kw">long long</span> sum = <span class="num">0</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+    sum += (<span class="kw">long long</span>)i * i; <span class="com">// 1^2 + 2^2 + ... + n^2</span>
+}
+<span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong binh phuong tu 1 den "</span> &lt;&lt; n &lt;&lt; <span class="str">": "</span> &lt;&lt; sum &lt;&lt; <span class="str">"\n"</span>;</code></pre>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: BÀI TẬP TRÊN LỚP -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Bài tập trên lớp (25 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">In Toàn Bộ Số Nguyên Tố Từ 2 Đến 100</h4>
+            <span class="badge badge--primary">Thực hành</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Dùng 2 vòng <code>for</code> lồng nhau:
+            vòng ngoài duyệt từng số từ 2 đến 100,
+            vòng trong kiểm tra xem số đó có nguyên tố hay không.
+            In ra tất cả số nguyên tố tìm được và đếm tổng số lượng.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Output (một phần)</span>
+            </div>
+            <pre><code>Cac so nguyen to tu 2 den 100:
+2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
+Tong so luong: 25</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem đáp án</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">primes_to_100.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> count = <span class="num">0</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Cac so nguyen to tu 2 den 100:\n"</span>;
+
+    <span class="kw">for</span> (<span class="kw">int</span> n = <span class="num">2</span>; n &lt;= <span class="num">100</span>; n++) {
+        <span class="kw">bool</span> isPrime = <span class="kw">true</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">2</span>; i * i &lt;= n; i++) {
+            <span class="kw">if</span> (n % i == <span class="num">0</span>) {
+                isPrime = <span class="kw">false</span>;
+                <span class="kw">break</span>;
+            }
+        }
+        <span class="kw">if</span> (isPrime) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; n &lt;&lt; <span class="str">" "</span>;
+            count++;
+        }
+    }
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nTong so luong: "</span> &lt;&lt; count &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (Tự luyện tập)</h2>
+        <p>Hoàn thành 3 bài tập sau ở nhà, nộp trước buổi học tiếp theo:</p>
+
+        <!-- Bài Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Tổng Bình Phương Từ 1² Đến n²</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Nhập n từ bàn phím. Tính và in ra tổng S = 1² + 2² + 3² + ... + n².
+            Dùng <code>long long</code> để tránh tràn số khi n lớn.
+            Kiểm tra với n = 10: S phải bằng 385.
+          </p>
+          <div class="note-box note-box--tip">
+            <strong>💡 Công thức đóng:</strong> S = n(n+1)(2n+1)/6. Hãy dùng công thức để kiểm chứng kết quả code!
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem đáp án</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">solution_easy.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap n: "</span>; <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; n;
+
+    <span class="kw">long long</span> sum = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+        sum += (<span class="kw">long long</span>)i * i;
+    }
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong 1^2 + 2^2 + ... + "</span> &lt;&lt; n &lt;&lt; <span class="str">"^2 = "</span> &lt;&lt; sum &lt;&lt; <span class="str">"\n"</span>;
+
+    <span class="com">// Kiem tra bang cong thuc dong: n*(n+1)*(2n+1)/6</span>
+    <span class="kw">long long</span> formula = (<span class="kw">long long</span>)n * (n + <span class="num">1</span>) * (<span class="num">2</span> * n + <span class="num">1</span>) / <span class="num">6</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Kiem tra cong thuc: "</span> &lt;&lt; formula &lt;&lt; <span class="str">"\n"</span>;
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: In 20 Số Fibonacci Đầu Tiên</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            In ra 20 số Fibonacci đầu tiên, mỗi số trên 1 dòng kèm chỉ số.
+            Dãy bắt đầu: F(0)=0, F(1)=1, F(2)=1, F(3)=2, ...
+            Dùng kỹ thuật 2 biến trượt (không dùng mảng).
+          </p>
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Output (5 dòng đầu)</span>
+            </div>
+            <pre><code>F(0)  = 0
+F(1)  = 1
+F(2)  = 1
+F(3)  = 2
+F(4)  = 3
+...</code></pre>
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem đáp án</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">solution_medium.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const</span> <span class="kw">int</span> COUNT = <span class="num">20</span>;
+    <span class="kw">long long</span> a = <span class="num">0</span>, b = <span class="num">1</span>;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"F(0)  = "</span> &lt;&lt; a &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"F(1)  = "</span> &lt;&lt; b &lt;&lt; <span class="str">"\n"</span>;
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">2</span>; i &lt; COUNT; i++) {
+        <span class="kw">long long</span> c = a + b;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"F("</span> &lt;&lt; i &lt;&lt; <span class="str">") = "</span> &lt;&lt; c &lt;&lt; <span class="str">"\n"</span>;
+        a = b;
+        b = c;
+    }
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Tìm Tất Cả Twin Primes Trong [1, 100]</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Hai số nguyên tố gọi là "nguyên tố anh em" (<em>twin primes</em>) nếu hơn kém nhau đúng 2 đơn vị.
+            Tìm và in tất cả cặp twin primes trong khoảng [1, 100].
+          </p>
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">Ví dụ Output (một phần)</span>
+            </div>
+            <pre><code">Cac cap so nguyen to anh em trong [1, 100]:
+(3, 5)
+(5, 7)
+(11, 13)
+(17, 19)
+(29, 31)
+...
+Tong so cap: 8</code></pre>
+          </div>
+
+          <div class="note-box note-box--tip">
+            <strong>💡 Gợi ý:</strong> Viết hàm <code>isPrime(n)</code> kiểm tra nguyên tố.
+            Duyệt p từ 2 đến 98, nếu cả p và p+2 đều nguyên tố thì in ra cặp (p, p+2).
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem đáp án</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">solution_hard.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="com">// Ham kiem tra so nguyen to</span>
+<span class="kw">bool</span> <span class="fn">isPrime</span>(<span class="kw">int</span> n) {
+    <span class="kw">if</span> (n &lt; <span class="num">2</span>) <span class="kw">return</span> <span class="kw">false</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">2</span>; i * i &lt;= n; i++) {
+        <span class="kw">if</span> (n % i == <span class="num">0</span>) <span class="kw">return</span> <span class="kw">false</span>;
+    }
+    <span class="kw">return</span> <span class="kw">true</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> count = <span class="num">0</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Cac cap so nguyen to anh em trong [1, 100]:\n"</span>;
+
+    <span class="kw">for</span> (<span class="kw">int</span> p = <span class="num">2</span>; p &lt;= <span class="num">98</span>; p++) {
+        <span class="kw">if</span> (<span class="fn">isPrime</span>(p) &amp;&amp; <span class="fn">isPrime</span>(p + <span class="num">2</span>)) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"("</span> &lt;&lt; p &lt;&lt; <span class="str">", "</span> &lt;&lt; p + <span class="num">2</span> &lt;&lt; <span class="str">")\n"</span>;
+            count++;
+        }
+    }
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong so cap: "</span> &lt;&lt; count &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+<span class="com">// Cac cap: (3,5) (5,7) (11,13) (17,19) (29,31) (41,43) (59,61) (71,73)</span></code></pre>
+                </div>
+                <div class="note-box note-box--info">
+                  <strong>📌 Thú vị:</strong> Twin primes là bài toán mở trong toán học hiện đại —
+                  người ta chưa chứng minh được có vô hạn cặp twin primes hay không
+                  (đây là <em>Twin Prime Conjecture</em>)! Nhưng code C++ giúp ta liệt kê chúng dễ dàng.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TỔNG KẾT GIAI ĐOẠN -->
+      <div style="background: var(--color-primary-light); border: 1px solid rgba(229, 57, 53, 0.2); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center; margin-bottom: var(--space-8);">
+        <h3 style="color: var(--color-primary); margin-bottom: var(--space-2);">🎯 Hoàn Thành Khối Kiến Thức Vòng Lặp Nâng Cao!</h3>
+        <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+          Bạn đã nắm vững vòng lặp lồng nhau, vẽ hình ký tự, break/continue và các bài toán thuật toán kinh điển.
+          Buổi tiếp theo sẽ bắt đầu với <strong>Flowchart &amp; Tư Duy Thuật Toán</strong> — bước đệm quan trọng
+          trước khi học lập trình game với Raylib!
+        </p>
+        <a href="lesson-02-09.html" class="btn btn--primary">Tiếp tục: Buổi 20 — Flowchart &amp; Thuật toán →</a>
+      </div>
+
+      <!-- ĐIỀU HƯỚNG CUỐI TRANG -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft);">
+        <a href="lesson-02-07.html" class="btn btn--outline">← Buổi 18: break &amp; continue</a>
+        <a href="lesson-02-09.html" class="btn btn--secondary">Buổi 20: Flowchart →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span></div>
+            <div class="contact-item"><i class="fas fa-phone"></i><span>090 198 05 69</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><span>innomindskills@gmail.com</span></div>
+            <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">Facebook</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="site-footer__text">© 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.</div>
+        <div class="site-footer__links"><a href="#" class="site-nav__link">Về đầu trang ↑</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

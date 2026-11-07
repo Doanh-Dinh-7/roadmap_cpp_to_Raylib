@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 22: Mini Project — Hoàn Thiện Number Guessing Game — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 22: Nâng cấp game đoán số với nhiều lượt chơi, giới hạn số lần đoán, 3 cấp độ khó, kiểm tra đầu vào hợp lệ và hệ thống tính điểm.">
+  <link rel="icon" type="image/png" href="../../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-02.html" class="site-nav__link is-active">Giai đoạn 02</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-02.html" class="breadcrumb__link">Giai đoạn 02</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 22: Hoàn Thiện Number Guessing Game</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 22</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--hard">Mini Project 02</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Mini Project: Hoàn Thiện Number Guessing Game
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Nâng cấp game đoán số 1 lượt (Buổi 11) thành game hoàn chỉnh có nhiều lượt chơi, giới hạn số lần đoán, 3 cấp độ khó, kiểm tra đầu vào hợp lệ và tính điểm — vận dụng toàn bộ kiến thức vòng lặp của Giai đoạn 02.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-02-10.html" class="btn btn--outline btn--sm">← Buổi 21</a>
+          <a href="../stage-02.html" class="btn btn--primary btn--sm">Danh sách buổi</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+
+      <!-- PHẦN 1: LÝ THUYẾT -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Phân tích &amp; Thiết kế game (20 Phút)</h2>
+
+        <h3>1.1 Từ phiên bản 1 lượt đến phiên bản hoàn chỉnh</h3>
+        <p>
+          Ở Buổi 11, game chỉ cho đoán <strong>một lần</strong> rồi kết thúc. Với kiến thức vòng lặp của Giai đoạn 02, ta có thể biến nó thành một trò chơi thực thụ. Bảng dưới đây ánh xạ từng tính năng mới với kiến thức đã học:
+        </p>
+
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Tính năng mới</th>
+                <th>Kiến thức áp dụng</th>
+                <th>Buổi học</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Đoán nhiều lần đến khi đúng hoặc hết lượt</td>
+                <td>Vòng lặp <code>while</code> + điều kiện dừng kép</td>
+                <td>Buổi 12</td>
+              </tr>
+              <tr>
+                <td>Kiểm tra số nhập nằm trong khoảng hợp lệ</td>
+                <td>Vòng lặp <code>do-while</code> kiểm tra đầu vào</td>
+                <td>Buổi 15</td>
+              </tr>
+              <tr>
+                <td>Chơi lại nhiều ván (Play again?)</td>
+                <td>Vòng lặp lồng nhau: vòng ván chơi bọc vòng đoán</td>
+                <td>Buổi 16–17</td>
+              </tr>
+              <tr>
+                <td>Thoát ngay khi đoán đúng</td>
+                <td><code>break</code></td>
+                <td>Buổi 18</td>
+              </tr>
+              <tr>
+                <td>Chọn độ khó Dễ / Thường / Khó</td>
+                <td><code>switch/case</code></td>
+                <td>Buổi 09</td>
+              </tr>
+              <tr>
+                <td>Tính điểm theo số lượt còn dư</td>
+                <td>Toán tử số học, biến tích lũy</td>
+                <td>Buổi 06, 14</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>1.2 Bảng cấu hình độ khó</h3>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Cấp độ</th>
+                <th>Khoảng số bí mật</th>
+                <th>Số lượt tối đa</th>
+                <th>Hệ số điểm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="badge badge--easy">1. Dễ</span></td><td>1 – 50</td><td>10</td><td>×1</td></tr>
+              <tr><td><span class="badge badge--medium">2. Thường</span></td><td>1 – 100</td><td>7</td><td>×2</td></tr>
+              <tr><td><span class="badge badge--hard">3. Khó</span></td><td>1 – 500</td><td>9</td><td>×3</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>Công thức điểm một ván thắng:</strong> <code>score = (maxTries - tries + 1) * 10 * multiplier</code>. Đoán đúng càng sớm → còn dư càng nhiều lượt → điểm càng cao. Thua ván thì được 0 điểm.
+        </p>
+
+        <h3>1.3 Flowchart tổng thể (Game Loop console)</h3>
+        <div class="note-box note-box--info">
+          <strong>📋 Luồng chạy chương trình:</strong>
+          <ol style="margin: var(--space-3) 0 0; padding-left: 1.25rem; line-height: 1.8;">
+            <li><strong>START</strong> → khởi tạo bộ sinh số ngẫu nhiên <code>srand(time(0))</code>, <code>totalScore = 0</code>.</li>
+            <li><strong>[Vòng ván chơi — do-while]</strong> Hiện menu, nhập độ khó (lặp lại nếu không phải 1–3).</li>
+            <li>Gán <code>maxNumber</code>, <code>maxTries</code>, <code>multiplier</code> theo độ khó; sinh <code>secret</code>.</li>
+            <li><strong>[Vòng đoán — while]</strong> Còn lượt? → nhập <code>guess</code> (kiểm tra hợp lệ) → so sánh:
+              <ul style="padding-left: 1.25rem;">
+                <li><code>guess &lt; secret</code> → "Lớn hơn!"</li>
+                <li><code>guess &gt; secret</code> → "Nhỏ hơn!"</li>
+                <li><code>guess == secret</code> → tính điểm, <code>break</code></li>
+              </ul>
+            </li>
+            <li>Hết lượt mà chưa đúng → in đáp án, ván thua.</li>
+            <li>Hỏi "Chơi tiếp? (y/n)" → <code>y</code> quay lại bước 2, <code>n</code> → in tổng kết → <strong>END</strong>.</li>
+          </ol>
+        </div>
+
+        <div class="note-box note-box--tip">
+          <strong>🎮 Mẹo tư duy Game:</strong> Mọi game — từ console đến Raylib — đều có cùng khung: <em>vòng lặp ngoài</em> giữ chương trình sống (game loop / menu), <em>vòng lặp trong</em> xử lý từng lượt chơi. Ở Giai đoạn 06, vòng <code>while (!WindowShouldClose())</code> của Raylib chính là vòng ngoài này, chạy 60 lần mỗi giây.
+        </div>
+
+        <div class="note-box note-box--warning">
+          <strong>⚠️ Bẫy nhập liệu:</strong> Nếu người chơi gõ chữ thay vì số, <code>std::cin</code> rơi vào trạng thái lỗi và các lần đọc tiếp theo bị bỏ qua → vòng lặp vô hạn. Cách xử lý: kiểm tra <code>if (!(std::cin &gt;&gt; x))</code>, rồi gọi <code>std::cin.clear()</code> và <code>std::cin.ignore(1000, '\n')</code> để dọn bộ đệm.
+        </div>
+      </section>
+
+      <!-- PHẦN 2: BÀI TẬP TRÊN LỚP -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Bài tập trên lớp — Xây dựng game từng bước (50 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bước 1: Vòng đoán có giới hạn lượt</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Sinh số bí mật từ 1 đến 100. Cho người chơi đoán tối đa 7 lần, mỗi lần gợi ý "Lớn hơn" / "Nhỏ hơn". Đoán đúng thì thông báo số lần đã đoán và dừng ngay.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">step1_guess_loop.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cstdlib&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;ctime&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">srand</span>(<span class="fn">time</span>(<span class="num">0</span>));
+    <span class="kw">const int</span> MAX_TRIES = <span class="num">7</span>;
+    <span class="kw">int</span> secret = <span class="fn">rand</span>() % <span class="num">100</span> + <span class="num">1</span>;
+    <span class="kw">int</span> guess = <span class="num">0</span>;
+    <span class="kw">int</span> tries = <span class="num">0</span>;
+    <span class="kw">bool</span> won = <span class="kw">false</span>;
+
+    <span class="kw">while</span> (tries &lt; MAX_TRIES) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Luot "</span> &lt;&lt; tries + <span class="num">1</span> &lt;&lt; <span class="str">"/"</span> &lt;&lt; MAX_TRIES &lt;&lt; <span class="str">" - Nhap so: "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; guess;
+        tries++;
+
+        <span class="kw">if</span> (guess == secret) {
+            won = <span class="kw">true</span>;
+            <span class="kw">break</span>;                        <span class="com">// Dung -&gt; thoat vong ngay</span>
+        } <span class="kw">else if</span> (guess &lt; secret) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Lon hon!\n"</span>;
+        } <span class="kw">else</span> {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nho hon!\n"</span>;
+        }
+    }
+
+    <span class="kw">if</span> (won) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chinh xac! Ban doan dung sau "</span> &lt;&lt; tries &lt;&lt; <span class="str">" lan.\n"</span>;
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Het luot! So bi mat la "</span> &lt;&lt; secret &lt;&lt; <span class="str">".\n"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+
+          <div class="note-box note-box--info">
+            <strong>Vì sao cần biến <code>won</code>?</strong> Sau vòng lặp, <code>tries == MAX_TRIES</code> có thể xảy ra cả khi người chơi đoán đúng ở lượt cuối. Dùng cờ <code>won</code> giúp phân biệt rõ "thắng" và "hết lượt" mà không phải so sánh lại.
+          </div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bước 2: Kiểm tra đầu vào hợp lệ bằng do-while</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Thay dòng <code>std::cin &gt;&gt; guess;</code> bằng đoạn lặp yêu cầu nhập lại khi số nằm ngoài khoảng <code>1..maxNumber</code> hoặc người chơi gõ chữ. Lượt nhập sai <strong>không</strong> bị tính vào số lần đoán.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">step2_validate.cpp (đoạn thay thế)</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">bool</span> valid = <span class="kw">false</span>;
+<span class="kw">do</span> {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap so (1-"</span> &lt;&lt; maxNumber &lt;&lt; <span class="str">"): "</span>;
+    <span class="kw">if</span> (!(<span class="type">std</span>::<span class="type">cin</span> &gt;&gt; guess)) {             <span class="com">// Go chu -&gt; cin bi loi</span>
+        <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">clear</span>();                     <span class="com">// Xoa trang thai loi</span>
+        <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);         <span class="com">// Bo phan rac trong bo dem</span>
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Vui long nhap mot so nguyen!\n"</span>;
+    } <span class="kw">else if</span> (guess &lt; <span class="num">1</span> || guess &gt; maxNumber) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So phai nam trong khoang 1-"</span> &lt;&lt; maxNumber &lt;&lt; <span class="str">"!\n"</span>;
+    } <span class="kw">else</span> {
+        valid = <span class="kw">true</span>;
+    }
+} <span class="kw">while</span> (!valid);
+tries++;                                       <span class="com">// Chi tinh luot khi nhap hop le</span></code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bước 3: Ghép hoàn chỉnh — Độ khó, nhiều ván, tính điểm</h4>
+            <span class="badge badge--hard">Mini Project</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Bọc toàn bộ phần chơi trong vòng <code>do-while</code> "Chơi tiếp?". Mỗi ván cho chọn độ khó bằng <code>switch</code>, tính điểm theo công thức ở mục 1.2 và cộng dồn vào <code>totalScore</code>. Khi thoát, in tổng kết: số ván, số ván thắng, tổng điểm.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem mã nguồn hoàn chỉnh của game</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">guess_game_v2.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cstdlib&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;ctime&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">srand</span>(<span class="fn">time</span>(<span class="num">0</span>));
+    <span class="kw">int</span> totalScore = <span class="num">0</span>, rounds = <span class="num">0</span>, wins = <span class="num">0</span>;
+    <span class="kw">char</span> again;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"===== NUMBER GUESSING GAME v2 =====\n"</span>;
+
+    <span class="kw">do</span> {                                                <span class="com">// VONG NGOAI: moi van choi</span>
+        <span class="com">// --- 1. Chon do kho (lap den khi hop le) ---</span>
+        <span class="kw">int</span> level = <span class="num">0</span>;
+        <span class="kw">do</span> {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nChon do kho: 1-De  2-Thuong  3-Kho : "</span>;
+            <span class="kw">if</span> (!(<span class="type">std</span>::<span class="type">cin</span> &gt;&gt; level)) {
+                <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">clear</span>();
+                <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);
+                level = <span class="num">0</span>;
+            }
+        } <span class="kw">while</span> (level &lt; <span class="num">1</span> || level &gt; <span class="num">3</span>);
+
+        <span class="kw">int</span> maxNumber, maxTries, multiplier;
+        <span class="kw">switch</span> (level) {
+            <span class="kw">case</span> <span class="num">1</span>:  maxNumber = <span class="num">50</span>;  maxTries = <span class="num">10</span>; multiplier = <span class="num">1</span>; <span class="kw">break</span>;
+            <span class="kw">case</span> <span class="num">2</span>:  maxNumber = <span class="num">100</span>; maxTries = <span class="num">7</span>;  multiplier = <span class="num">2</span>; <span class="kw">break</span>;
+            <span class="kw">default</span>: maxNumber = <span class="num">500</span>; maxTries = <span class="num">9</span>;  multiplier = <span class="num">3</span>; <span class="kw">break</span>;
+        }
+
+        <span class="kw">int</span> secret = <span class="fn">rand</span>() % maxNumber + <span class="num">1</span>;
+        <span class="kw">int</span> tries = <span class="num">0</span>, guess = <span class="num">0</span>;
+        <span class="kw">bool</span> won = <span class="kw">false</span>;
+        rounds++;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Toi da nghi mot so tu 1 den "</span> &lt;&lt; maxNumber
+                  &lt;&lt; <span class="str">". Ban co "</span> &lt;&lt; maxTries &lt;&lt; <span class="str">" luot.\n"</span>;
+
+        <span class="com">// --- 2. Vong doan ---</span>
+        <span class="kw">while</span> (tries &lt; maxTries) {                           <span class="com">// VONG TRONG: moi luot doan</span>
+            <span class="kw">bool</span> valid = <span class="kw">false</span>;
+            <span class="kw">do</span> {
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"[Luot "</span> &lt;&lt; tries + <span class="num">1</span> &lt;&lt; <span class="str">"/"</span> &lt;&lt; maxTries &lt;&lt; <span class="str">"] Nhap so: "</span>;
+                <span class="kw">if</span> (!(<span class="type">std</span>::<span class="type">cin</span> &gt;&gt; guess)) {
+                    <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">clear</span>();
+                    <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);
+                    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Vui long nhap so nguyen!\n"</span>;
+                } <span class="kw">else if</span> (guess &lt; <span class="num">1</span> || guess &gt; maxNumber) {
+                    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ngoai khoang 1-"</span> &lt;&lt; maxNumber &lt;&lt; <span class="str">"!\n"</span>;
+                } <span class="kw">else</span> {
+                    valid = <span class="kw">true</span>;
+                }
+            } <span class="kw">while</span> (!valid);
+            tries++;
+
+            <span class="kw">if</span> (guess == secret) { won = <span class="kw">true</span>; <span class="kw">break</span>; }
+            <span class="kw">if</span> (guess &lt; secret) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  -&gt; Lon hon!\n"</span>;
+            <span class="kw">else</span>                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  -&gt; Nho hon!\n"</span>;
+        }
+
+        <span class="com">// --- 3. Ket qua van ---</span>
+        <span class="kw">if</span> (won) {
+            <span class="kw">int</span> score = (maxTries - tries + <span class="num">1</span>) * <span class="num">10</span> * multiplier;
+            totalScore += score;
+            wins++;
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"CHINH XAC! Doan dung sau "</span> &lt;&lt; tries
+                      &lt;&lt; <span class="str">" lan. +"</span> &lt;&lt; score &lt;&lt; <span class="str">" diem.\n"</span>;
+        } <span class="kw">else</span> {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"HET LUOT! So bi mat la "</span> &lt;&lt; secret &lt;&lt; <span class="str">".\n"</span>;
+        }
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong diem hien tai: "</span> &lt;&lt; totalScore &lt;&lt; <span class="str">"\n"</span>;
+
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Choi tiep? (y/n): "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; again;
+    } <span class="kw">while</span> (again == <span class="str">'y'</span> || again == <span class="str">'Y'</span>);
+
+    <span class="com">// --- 4. Tong ket ---</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n===== TONG KET =====\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So van: "</span> &lt;&lt; rounds &lt;&lt; <span class="str">" | Thang: "</span> &lt;&lt; wins
+              &lt;&lt; <span class="str">" | Tong diem: "</span> &lt;&lt; totalScore &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Cam on ban da choi!\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box note-box--tip">
+            <strong>🎯 Kiểm thử bắt buộc trước khi nộp:</strong> (1) Đoán đúng ở lượt 1; (2) Đoán đúng ở lượt cuối cùng; (3) Thua hết lượt; (4) Nhập chữ <code>abc</code>; (5) Nhập số ngoài khoảng; (6) Chọn độ khó <code>0</code> hoặc <code>4</code>; (7) Chơi 3 ván liên tiếp rồi kiểm tra tổng điểm.
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (Mở rộng game)</h2>
+        <p>Học viên chọn làm cả 3 bài để hoàn thiện sản phẩm cuối Giai đoạn 02:</p>
+
+        <!-- Bài Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Gợi ý "Nóng / Lạnh"</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Ngoài gợi ý "Lớn hơn / Nhỏ hơn", thêm thông báo độ gần: nếu khoảng cách <code>|guess - secret| &lt;= 5</code> in <code>"Rat nong!"</code>, <code>&lt;= 15</code> in <code>"Nong"</code>, còn lại in <code>"Lanh"</code>.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Gợi ý:</strong> Tự tính trị tuyệt đối bằng <code>if</code> (chưa cần thư viện), đặt đoạn này ngay sau gợi ý Lớn/Nhỏ trong vòng đoán.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">hot_cold.cpp (đoạn thêm vào)</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">int</span> distance = guess - secret;
+<span class="kw">if</span> (distance &lt; <span class="num">0</span>) distance = -distance;     <span class="com">// Tri tuyet doi</span>
+
+<span class="kw">if</span> (distance &lt;= <span class="num">5</span>) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  (Rat nong!)\n"</span>;
+} <span class="kw">else if</span> (distance &lt;= <span class="num">15</span>) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  (Nong)\n"</span>;
+} <span class="kw">else</span> {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  (Lanh)\n"</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Kỷ lục &amp; Thu hẹp khoảng gợi ý</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            (a) Lưu <code>bestTries</code> — số lượt ít nhất mà người chơi từng thắng trong phiên chơi; khi phá kỷ lục in <code>"KY LUC MOI!"</code>.<br>
+            (b) Sau mỗi lần đoán sai, in khoảng còn khả thi, ví dụ <code>"So bi mat nam trong [38, 100]"</code>, bằng cách cập nhật hai biến <code>low</code> và <code>high</code>.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Phân tích:</strong> Khởi tạo <code>bestTries</code> <em>ngoài</em> vòng ván chơi (để giữ qua nhiều ván) với giá trị lớn bất kỳ, ví dụ <code>9999</code>. Còn <code>low/high</code> phải khởi tạo <em>trong</em> mỗi ván vì mỗi ván có số bí mật mới.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">record_range.cpp (các đoạn thêm vào)</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="com">// Truoc vong do-while van choi:</span>
+<span class="kw">int</span> bestTries = <span class="num">9999</span>;
+
+<span class="com">// Dau moi van, sau khi sinh secret:</span>
+<span class="kw">int</span> low = <span class="num">1</span>, high = maxNumber;
+
+<span class="com">// Trong vong doan, thay phan goi y:</span>
+<span class="kw">if</span> (guess &lt; secret) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  -&gt; Lon hon!\n"</span>;
+    <span class="kw">if</span> (guess + <span class="num">1</span> &gt; low) low = guess + <span class="num">1</span>;
+} <span class="kw">else</span> {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  -&gt; Nho hon!\n"</span>;
+    <span class="kw">if</span> (guess - <span class="num">1</span> &lt; high) high = guess - <span class="num">1</span>;
+}
+<span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  So bi mat nam trong ["</span> &lt;&lt; low &lt;&lt; <span class="str">", "</span> &lt;&lt; high &lt;&lt; <span class="str">"]\n"</span>;
+
+<span class="com">// Trong nhanh thang (if won):</span>
+<span class="kw">if</span> (tries &lt; bestTries) {
+    bestTries = tries;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"KY LUC MOI: "</span> &lt;&lt; bestTries &lt;&lt; <span class="str">" luot!\n"</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Đổi vai — Máy tính đoán số của bạn</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Người chơi nghĩ một số từ 1 đến 100 (không nhập vào máy). Máy đoán, người chơi trả lời bằng ký tự: <code>l</code> (số của tôi lớn hơn), <code>n</code> (nhỏ hơn), <code>d</code> (đúng). Máy phải luôn đoán ra trong <strong>tối đa 7 lượt</strong>. Nếu người chơi trả lời mâu thuẫn (khoảng còn lại rỗng) → in <code>"Ban gian lan roi!"</code>.
+          </p>
+
+          <div class="note-box note-box--info">
+            <strong>Gợi ý thuật toán:</strong> Luôn đoán số ở giữa khoảng <code>mid = (low + high) / 2</code>. Mỗi câu trả lời loại bỏ một nửa khoảng → 100 → 50 → 25 → 13 → 7 → 4 → 2 → 1, tức 7 lượt là đủ. Đây chính là ý tưởng <strong>Tìm kiếm nhị phân (Binary Search)</strong> mà bạn sẽ gặp lại ở Giai đoạn 03.
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">computer_guess.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> low = <span class="num">1</span>, high = <span class="num">100</span>, tries = <span class="num">0</span>;
+    <span class="kw">char</span> answer;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Hay nghi mot so tu 1 den 100. May se doan!\n"</span>;
+
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="kw">if</span> (low &gt; high) {                        <span class="com">// Khoang rong -&gt; tra loi mau thuan</span>
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ban gian lan roi!\n"</span>;
+            <span class="kw">break</span>;
+        }
+        <span class="kw">int</span> mid = (low + high) / <span class="num">2</span>;
+        tries++;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Lan "</span> &lt;&lt; tries &lt;&lt; <span class="str">": May doan "</span> &lt;&lt; mid
+                  &lt;&lt; <span class="str">". (l = lon hon, n = nho hon, d = dung): "</span>;
+
+        <span class="kw">do</span> {
+            <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; answer;
+        } <span class="kw">while</span> (answer != <span class="str">'l'</span> &amp;&amp; answer != <span class="str">'n'</span> &amp;&amp; answer != <span class="str">'d'</span>);
+
+        <span class="kw">if</span> (answer == <span class="str">'d'</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"May doan dung sau "</span> &lt;&lt; tries &lt;&lt; <span class="str">" lan!\n"</span>;
+            <span class="kw">break</span>;
+        } <span class="kw">else if</span> (answer == <span class="str">'l'</span>) {
+            low = mid + <span class="num">1</span>;
+        } <span class="kw">else</span> {
+            high = mid - <span class="num">1</span>;
+        }
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <div class="note-box note-box--tip">
+                  <strong>💡 Vì sao luôn ≤ 7 lượt?</strong> Vì 2<sup>7</sup> = 128 ≥ 100. Mỗi lượt chia đôi khoảng tìm kiếm, nên sau 7 lượt khoảng chỉ còn tối đa 1 số.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- KẾT THÚC GIAI ĐOẠN 02 -->
+      <div style="background: var(--color-primary-light); border: 1px solid rgba(229, 57, 53, 0.2); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center; margin-bottom: var(--space-8);">
+        <h3 style="color: var(--color-primary); margin-bottom: var(--space-2);">🎉 Chúc Mừng Bạn Đã Hoàn Thành Giai Đoạn 02!</h3>
+        <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+          Bạn đã làm chủ vòng lặp <code>while</code>, <code>for</code>, <code>do-while</code>, vòng lặp lồng nhau, <code>break/continue</code> và biết phân tích bài toán bằng Flowchart. Code game đoán số giờ đã khá dài — trong <strong>Giai đoạn 03</strong>, bạn sẽ học <strong>Hàm (Function)</strong> và <strong>Mảng</strong> để chia nhỏ chương trình và lưu lịch sử các lần đoán!
+        </p>
+        <a href="../stage-03.html" class="btn btn--primary">Tiếp tục hành trình: Khám phá Giai đoạn 03 →</a>
+      </div>
+
+      <!-- NAVIGATION CUỐI TRANG -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft);">
+        <a href="lesson-02-10.html" class="btn btn--outline">← Buổi 21: Phân tích trường hợp</a>
+        <a href="../stage-02.html" class="btn btn--secondary">Danh sách 11 buổi Giai đoạn 02</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span></div>
+            <div class="contact-item"><i class="fas fa-phone"></i><span>090 198 05 69</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><span>innomindskills@gmail.com</span></div>
+            <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">Facebook</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="site-footer__text">© 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.</div>
+        <div class="site-footer__links"><a href="#" class="site-nav__link">Về đầu trang ↑</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

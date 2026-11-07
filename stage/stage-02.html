@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giai Đoạn 02: Cấu Trúc Điều Khiển &amp; Tư Duy Thuật Toán — Roadmap Game Dev</title>
+  <meta name="description" content="Danh sách 11 buổi học Giai đoạn 02: Vòng lặp while, for, do-while, vòng lặp lồng nhau, break/continue, Flowchart và hoàn thiện Number Guessing Game.">
+  <link rel="icon" type="image/png" href="../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../index.html" class="brand">
+        <img src="../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../index.html#stages" class="site-nav__link is-active">8 Giai đoạn</a></li>
+          <li><a href="../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../index.html#tools" class="site-nav__link">Công cụ</a></li>
+          <li><a href="../index.html#rubric" class="site-nav__link">Đánh giá</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== STAGE HERO & BREADCRUMB ==================== -->
+  <div class="stage-banner" style="background: radial-gradient(circle at top right, rgba(229, 57, 53, 0.06) 0%, transparent 40%), var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-8) 0 var(--space-6);">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Giai đoạn 02</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: inline-flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">Giai đoạn 02</span>
+            <span class="badge badge--tag">11 Buổi (16.5 Giờ)</span>
+            <span class="badge badge--medium">Tư duy thuật toán</span>
+          </div>
+          <h1 style="font-size: var(--font-size-3xl); margin-bottom: var(--space-2);">
+            CẤU TRÚC ĐIỀU KHIỂN VÀ TƯ DUY THUẬT TOÁN
+          </h1>
+          <p style="color: var(--color-text-secondary); max-width: 800px; margin: 0; font-size: var(--font-size-md);">
+            Làm chủ các vòng lặp <code>while</code>, <code>for</code>, <code>do-while</code> và vòng lặp lồng nhau;
+            sử dụng <code>break</code> &amp; <code>continue</code> để kiểm soát luồng; phân tích bài toán bằng
+            Flowchart và hoàn thiện Number Guessing Game có nhiều lượt chơi, giới hạn lượt và độ khó.
+          </p>
+        </div>
+
+        <div style="background: var(--color-bg-page); padding: var(--space-4); border-radius: var(--radius-md); border: 1px solid var(--color-border-soft); min-width: 200px;">
+          <div style="font-size: var(--font-size-xs); color: var(--color-text-muted); text-transform: uppercase; font-weight: var(--font-weight-bold);">Sản phẩm giai đoạn</div>
+          <div style="font-weight: var(--font-weight-bold); color: var(--color-primary); font-size: var(--font-size-base); margin-top: 4px;">Guess Number Game v2</div>
+          <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 2px;">Nhiều lượt, giới hạn đoán, 3 cấp độ khó</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== LESSON LIST ==================== -->
+  <main class="section">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6);">
+        <h2 style="font-size: var(--font-size-2xl); margin: 0;">Danh sách 11 buổi học</h2>
+        <div style="font-size: var(--font-size-sm); color: var(--color-text-muted);">
+          Thời lượng: <strong>90 phút / buổi</strong>
+        </div>
+      </div>
+
+      <div class="lesson-grid">
+        <!-- Buổi 12 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">12</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-02-01.html">Vòng lặp while và điều kiện dừng</a>
+            </h3>
+            <p>Hiểu cơ chế lặp có điều kiện kiểm tra trước, nhận diện vòng lặp vô hạn và cách thoát an toàn; ứng dụng tạo Game Loop đơn giản trên console.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--easy">Thực hành: Lặp thao tác khi điều kiện chưa biết trước</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-02-01.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 13 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">13</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-02-02.html">Vòng lặp for</a>
+            </h3>
+            <p>Cú pháp 3 phần của <code>for</code> (khởi tạo – điều kiện – cập nhật); duyệt dãy số, in bảng điểm, tạo đếm ngược trong game.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--easy">Thực hành: Lặp thao tác xử lý dãy số biết trước số lần</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-02-02.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 14 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">14</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-02-03.html">Sửa bài vòng lặp cơ bản; nhận diện lỗi lặp vô hạn</a>
+            </h3>
+            <p>Buổi thực hành chuyên sâu: Chữa lỗi vòng lặp hay gặp, kỹ thuật debug bằng in giá trị biến điều khiển, tính tổng/đếm/tìm giá trị theo điều kiện.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--medium">Thực hành: Tính tổng, đếm, tìm giá trị theo điều kiện</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-02-03.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 15 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">15</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-02-04.html">Vòng lặp do-while và sự khác biệt với while</a>
+            </h3>
+            <p>Vòng lặp kiểm tra điều kiện sau khi thân lặp đã chạy ít nhất 1 lần; ứng dụng lý tưởng để kiểm tra đầu vào hợp lệ từ người chơi.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--easy">Thực hành: Lặp kiểm tra đầu vào hợp lệ</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-02-04.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 16 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">16</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-02-05.html">Vòng lặp lồng nhau (Phần 1)</a>
+            </h3>
+            <p>Cơ chế hoạt động và truy vết luồng chạy khi 2 vòng lặp lồng nhau; đếm số lần thực thi thực tế, nhận biết độ phức tạp O(n²).</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--medium">Thực hành: Truy vết luồng chạy 2 vòng lặp lồng nhau</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-02-05.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 17 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">17</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-02-06.html">Vòng lặp lồng nhau (Phần 2) — Vẽ hình bằng ký tự</a>
+            </h3>
+            <p>Ứng dụng vòng lặp lồng nhau để vẽ tam giác, hình chữ nhật, kim cương bằng ký tự ASCII; nền tảng hiểu cách game vẽ lưới (tile map).</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--medium">Thực hành: Vẽ hình bằng ký tự (tam giác, hình chữ nhật)</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-02-06.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 18 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">18</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-02-07.html">Lệnh điều khiển luồng: break và continue</a>
+            </h3>
+            <p>Dùng <code>break</code> để thoát vòng lặp sớm khi tìm thấy kết quả, <code>continue</code> để bỏ qua lần lặp không cần thiết; tối ưu hóa hiệu suất thuật toán.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--medium">Thực hành: Tối ưu hóa và thoát vòng lặp đúng lúc</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-02-07.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 19 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">19</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-02-08.html">Luyện tập tổng hợp cấu trúc điều khiển và vòng lặp</a>
+            </h3>
+            <p>Giải các bài toán kinh điển: kiểm tra số nguyên tố, tính giai thừa, tìm số Fibonacci, tổng dãy chẵn/lẻ — kết hợp <code>if</code> lồng trong vòng lặp.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--hard">Thực hành: Số nguyên tố, dãy số, giai thừa</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-02-08.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 20 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">20</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-02-09.html">Flowchart (Lưu đồ thuật toán) và quy trình phân tích</a>
+            </h3>
+            <p>Các ký hiệu Flowchart chuẩn (hình thoi, hình chữ nhật, mũi tên); quy trình chuyển đề bài thành lưu đồ trước khi viết code — tư duy thiết kế game.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--medium">Thực hành: Vẽ Flowchart các bước xử lý bài toán</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-02-09.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 21 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">21</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-02-10.html">Sửa bài và thực hành phân tích trường hợp bằng Flowchart</a>
+            </h3>
+            <p>Buổi luyện tư duy bẻ gãy bài toán lớn thành nhỏ; chữa lỗi thuật toán qua Flowchart, nhận biết điểm cần tối ưu trước khi code.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--medium">Thực hành: Phân tích và chữa lỗi thuật toán qua Flowchart</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-02-10.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 22 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">22</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-02-11.html">Mini Project: Hoàn thiện Number Guessing Game</a>
+            </h3>
+            <p>Nâng cấp game đoán số từ Giai đoạn 01: thêm vòng lặp nhiều lượt chơi, giới hạn số lần đoán, 3 cấp độ khó và hệ thống tính điểm.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--hard">Mini Project: Game đoán số nâng cao</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-02-11.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+      </div>
+
+      <!-- Bài tập và vận dụng của giai đoạn (theo tài liệu Roadmap) -->
+      <section class="stage-practice" aria-labelledby="practice-title">
+        <h2 id="practice-title" class="stage-practice__title">Bài tập và vận dụng Giai đoạn 02</h2>
+        <p class="stage-practice__intro">Tổng hợp yêu cầu bài tập của cả giai đoạn theo 3 cấp độ, kèm các buổi học có bài luyện tập tương ứng.</p>
+        <div class="stage-practice__grid">
+          <article class="stage-practice__item">
+            <span class="badge badge--easy">Easy (40%)</span>
+            <h3>Tính tổng một dãy số, đếm số lượng phần tử thỏa mãn điều kiện.</h3>
+            <p>Luyện tập trong các buổi:</p>
+            <ul class="stage-practice__links">
+              <li><a href="lesson/lesson-02-01.html">Buổi 12 — Tính tổng 1 đến n</a></li>
+              <li><a href="lesson/lesson-02-03.html">Buổi 14 — Đếm số chẵn trong dãy</a></li>
+            </ul>
+          </article>
+
+          <article class="stage-practice__item">
+            <span class="badge badge--medium">Medium (40%)</span>
+            <h3>Kiểm tra số nguyên tố, tính giai thừa, in bảng cửu chương.</h3>
+            <p>Luyện tập trong các buổi:</p>
+            <ul class="stage-practice__links">
+              <li><a href="lesson/lesson-02-08.html">Buổi 19 — Số nguyên tố, giai thừa</a></li>
+              <li><a href="lesson/lesson-02-02.html">Buổi 13 — Tính n! &amp; bảng cửu chương</a></li>
+              <li><a href="lesson/lesson-02-05.html">Buổi 16 — Bảng nhân 10×10</a></li>
+            </ul>
+          </article>
+
+          <article class="stage-practice__item">
+            <span class="badge badge--hard">Hard (20%)</span>
+            <h3>In các hình học phức tạp bằng ký tự, hoàn thiện game đoán số nâng cao.</h3>
+            <p>Luyện tập trong các buổi:</p>
+            <ul class="stage-practice__links">
+              <li><a href="lesson/lesson-02-06.html">Buổi 17 — Hình kim cương, mê cung ký tự</a></li>
+              <li><a href="lesson/lesson-02-11.html">Buổi 22 — Number Guessing Game v2</a></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- Navigation giữa các giai đoạn -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-10); padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft); flex-wrap: wrap; gap: var(--space-4);">
+        <a href="stage-01.html" class="btn btn--outline">← Giai đoạn 01: Nhập Môn C++</a>
+        <a href="stage-03.html" class="btn btn--primary">Sang Giai đoạn 03: Hàm &amp; Cấu trúc dữ liệu →</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <span>090 198 05 69</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <span>innomindskills@gmail.com</span>
+            </div>
+            <div class="contact-item">
+              <i class="fab fa-facebook"></i>
+              <a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">
+                Facebook
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="site-footer__text">
+          © 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.
+        </div>
+        <div class="site-footer__links">
+          <a href="#" class="site-nav__link">Về đầu trang ↑</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
+
