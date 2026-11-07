@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buổi 09: Cấu Trúc Else If &amp; Switch/Case C++ — Roadmap Game Dev</title>
   <meta name="description" content="Buổi 09: Xử lý bài toán đa nhánh, tối ưu hóa hệ thống Main Menu trò chơi với cấu trúc switch/case và else if trong C++.">
+  <link rel="icon" type="image/png" href="../../assets/images/logo-browser.png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="../../css/style.css">
 </head>
@@ -87,10 +88,7 @@
         <div class="code-block">
           <div class="code-block__header">
             <span class="code-block__lang">rank_check.cpp</span>
-            <button class="code-block__copy" aria-label="Sao chép">
-              <i class="far fa-copy"></i>
-              <span>Sao chép</span>
-            </button>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
           </div>
           <pre><code><span class="kw">if</span> (score &gt;= <span class="num">1000</span>) {
     <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Hạng: Cao Thủ (Master)\n"</span>;
@@ -109,10 +107,7 @@
         <div class="code-block">
           <div class="code-block__header">
             <span class="code-block__lang">switch_demo.cpp</span>
-            <button class="code-block__copy" aria-label="Sao chép">
-              <i class="far fa-copy"></i>
-              <span>Sao chép</span>
-            </button>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
           </div>
           <pre><code><span class="kw">switch</span> (biến_lựa_chọn) {
     <span class="kw">case</span> <span class="num">1</span>:
@@ -169,7 +164,7 @@ Output:
                 <div class="code-block">
                   <div class="code-block__header">
                     <span class="code-block__lang">main_menu.cpp</span>
-                    <button class="code-block__copy"><span>Sao chép</span></button>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
                   </div>
                   <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
 
@@ -207,6 +202,57 @@ Output:
 
     <span class="kw">return</span> <span class="num">0</span>;
 }</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Thực hành nhanh: Phân loại số Âm / Dương / Bằng 0 (Biến động điểm số)</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Sau mỗi màn chơi, game tính <code>delta</code> = điểm thay đổi (có thể âm, dương hoặc bằng 0). Nhập <code>delta</code>, dùng chuỗi <code>if - else if - else</code> để in: <code>"Tang diem"</code> nếu dương, <code>"Mat diem"</code> nếu âm, <code>"Khong doi"</code> nếu bằng 0. Sau đó kiểm tra thêm <code>delta</code> là số chẵn hay lẻ (bỏ qua trường hợp 0).
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem mã nguồn giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">am_duong.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> delta;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap diem thay doi: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; delta;
+
+    <span class="kw">if</span> (delta &gt; <span class="num">0</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tang diem"</span>;
+    } <span class="kw">else if</span> (delta &lt; <span class="num">0</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Mat diem"</span>;
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Khong doi"</span>;
+    }
+
+    <span class="kw">if</span> (delta != <span class="num">0</span>) {
+        <span class="kw">if</span> (delta % <span class="num">2</span> == <span class="num">0</span>) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" (so chan)\n"</span>;
+        <span class="kw">else</span>                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" (so le)\n"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <div class="note-box note-box--warning">
+                  <strong>⚠️ Lưu ý:</strong> Với số âm, <code>-7 % 2</code> cho kết quả <code>-1</code> (không phải <code>1</code>). Vì vậy hãy kiểm tra chẵn bằng <code>% 2 == 0</code>, đừng kiểm tra lẻ bằng <code>% 2 == 1</code>.
                 </div>
               </div>
             </div>
@@ -251,7 +297,7 @@ Output:
                 <div class="code-block">
                   <div class="code-block__header">
                     <span class="code-block__lang">wasd_switch.cpp</span>
-                    <button class="code-block__copy"><span>Sao chép</span></button>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
                   </div>
                   <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
 
@@ -326,7 +372,7 @@ Bạn đã chọn: Pháp Sư (Mage)
                 <div class="code-block">
                   <div class="code-block__header">
                     <span class="code-block__lang">pick_class.cpp</span>
-                    <button class="code-block__copy"><span>Sao chép</span></button>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
                   </div>
                   <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
 <span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
@@ -400,7 +446,7 @@ Kết quả: 5</code></pre>
                 <div class="code-block">
                   <div class="code-block__header">
                     <span class="code-block__lang">gm_calculator.cpp</span>
-                    <button class="code-block__copy"><span>Sao chép</span></button>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
                   </div>
                   <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
 

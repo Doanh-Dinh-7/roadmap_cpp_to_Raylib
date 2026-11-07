@@ -1038,3 +1038,110 @@ code:not(pre code) {
   }
 }
 
+
+/* ==================== TABLE (Bảng tóm tắt trong bài học) ==================== */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin: var(--space-4) 0 var(--space-6);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-card);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border-soft);
+  vertical-align: top;
+}
+
+.table thead th {
+  background-color: var(--color-bg-subtle);
+  font-weight: var(--font-weight-semibold);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ==================== NOTE BOX — INFO (Bảng tóm tắt, gợi ý trung tính) ==================== */
+.note-box--info {
+  background-color: #EFF6FF;
+  border-left: 4px solid #3B82F6;
+  color: #1E3A8A;
+}
+
+.note-box--info strong {
+  color: #1E3A8A;
+}
+
+/* ==================== STAGE PRACTICE (Bài tập & vận dụng của giai đoạn) ==================== */
+.stage-practice {
+  margin-top: var(--space-10);
+}
+
+.stage-practice__title {
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--space-2);
+}
+
+.stage-practice__intro {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.stage-practice__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.stage-practice__item {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+}
+
+.stage-practice__item h3 {
+  font-size: var(--font-size-base);
+  margin: var(--space-3) 0 var(--space-2);
+}
+
+.stage-practice__item p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.stage-practice__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.8;
+}
+
+.stage-practice__links a {
+  color: var(--color-text-main);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.stage-practice__links a:hover {
+  color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .stage-practice__grid {
+    grid-template-columns: 1fr;
+  }
+}
