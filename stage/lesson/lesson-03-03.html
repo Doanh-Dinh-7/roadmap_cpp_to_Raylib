@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 25: Phạm Vi Biến (Scope) và Luyện Tập Thiết Kế Hàm — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 25: Phạm vi biến trong C++ — biến cục bộ, biến toàn cục, che khuất tên, biến static cục bộ; nguyên tắc mỗi hàm một việc và refactor game đoán số thành các hàm.">
+  <link rel="icon" type="image/png" href="../../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-03.html" class="site-nav__link is-active">Giai đoạn 03</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-03.html" class="breadcrumb__link">Giai đoạn 03</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 25: Phạm vi biến (Scope) và thiết kế hàm</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 25</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--medium">Thiết kế hàm</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Phạm Vi Biến (Scope) và Luyện Tập Thiết Kế Hàm
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Phân biệt biến cục bộ, biến toàn cục, hiện tượng che khuất tên và biến <code>static</code> cục bộ; áp dụng nguyên tắc "mỗi hàm một việc" để refactor game đoán số của Buổi 22 thành các hàm nhỏ, dễ đọc và tái sử dụng.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-03-02.html" class="btn btn--outline btn--sm">← Buổi 24</a>
+          <a href="lesson-03-04.html" class="btn btn--primary btn--sm">Buổi 26 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+
+      <!-- PHẦN 1: LÝ THUYẾT -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi (30 Phút)</h2>
+
+        <h3>1.1 Phạm vi (Scope) là gì?</h3>
+        <p>
+          <strong>Phạm vi</strong> của một biến là vùng code mà biến đó "được nhìn thấy" và sử dụng được. Quy tắc cơ bản trong C++: một biến chỉ tồn tại <strong>từ dòng khai báo đến dấu <code>}</code> đóng khối chứa nó</strong>. Ra khỏi khối, biến bị hủy và tên của nó không còn ý nghĩa.
+        </p>
+<div class="code-block">
+  <div class="code-block__header">
+    <span class="code-block__lang">block_scope.cpp</span>
+    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+  </div>
+  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> gold = <span class="num">100</span>;                  <span class="com">// Song trong ca main</span>
+    <span class="kw">if</span> (gold &gt;= <span class="num">50</span>) {
+        <span class="kw">int</span> potionPrice = <span class="num">50</span>;        <span class="com">// Chi song trong khoi if</span>
+        gold -= potionPrice;
+    }
+    <span class="com">// std::cout &lt;&lt; potionPrice;     // LOI: potionPrice da bi huy</span>
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">3</span>; i++) {    <span class="com">// i chi song trong vong for</span>
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Luot "</span> &lt;&lt; i &lt;&lt; <span class="str">"\n"</span>;
+    }
+    <span class="com">// std::cout &lt;&lt; i;               // LOI: i khong ton tai o day</span>
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Vang con: "</span> &lt;&lt; gold &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+</div>
+
+        <h3>1.2 Bảng phân loại biến theo phạm vi</h3>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Loại biến</th>
+                <th>Khai báo ở đâu</th>
+                <th>Nhìn thấy ở đâu</th>
+                <th>Tồn tại bao lâu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cục bộ (local)</strong></td>
+                <td>Trong hàm hoặc khối <code>{ }</code></td>
+                <td>Từ chỗ khai báo đến cuối khối</td>
+                <td>Bị hủy khi ra khỏi khối; mỗi lần gọi hàm tạo mới</td>
+              </tr>
+              <tr>
+                <td><strong>Tham số</strong></td>
+                <td>Trong <code>( )</code> của hàm</td>
+                <td>Toàn bộ thân hàm</td>
+                <td>Như biến cục bộ của hàm</td>
+              </tr>
+              <tr>
+                <td><strong>Toàn cục (global)</strong></td>
+                <td>Ngoài mọi hàm (đầu file)</td>
+                <td>Mọi hàm phía dưới khai báo</td>
+                <td>Suốt thời gian chương trình chạy</td>
+              </tr>
+              <tr>
+                <td><strong><code>static</code> cục bộ</strong></td>
+                <td>Trong hàm, có từ khóa <code>static</code></td>
+                <td>Chỉ trong hàm đó</td>
+                <td>Suốt chương trình; chỉ khởi tạo <strong>một lần</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Hai hàm khác nhau hoàn toàn có thể dùng chung tên biến cục bộ (ví dụ đều có <code>int i</code> hay <code>int result</code>) mà không ảnh hưởng nhau — mỗi hàm có "căn phòng riêng".
+        </p>
+
+        <h3>1.3 Biến toàn cục &amp; hằng toàn cục</h3>
+<div class="code-block">
+  <div class="code-block__header">
+    <span class="code-block__lang">global_demo.cpp</span>
+    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+  </div>
+  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">const</span> <span class="kw">int</span> MAX_HP = <span class="num">100</span>;      <span class="com">// Hang toan cuc: AN TOAN, nen dung</span>
+<span class="kw">int</span> enemyCount = <span class="num">0</span>;          <span class="com">// Bien toan cuc: ham nao cung sua duoc -&gt; han che</span>
+
+<span class="kw">void</span> <span class="fn">spawnEnemy</span>() {
+    enemyCount++;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Quai xuat hien! HP = "</span> &lt;&lt; MAX_HP &lt;&lt; <span class="str">"\n"</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">spawnEnemy</span>();
+    <span class="fn">spawnEnemy</span>();
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So quai: "</span> &lt;&lt; enemyCount &lt;&lt; <span class="str">"\n"</span>;   <span class="com">// 2</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+</div>
+        <p>
+          <strong>Hằng toàn cục</strong> (<code>const</code>) rất hữu ích cho các thông số cấu hình game: <code>MAX_HP</code>, <code>SCREEN_WIDTH</code>, <code>WIN_SCORE</code>. Ngược lại, <strong>biến toàn cục có thể thay đổi</strong> là con dao hai lưỡi: bất kỳ hàm nào cũng sửa được nó, khi có lỗi rất khó biết "ai đã sửa". Quy tắc của khóa học: <em>dữ liệu đi vào hàm qua tham số, đi ra qua <code>return</code></em>; chỉ dùng toàn cục cho hằng số.
+        </p>
+
+        <h3>1.4 Che khuất tên (Name Shadowing)</h3>
+        <p>
+          Khi khối bên trong khai báo biến <strong>trùng tên</strong> với biến bên ngoài, biến bên trong sẽ "che" biến bên ngoài cho đến hết khối. Muốn truy cập biến <em>toàn cục</em> bị che, có thể dùng toán tử phạm vi <code>::ten_bien</code> — nhưng cách tốt nhất là <strong>đừng đặt trùng tên</strong>.
+        </p>
+<div class="code-block">
+  <div class="code-block__header">
+    <span class="code-block__lang">shadowing_bug.cpp</span>
+    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+  </div>
+  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> score = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> level = <span class="num">1</span>; level &lt;= <span class="num">3</span>; level++) {
+        <span class="kw">int</span> score = level * <span class="num">100</span>;    <span class="com">// BUG: tao bien MOI, che bien ben ngoai</span>
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Level "</span> &lt;&lt; level &lt;&lt; <span class="str">": "</span> &lt;&lt; score &lt;&lt; <span class="str">"\n"</span>;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong diem: "</span> &lt;&lt; score &lt;&lt; <span class="str">"\n"</span>;   <span class="com">// In ra 0 !!!</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+</div>
+        <p>Sửa: bỏ chữ <code>int</code> và cộng dồn — <code>score += level * 100;</code> — để dùng đúng biến bên ngoài.</p>
+
+        <h3>1.5 Biến <code>static</code> cục bộ</h3>
+        <p>
+          Biến cục bộ bình thường bị tạo mới mỗi lần gọi hàm. Thêm từ khóa <code>static</code> thì biến chỉ được khởi tạo <strong>một lần duy nhất</strong> và <strong>giữ nguyên giá trị</strong> giữa các lần gọi, nhưng vẫn chỉ nhìn thấy được bên trong hàm — an toàn hơn biến toàn cục.
+        </p>
+<div class="code-block">
+  <div class="code-block__header">
+    <span class="code-block__lang">static_local.cpp</span>
+    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+  </div>
+  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">nextMonsterId</span>() {
+    <span class="kw">static</span> <span class="kw">int</span> id = <span class="num">0</span>;      <span class="com">// Chi khoi tao 1 lan</span>
+    id++;
+    <span class="kw">return</span> id;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Goblin #"</span> &lt;&lt; <span class="fn">nextMonsterId</span>() &lt;&lt; <span class="str">"\n"</span>;   <span class="com">// 1</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Slime  #"</span> &lt;&lt; <span class="fn">nextMonsterId</span>() &lt;&lt; <span class="str">"\n"</span>;   <span class="com">// 2</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Orc    #"</span> &lt;&lt; <span class="fn">nextMonsterId</span>() &lt;&lt; <span class="str">"\n"</span>;   <span class="com">// 3</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+</div>
+
+        <h3>1.6 Nguyên tắc thiết kế hàm tốt</h3>
+        <ul>
+          <li><strong>Mỗi hàm một việc:</strong> Nếu phải dùng chữ "và" khi mô tả hàm ("đọc số <em>và</em> kiểm tra <em>và</em> in gợi ý"), hãy tách nhỏ.</li>
+          <li><strong>Tên là động từ rõ nghĩa:</strong> <code>readGuess</code>, <code>giveHint</code>, <code>calcScore</code>; hàm trả <code>bool</code> đặt tên dạng câu hỏi: <code>isValid</code>, <code>askPlayAgain</code>.</li>
+          <li><strong>Ngắn gọn:</strong> Một hàm nên vừa một màn hình (khoảng dưới 30 dòng).</li>
+          <li><strong>Vào bằng tham số, ra bằng <code>return</code>:</strong> Tránh để hàm âm thầm sửa biến toàn cục.</li>
+          <li><strong>Không lặp code:</strong> Thấy một đoạn xuất hiện 2 lần trở lên → ứng viên để thành hàm.</li>
+        </ul>
+
+        <div class="note-box note-box--tip">
+          <strong>🎮 Mẹo tư duy Game:</strong> Trong game thật, các hằng như <code>SCREEN_WIDTH = 800</code>, <code>GRAVITY</code>, <code>PLAYER_SPEED</code> thường đặt toàn cục để chỉnh "cảm giác game" ở một chỗ. Còn trạng thái thay đổi liên tục (vị trí, máu, điểm) được giữ trong <code>main</code> hoặc trong các cấu trúc dữ liệu (Giai đoạn 04) và truyền vào hàm. Biến <code>static</code> cục bộ hay dùng để đếm khung hình, sinh ID duy nhất cho quái vật/viên đạn.
+        </div>
+
+        <div class="note-box note-box--warning">
+          <strong>⚠️ Lỗi thường gặp &amp; bộ nhớ:</strong>
+          <ul style="margin: var(--space-2) 0 0; padding-left: 1.25rem;">
+            <li><strong>Khai báo lại thay vì gán:</strong> <code>int score = ...</code> trong khối con tạo biến mới, biến ngoài không đổi (xem ví dụ 1.4). Bật <code>-Wshadow</code> để trình biên dịch cảnh báo.</li>
+            <li><strong>Dùng biến ngoài phạm vi:</strong> dùng <code>i</code> sau vòng <code>for</code>, hoặc dùng biến khai báo trong <code>if</code> ở bên ngoài → lỗi <em>was not declared in this scope</em>.</li>
+            <li><strong>Biến cục bộ chưa khởi tạo</strong> chứa giá trị rác; biến toàn cục và <code>static</code> thì tự động bằng <code>0</code>. Hãy luôn khởi tạo rõ ràng.</li>
+            <li><strong>Lạm dụng biến toàn cục:</strong> chương trình chạy đúng lúc đầu nhưng càng thêm tính năng càng khó tìm lỗi.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: BÀI TẬP TRÊN LỚP -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Bài tập trên lớp (60 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1: Đoán kết quả — Ai là <code>score</code>?</h4>
+            <span class="badge badge--easy">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Không chạy máy, hãy dự đoán chương trình in ra những gì ở các dòng A đến F. Sau đó chạy thử để kiểm tra.
+          </p>
+<div class="code-block">
+  <div class="code-block__header">
+    <span class="code-block__lang">scope_quiz.cpp</span>
+    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+  </div>
+  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> score = <span class="num">100</span>;                       <span class="com">// Bien toan cuc</span>
+
+<span class="kw">void</span> <span class="fn">addBonus</span>() {
+    <span class="kw">int</span> score = <span class="num">5</span>;                     <span class="com">// Che khuat bien toan cuc</span>
+    score += <span class="num">10</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"A: "</span> &lt;&lt; score &lt;&lt; <span class="str">"\n"</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"B: "</span> &lt;&lt; score &lt;&lt; <span class="str">"\n"</span>;
+    <span class="fn">addBonus</span>();
+    {
+        <span class="kw">int</span> score = <span class="num">1</span>;                 <span class="com">// Khoi rieng, bien rieng</span>
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"C: "</span> &lt;&lt; score &lt;&lt; <span class="str">"\n"</span>;
+    }
+    score += <span class="num">1</span>;                        <span class="com">// Day la bien nao?</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"D: "</span> &lt;&lt; score &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> score = <span class="num">0</span>; score &lt; <span class="num">2</span>; score++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"E: "</span> &lt;&lt; score &lt;&lt; <span class="str">"\n"</span>;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"F: "</span> &lt;&lt; ::score &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+</div>
+<div class="collapse-box">
+  <button class="collapse-trigger" aria-expanded="false">
+    <span>👉 Xem đáp án &amp; giải thích</span>
+    <span class="collapse-icon">▶</span>
+  </button>
+  <div class="collapse-content">
+    <div class="collapse-inner">
+<p>Thứ tự in: <code>B: 100</code> → <code>A: 15</code> → <code>C: 1</code> → <code>D: 101</code> → <code>E: 0</code> → <code>E: 1</code> → <code>F: 101</code>.</p>
+<ul>
+  <li><strong>B:</strong> <code>main</code> chưa có biến <code>score</code> cục bộ nên dùng biến toàn cục (100).</li>
+  <li><strong>A:</strong> <code>addBonus</code> có <code>score</code> cục bộ = 5, cộng 10 → 15. Biến toàn cục không bị đụng tới.</li>
+  <li><strong>C:</strong> Biến trong khối <code>{ }</code> riêng, hủy ngay sau dấu <code>}</code>.</li>
+  <li><strong>D:</strong> Ra khỏi khối, <code>score</code> lại là biến toàn cục → 101.</li>
+  <li><strong>E:</strong> Biến đếm của vòng <code>for</code> che biến toàn cục trong vòng lặp.</li>
+  <li><strong>F:</strong> <code>::score</code> luôn chỉ biến toàn cục → 101.</li>
+</ul>
+    </div>
+  </div>
+</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2: Refactor game đoán số (Buổi 22) thành các hàm</h4>
+            <span class="badge badge--hard">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Game đoán số ở Buổi 22 có toàn bộ logic trong <code>main</code> (hơn 70 dòng). Hãy tách thành các hàm theo bảng thiết kế dưới đây. Yêu cầu: không dùng biến toàn cục có thể thay đổi (chỉ được dùng hằng toàn cục), <code>main</code> chỉ còn vòng lặp ván chơi và phần tổng kết.
+          </p>
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Hàm</th>
+                  <th>Nhiệm vụ (một việc)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>int readNumberInRange(int minValue, int maxValue)</code></td><td>Đọc một số nguyên hợp lệ trong khoảng, xử lý cả trường hợp gõ chữ</td></tr>
+                <tr><td><code>int chooseLevel()</code></td><td>Hiện menu độ khó, trả về 1–3</td></tr>
+                <tr><td><code>int getMaxNumber(int level)</code>, <code>int getMaxTries(int level)</code>, <code>int getMultiplier(int level)</code></td><td>Tra cứu cấu hình theo độ khó</td></tr>
+                <tr><td><code>void giveHint(int guess, int secret)</code></td><td>In gợi ý Lớn hơn / Nhỏ hơn</td></tr>
+                <tr><td><code>int calcScore(int maxTries, int tries, int multiplier)</code></td><td>Tính điểm một ván thắng</td></tr>
+                <tr><td><code>int playRound()</code></td><td>Chơi trọn một ván, trả về điểm (0 nếu thua)</td></tr>
+                <tr><td><code>bool askPlayAgain()</code></td><td>Hỏi chơi tiếp, trả về <code>true/false</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+<div class="collapse-box">
+  <button class="collapse-trigger" aria-expanded="false">
+    <span>👉 Xem mã nguồn sau khi refactor</span>
+    <span class="collapse-icon">▶</span>
+  </button>
+  <div class="collapse-content">
+    <div class="collapse-inner">
+<div class="code-block">
+  <div class="code-block__header">
+    <span class="code-block__lang">guess_game_v3.cpp</span>
+    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+  </div>
+  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cstdlib&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;ctime&gt;</span>
+
+<span class="kw">const</span> <span class="kw">int</span> POINTS_PER_TRY = <span class="num">10</span>;      <span class="com">// Hang toan cuc: cau hinh game</span>
+
+<span class="kw">int</span> <span class="fn">readNumberInRange</span>(<span class="kw">int</span> minValue, <span class="kw">int</span> maxValue);
+<span class="kw">int</span> <span class="fn">chooseLevel</span>();
+<span class="kw">int</span> <span class="fn">getMaxNumber</span>(<span class="kw">int</span> level);
+<span class="kw">int</span> <span class="fn">getMaxTries</span>(<span class="kw">int</span> level);
+<span class="kw">int</span> <span class="fn">getMultiplier</span>(<span class="kw">int</span> level);
+<span class="kw">void</span> <span class="fn">giveHint</span>(<span class="kw">int</span> guess, <span class="kw">int</span> secret);
+<span class="kw">int</span> <span class="fn">calcScore</span>(<span class="kw">int</span> maxTries, <span class="kw">int</span> tries, <span class="kw">int</span> multiplier);
+<span class="kw">int</span> <span class="fn">playRound</span>();
+<span class="kw">bool</span> <span class="fn">askPlayAgain</span>();
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">srand</span>(<span class="fn">time</span>(<span class="num">0</span>));
+    <span class="kw">int</span> totalScore = <span class="num">0</span>, rounds = <span class="num">0</span>, wins = <span class="num">0</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"===== NUMBER GUESSING GAME v3 =====\n"</span>;
+
+    <span class="kw">do</span> {
+        <span class="kw">int</span> score = <span class="fn">playRound</span>();
+        rounds++;
+        <span class="kw">if</span> (score &gt; <span class="num">0</span>) wins++;
+        totalScore += score;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong diem hien tai: "</span> &lt;&lt; totalScore &lt;&lt; <span class="str">"\n"</span>;
+    } <span class="kw">while</span> (<span class="fn">askPlayAgain</span>());
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n===== TONG KET =====\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So van: "</span> &lt;&lt; rounds &lt;&lt; <span class="str">" | Thang: "</span> &lt;&lt; wins
+              &lt;&lt; <span class="str">" | Tong diem: "</span> &lt;&lt; totalScore &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+
+<span class="kw">int</span> <span class="fn">readNumberInRange</span>(<span class="kw">int</span> minValue, <span class="kw">int</span> maxValue) {
+    <span class="kw">int</span> value;
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="kw">if</span> (!(<span class="type">std</span>::<span class="type">cin</span> &gt;&gt; value)) {
+            <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">clear</span>();
+            <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Vui long nhap so nguyen: "</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> (value &lt; minValue || value &gt; maxValue) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap so tu "</span> &lt;&lt; minValue &lt;&lt; <span class="str">" den "</span> &lt;&lt; maxValue &lt;&lt; <span class="str">": "</span>;
+        } <span class="kw">else</span> {
+            <span class="kw">return</span> value;               <span class="com">// Hop le -&gt; tra ve ngay</span>
+        }
+    }
+}
+
+<span class="kw">int</span> <span class="fn">chooseLevel</span>() {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nChon do kho: 1-De  2-Thuong  3-Kho : "</span>;
+    <span class="kw">return</span> <span class="fn">readNumberInRange</span>(<span class="num">1</span>, <span class="num">3</span>);     <span class="com">// Tai su dung ham doc so</span>
+}
+
+<span class="kw">int</span> <span class="fn">getMaxNumber</span>(<span class="kw">int</span> level) {
+    <span class="kw">switch</span> (level) {
+        <span class="kw">case</span> <span class="num">1</span>:  <span class="kw">return</span> <span class="num">50</span>;
+        <span class="kw">case</span> <span class="num">2</span>:  <span class="kw">return</span> <span class="num">100</span>;
+        <span class="kw">default</span>: <span class="kw">return</span> <span class="num">500</span>;
+    }
+}
+
+<span class="kw">int</span> <span class="fn">getMaxTries</span>(<span class="kw">int</span> level) {
+    <span class="kw">switch</span> (level) {
+        <span class="kw">case</span> <span class="num">1</span>:  <span class="kw">return</span> <span class="num">10</span>;
+        <span class="kw">case</span> <span class="num">2</span>:  <span class="kw">return</span> <span class="num">7</span>;
+        <span class="kw">default</span>: <span class="kw">return</span> <span class="num">9</span>;
+    }
+}
+
+<span class="kw">int</span> <span class="fn">getMultiplier</span>(<span class="kw">int</span> level) {
+    <span class="kw">return</span> level;                       <span class="com">// De x1, Thuong x2, Kho x3</span>
+}
+
+<span class="kw">void</span> <span class="fn">giveHint</span>(<span class="kw">int</span> guess, <span class="kw">int</span> secret) {
+    <span class="kw">if</span> (guess &lt; secret) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  -&gt; Lon hon!\n"</span>;
+    <span class="kw">else</span>                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  -&gt; Nho hon!\n"</span>;
+}
+
+<span class="kw">int</span> <span class="fn">calcScore</span>(<span class="kw">int</span> maxTries, <span class="kw">int</span> tries, <span class="kw">int</span> multiplier) {
+    <span class="kw">return</span> (maxTries - tries + <span class="num">1</span>) * POINTS_PER_TRY * multiplier;
+}
+
+<span class="kw">int</span> <span class="fn">playRound</span>() {
+    <span class="kw">int</span> level = <span class="fn">chooseLevel</span>();
+    <span class="kw">int</span> maxNumber = <span class="fn">getMaxNumber</span>(level);
+    <span class="kw">int</span> maxTries = <span class="fn">getMaxTries</span>(level);
+    <span class="kw">int</span> secret = <span class="fn">rand</span>() % maxNumber + <span class="num">1</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Toi da nghi mot so tu 1 den "</span> &lt;&lt; maxNumber
+              &lt;&lt; <span class="str">". Ban co "</span> &lt;&lt; maxTries &lt;&lt; <span class="str">" luot.\n"</span>;
+
+    <span class="kw">for</span> (<span class="kw">int</span> tries = <span class="num">1</span>; tries &lt;= maxTries; tries++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"[Luot "</span> &lt;&lt; tries &lt;&lt; <span class="str">"/"</span> &lt;&lt; maxTries &lt;&lt; <span class="str">"] Nhap so: "</span>;
+        <span class="kw">int</span> guess = <span class="fn">readNumberInRange</span>(<span class="num">1</span>, maxNumber);
+        <span class="kw">if</span> (guess == secret) {
+            <span class="kw">int</span> score = <span class="fn">calcScore</span>(maxTries, tries, <span class="fn">getMultiplier</span>(level));
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"CHINH XAC! +"</span> &lt;&lt; score &lt;&lt; <span class="str">" diem.\n"</span>;
+            <span class="kw">return</span> score;               <span class="com">// Thang -&gt; ket thuc van</span>
+        }
+        <span class="fn">giveHint</span>(guess, secret);
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"HET LUOT! So bi mat la "</span> &lt;&lt; secret &lt;&lt; <span class="str">".\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+
+<span class="kw">bool</span> <span class="fn">askPlayAgain</span>() {
+    <span class="kw">char</span> again;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Choi tiep? (y/n): "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; again;
+    <span class="kw">return</span> again == <span class="str">'y'</span> || again == <span class="str">'Y'</span>;
+}</code></pre>
+</div>
+<div class="note-box note-box--info">
+  <strong>So sánh trước và sau:</strong> Biến cờ <code>won</code> và lệnh <code>break</code> đã biến mất — <code>return</code> bên trong vòng lặp vừa thoát vòng vừa thoát hàm. Hàm <code>readNumberInRange</code> được dùng ở <strong>hai</strong> nơi (chọn độ khó và nhập số đoán) thay vì viết lặp hai khối <code>do-while</code>. Biến <code>tries</code>, <code>secret</code> giờ là biến cục bộ của <code>playRound</code>, tự "reset" ở mỗi ván mới.
+</div>
+    </div>
+  </div>
+</div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (Tự luyện tập)</h2>
+
+        <!-- Bài Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Bắt lỗi phạm vi trong game nhặt xu</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Chương trình dưới đây muốn: người chơi đi qua 5 phòng, mỗi phòng nhặt 10 xu; nếu tổng xu từ 50 trở lên thì lên cấp 2. Chương trình có <strong>2 lỗi về phạm vi</strong> (một lỗi biên dịch, một lỗi logic). Hãy tìm, giải thích và sửa.
+          </p>
+<div class="code-block">
+  <div class="code-block__header">
+    <span class="code-block__lang">coin_bug.cpp (code có lỗi)</span>
+    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+  </div>
+  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> coins = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> room = <span class="num">1</span>; room &lt;= <span class="num">5</span>; room++) {
+        <span class="kw">int</span> coins = <span class="num">0</span>;
+        coins += <span class="num">10</span>;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Phong "</span> &lt;&lt; room &lt;&lt; <span class="str">": nhat 10 xu\n"</span>;
+    }
+
+    <span class="kw">if</span> (coins &gt;= <span class="num">50</span>) {
+        <span class="kw">int</span> level = <span class="num">2</span>;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong xu: "</span> &lt;&lt; coins &lt;&lt; <span class="str">" | Cap do: "</span> &lt;&lt; level &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+</div>
+<div class="collapse-box">
+  <button class="collapse-trigger" aria-expanded="false">
+    <span>👉 Xem lời giải mẫu</span>
+    <span class="collapse-icon">▶</span>
+  </button>
+  <div class="collapse-content">
+    <div class="collapse-inner">
+<ul>
+  <li><strong>Lỗi logic:</strong> <code>int coins = 0;</code> trong vòng <code>for</code> tạo biến mới che biến bên ngoài, mỗi vòng lại reset về 0 → tổng xu bên ngoài luôn là 0. Sửa: xóa dòng đó.</li>
+  <li><strong>Lỗi biên dịch:</strong> <code>level</code> khai báo trong khối <code>if</code> nên bị hủy sau dấu <code>}</code>. Sửa: khai báo <code>int level = 1;</code> ở ngoài, trong <code>if</code> chỉ gán <code>level = 2;</code>.</li>
+</ul>
+<div class="code-block">
+  <div class="code-block__header">
+    <span class="code-block__lang">coin_fixed.cpp</span>
+    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+  </div>
+  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> coins = <span class="num">0</span>;
+    <span class="kw">int</span> level = <span class="num">1</span>;                     <span class="com">// Khai bao ngoai de dung sau if</span>
+    <span class="kw">for</span> (<span class="kw">int</span> room = <span class="num">1</span>; room &lt;= <span class="num">5</span>; room++) {
+        coins += <span class="num">10</span>;                   <span class="com">// Dung bien coins ben ngoai</span>
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Phong "</span> &lt;&lt; room &lt;&lt; <span class="str">": nhat 10 xu\n"</span>;
+    }
+
+    <span class="kw">if</span> (coins &gt;= <span class="num">50</span>) {
+        level = <span class="num">2</span>;                     <span class="com">// Gan, khong khai bao lai</span>
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong xu: "</span> &lt;&lt; coins &lt;&lt; <span class="str">" | Cap do: "</span> &lt;&lt; level &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+</div>
+    </div>
+  </div>
+</div>
+        </div>
+
+        <!-- Bài Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Hệ thống sinh quái theo đợt (static &amp; hằng toàn cục)</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>Game có 3 đợt (wave); đợt thứ <code>w</code> sinh ra <code>w + 1</code> con quái. Yêu cầu:</p>
+          <ul>
+            <li>Hằng toàn cục <code>BASE_HP = 50</code>, <code>HP_PER_WAVE = 20</code>, <code>TOTAL_WAVES = 3</code>.</li>
+            <li><code>int nextMonsterId()</code> dùng biến <code>static</code> để cấp ID tăng dần 1, 2, 3... cho mọi con quái.</li>
+            <li><code>int spawnMonster(int wave)</code>: lấy ID mới, tính máu = <code>BASE_HP + wave * HP_PER_WAVE</code>, in <code>"Monster #ID - HP: ..."</code> và trả về máu.</li>
+            <li><code>int spawnWave(int wave)</code>: sinh đủ quái của đợt, trả về tổng máu của đợt.</li>
+          </ul>
+          <p>Trong <code>main</code>, in tổng máu từng đợt, tổng máu cả game và tổng số quái đã sinh. <strong>Không dùng biến toàn cục có thể thay đổi.</strong></p>
+<div class="collapse-box">
+  <button class="collapse-trigger" aria-expanded="false">
+    <span>👉 Xem lời giải mẫu</span>
+    <span class="collapse-icon">▶</span>
+  </button>
+  <div class="collapse-content">
+    <div class="collapse-inner">
+<div class="code-block">
+  <div class="code-block__header">
+    <span class="code-block__lang">monster_waves.cpp</span>
+    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+  </div>
+  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">const</span> <span class="kw">int</span> BASE_HP = <span class="num">50</span>;
+<span class="kw">const</span> <span class="kw">int</span> HP_PER_WAVE = <span class="num">20</span>;
+<span class="kw">const</span> <span class="kw">int</span> TOTAL_WAVES = <span class="num">3</span>;
+
+<span class="kw">int</span> <span class="fn">nextMonsterId</span>();
+<span class="kw">int</span> <span class="fn">spawnMonster</span>(<span class="kw">int</span> wave);
+<span class="kw">int</span> <span class="fn">spawnWave</span>(<span class="kw">int</span> wave);
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> totalHp = <span class="num">0</span>;
+    <span class="kw">int</span> totalMonsters = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> wave = <span class="num">1</span>; wave &lt;= TOTAL_WAVES; wave++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n=== WAVE "</span> &lt;&lt; wave &lt;&lt; <span class="str">" ===\n"</span>;
+        <span class="kw">int</span> waveHp = <span class="fn">spawnWave</span>(wave);
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong mau wave "</span> &lt;&lt; wave &lt;&lt; <span class="str">": "</span> &lt;&lt; waveHp &lt;&lt; <span class="str">"\n"</span>;
+        totalHp += waveHp;
+        totalMonsters += wave + <span class="num">1</span>;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nTong so quai: "</span> &lt;&lt; totalMonsters &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong mau ca game: "</span> &lt;&lt; totalHp &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+
+<span class="kw">int</span> <span class="fn">nextMonsterId</span>() {
+    <span class="kw">static</span> <span class="kw">int</span> id = <span class="num">0</span>;           <span class="com">// Giu gia tri giua cac lan goi</span>
+    id++;
+    <span class="kw">return</span> id;
+}
+
+<span class="kw">int</span> <span class="fn">spawnMonster</span>(<span class="kw">int</span> wave) {
+    <span class="kw">int</span> id = <span class="fn">nextMonsterId</span>();    <span class="com">// Bien cuc bo 'id' khac voi 'id' static ben kia</span>
+    <span class="kw">int</span> hp = BASE_HP + wave * HP_PER_WAVE;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Monster #"</span> &lt;&lt; id &lt;&lt; <span class="str">" - HP: "</span> &lt;&lt; hp &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> hp;
+}
+
+<span class="kw">int</span> <span class="fn">spawnWave</span>(<span class="kw">int</span> wave) {
+    <span class="kw">int</span> waveHp = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; wave + <span class="num">1</span>; i++) {
+        waveHp += <span class="fn">spawnMonster</span>(wave);
+    }
+    <span class="kw">return</span> waveHp;
+}</code></pre>
+</div>
+<p><strong>Kết quả mong đợi:</strong> Wave 1 có Monster #1–#2 (HP 70), Wave 2 có #3–#5 (HP 90), Wave 3 có #6–#9 (HP 110). Tổng 9 quái, tổng máu 2·70 + 3·90 + 4·110 = 850.</p>
+    </div>
+  </div>
+</div>
+        </div>
+
+        <!-- Bài Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Game xúc xắc "Pig" — Người đấu Máy</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Luật chơi: Mỗi lượt, người chơi tung xúc xắc liên tục và cộng dồn điểm lượt. Nếu tung ra <strong>1</strong> → mất toàn bộ điểm lượt và hết lượt. Người chơi có thể <strong>dừng</strong> bất kỳ lúc nào để cộng điểm lượt vào tổng. Ai đạt <strong>50 điểm</strong> trước sẽ thắng. Máy dùng chiến thuật: tung đến khi điểm lượt đạt 15 (hoặc đủ để thắng) thì dừng.
+          </p>
+          <p>Yêu cầu thiết kế: hằng toàn cục <code>WIN_SCORE</code>, <code>COMPUTER_HOLD</code>; các hàm <code>rollDie()</code>, <code>askRollAgain()</code>, <code>playerTurn(int playerScore)</code>, <code>computerTurn(int computerScore)</code> (trả về điểm kiếm được trong lượt), <code>printScoreboard(int playerScore, int computerScore)</code>. Không có biến toàn cục có thể thay đổi; mỗi hàm không quá 25 dòng.</p>
+<div class="collapse-box">
+  <button class="collapse-trigger" aria-expanded="false">
+    <span>👉 Xem lời giải mẫu</span>
+    <span class="collapse-icon">▶</span>
+  </button>
+  <div class="collapse-content">
+    <div class="collapse-inner">
+<div class="code-block">
+  <div class="code-block__header">
+    <span class="code-block__lang">pig_dice.cpp</span>
+    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+  </div>
+  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cstdlib&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;ctime&gt;</span>
+
+<span class="kw">const</span> <span class="kw">int</span> WIN_SCORE = <span class="num">50</span>;
+<span class="kw">const</span> <span class="kw">int</span> COMPUTER_HOLD = <span class="num">15</span>;
+
+<span class="kw">int</span> <span class="fn">rollDie</span>();
+<span class="kw">bool</span> <span class="fn">askRollAgain</span>();
+<span class="kw">int</span> <span class="fn">playerTurn</span>(<span class="kw">int</span> playerScore);
+<span class="kw">int</span> <span class="fn">computerTurn</span>(<span class="kw">int</span> computerScore);
+<span class="kw">void</span> <span class="fn">printScoreboard</span>(<span class="kw">int</span> playerScore, <span class="kw">int</span> computerScore);
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">srand</span>(<span class="fn">time</span>(<span class="num">0</span>));
+    <span class="kw">int</span> playerScore = <span class="num">0</span>, computerScore = <span class="num">0</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"===== PIG DICE - Ai dat "</span> &lt;&lt; WIN_SCORE &lt;&lt; <span class="str">" diem truoc se thang =====\n"</span>;
+
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        playerScore += <span class="fn">playerTurn</span>(playerScore);
+        <span class="fn">printScoreboard</span>(playerScore, computerScore);
+        <span class="kw">if</span> (playerScore &gt;= WIN_SCORE) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"BAN THANG!\n"</span>;
+            <span class="kw">break</span>;
+        }
+        computerScore += <span class="fn">computerTurn</span>(computerScore);
+        <span class="fn">printScoreboard</span>(playerScore, computerScore);
+        <span class="kw">if</span> (computerScore &gt;= WIN_SCORE) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"MAY THANG!\n"</span>;
+            <span class="kw">break</span>;
+        }
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+
+<span class="kw">int</span> <span class="fn">rollDie</span>() {
+    <span class="kw">return</span> <span class="fn">rand</span>() % <span class="num">6</span> + <span class="num">1</span>;
+}
+
+<span class="kw">bool</span> <span class="fn">askRollAgain</span>() {
+    <span class="kw">char</span> answer;
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tung tiep (r) hay dung (h)? "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; answer;
+    } <span class="kw">while</span> (answer != <span class="str">'r'</span> &amp;&amp; answer != <span class="str">'h'</span>);
+    <span class="kw">return</span> answer == <span class="str">'r'</span>;
+}
+
+<span class="kw">int</span> <span class="fn">playerTurn</span>(<span class="kw">int</span> playerScore) {
+    <span class="kw">int</span> turnTotal = <span class="num">0</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n--- LUOT CUA BAN ---\n"</span>;
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="kw">int</span> face = <span class="fn">rollDie</span>();
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ban tung duoc: "</span> &lt;&lt; face &lt;&lt; <span class="str">"\n"</span>;
+        <span class="kw">if</span> (face == <span class="num">1</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ra 1! Mat het diem luot.\n"</span>;
+            <span class="kw">return</span> <span class="num">0</span>;
+        }
+        turnTotal += face;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Diem luot: "</span> &lt;&lt; turnTotal &lt;&lt; <span class="str">"\n"</span>;
+        <span class="kw">if</span> (playerScore + turnTotal &gt;= WIN_SCORE) <span class="kw">return</span> turnTotal;   <span class="com">// Du de thang</span>
+        <span class="kw">if</span> (!<span class="fn">askRollAgain</span>()) <span class="kw">return</span> turnTotal;
+    }
+}
+
+<span class="kw">int</span> <span class="fn">computerTurn</span>(<span class="kw">int</span> computerScore) {
+    <span class="kw">int</span> turnTotal = <span class="num">0</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n--- LUOT CUA MAY ---\n"</span>;
+    <span class="kw">while</span> (turnTotal &lt; COMPUTER_HOLD &amp;&amp; computerScore + turnTotal &lt; WIN_SCORE) {
+        <span class="kw">int</span> face = <span class="fn">rollDie</span>();
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"May tung duoc: "</span> &lt;&lt; face &lt;&lt; <span class="str">"\n"</span>;
+        <span class="kw">if</span> (face == <span class="num">1</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"May ra 1! Mat het diem luot.\n"</span>;
+            <span class="kw">return</span> <span class="num">0</span>;
+        }
+        turnTotal += face;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"May dung lai voi "</span> &lt;&lt; turnTotal &lt;&lt; <span class="str">" diem luot.\n"</span>;
+    <span class="kw">return</span> turnTotal;
+}
+
+<span class="kw">void</span> <span class="fn">printScoreboard</span>(<span class="kw">int</span> playerScore, <span class="kw">int</span> computerScore) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"&gt;&gt; Bang diem: Ban "</span> &lt;&lt; playerScore
+              &lt;&lt; <span class="str">" - May "</span> &lt;&lt; computerScore &lt;&lt; <span class="str">"\n"</span>;
+}</code></pre>
+</div>
+<div class="note-box note-box--tip">
+  <strong>💡 Điểm thiết kế:</strong> Biến <code>turnTotal</code> xuất hiện ở cả <code>playerTurn</code> và <code>computerTurn</code> nhưng là hai biến cục bộ độc lập. Tổng điểm được giữ trong <code>main</code> và chỉ thay đổi qua giá trị <code>return</code> — đọc <code>main</code> là thấy ngay điểm thay đổi ở đâu. Thử thách thêm: cho người chơi chọn mức chiến thuật của máy (dừng ở 10, 15 hay 20) bằng tham số.
+</div>
+    </div>
+  </div>
+</div>
+        </div>
+      </section>
+
+
+      <!-- NAVIGATION CUỐI TRANG -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft); margin-top: var(--space-10);">
+        <a href="lesson-03-02.html" class="btn btn--outline">← Buổi 24: Tham số và giá trị trả về</a>
+        <a href="lesson-03-04.html" class="btn btn--primary">Buổi 26: Mảng một chiều →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span></div>
+            <div class="contact-item"><i class="fas fa-phone"></i><span>090 198 05 69</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><span>innomindskills@gmail.com</span></div>
+            <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">Facebook</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="site-footer__text">© 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.</div>
+        <div class="site-footer__links"><a href="#" class="site-nav__link">Về đầu trang ↑</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

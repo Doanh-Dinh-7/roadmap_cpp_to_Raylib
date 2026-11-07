@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giai Đoạn 03: Hàm &amp; Cấu Trúc Dữ Liệu — Roadmap Game Dev</title>
+  <meta name="description" content="Danh sách 11 buổi học Giai đoạn 03: Hàm, tham số và giá trị trả về, phạm vi biến, mảng một chiều, tìm kiếm, sắp xếp, độ phức tạp thuật toán, chuỗi ký tự và Mini Project Tic Tac Toe.">
+  <link rel="icon" type="image/png" href="../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../index.html" class="brand">
+        <img src="../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../index.html#stages" class="site-nav__link is-active">8 Giai đoạn</a></li>
+          <li><a href="../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../index.html#tools" class="site-nav__link">Công cụ</a></li>
+          <li><a href="../index.html#rubric" class="site-nav__link">Đánh giá</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== STAGE HERO & BREADCRUMB ==================== -->
+  <div class="stage-banner" style="background: radial-gradient(circle at top right, rgba(229, 57, 53, 0.06) 0%, transparent 40%), var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-8) 0 var(--space-6);">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Giai đoạn 03</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: inline-flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">Giai đoạn 03</span>
+            <span class="badge badge--tag">11 Buổi (16.5 Giờ)</span>
+            <span class="badge badge--medium">Hàm &amp; Dữ liệu</span>
+          </div>
+          <h1 style="font-size: var(--font-size-3xl); margin-bottom: var(--space-2);">
+            HÀM VÀ CẤU TRÚC DỮ LIỆU
+          </h1>
+          <p style="color: var(--color-text-secondary); max-width: 800px; margin: 0; font-size: var(--font-size-md);">
+            Tổ chức chương trình bằng hàm (Functions), tham số và giá trị trả về, phạm vi biến;
+            lưu trữ dữ liệu bằng mảng một chiều, cài đặt thuật toán tìm kiếm tuần tự, sắp xếp nổi bọt,
+            đánh giá độ phức tạp và xử lý chuỗi <code>std::string</code> — tổng hợp thành Mini Project Tic Tac Toe console.
+          </p>
+        </div>
+
+        <div style="background: var(--color-bg-page); padding: var(--space-4); border-radius: var(--radius-md); border: 1px solid var(--color-border-soft); min-width: 200px;">
+          <div style="font-size: var(--font-size-xs); color: var(--color-text-muted); text-transform: uppercase; font-weight: var(--font-weight-bold);">Sản phẩm giai đoạn</div>
+          <div style="font-weight: var(--font-weight-bold); color: var(--color-primary); font-size: var(--font-size-base); margin-top: 4px;">Tic Tac Toe Console</div>
+          <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 2px;">Cờ caro 3x3 cho 2 người chơi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== LESSON LIST ==================== -->
+  <main class="section">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6);">
+        <h2 style="font-size: var(--font-size-2xl); margin: 0;">Danh sách 11 buổi học</h2>
+        <div style="font-size: var(--font-size-sm); color: var(--color-text-muted);">
+          Thời lượng: <strong>90 phút / buổi</strong>
+        </div>
+      </div>
+
+      <div class="lesson-grid">
+        <!-- Buổi 23 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">23</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-03-01.html">Hàm (Functions) cơ bản: định nghĩa và gọi hàm</a>
+            </h3>
+            <p>Hiểu vì sao cần hàm, cú pháp định nghĩa/gọi hàm void, khai báo nguyên mẫu (prototype); tách các khối lệnh lặp lại trong game đoán số thành hàm riêng.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--easy">Thực hành: Tách khối lệnh lặp lại thành hàm</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-03-01.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 24 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">24</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-03-02.html">Tham số (Parameters) và giá trị trả về (Return)</a>
+            </h3>
+            <p>Truyền dữ liệu vào hàm qua tham số (truyền tham trị), trả kết quả bằng return; viết các hàm tính toán tái sử dụng như tính máu, tính điểm.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--easy">Thực hành: Giao tiếp dữ liệu giữa các hàm</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-03-02.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 25 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">25</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-03-03.html">Phạm vi biến (Scope) và luyện tập thiết kế hàm</a>
+            </h3>
+            <p>Biến cục bộ, biến toàn cục, che khuất tên biến; nguyên tắc mỗi hàm làm một việc và đặt tên rõ nghĩa để tái sử dụng.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--medium">Thực hành: Tránh trùng tên, tối ưu và tái sử dụng mã</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-03-03.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 26 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">26</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-03-04.html">Mảng một chiều (Arrays): khai báo và duyệt phần tử</a>
+            </h3>
+            <p>Khai báo, khởi tạo mảng tĩnh, chỉ số bắt đầu từ 0, duyệt mảng bằng for; nhận diện lỗi truy cập ngoài phạm vi mảng.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--easy">Thực hành: Lưu trữ danh sách số/ký tự</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-03-04.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 27 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">27</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-03-05.html">Thao tác trên mảng: cập nhật, tính tổng, tìm Max/Min</a>
+            </h3>
+            <p>Cập nhật phần tử, tính tổng/trung bình, tìm giá trị lớn nhất/nhỏ nhất và vị trí; truyền mảng vào hàm.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--medium">Thực hành: Thống kê cơ bản trên mảng</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-03-05.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 28 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">28</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-03-06.html">Tìm kiếm cơ bản: Linear Search</a>
+            </h3>
+            <p>Thuật toán tìm kiếm tuần tự, trả về vị trí hoặc -1; đếm/tìm tất cả phần tử thỏa điều kiện.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--medium">Thực hành: Tìm phần tử thỏa điều kiện</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-03-06.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 29 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">29</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-03-07.html">Sắp xếp cơ bản: Bubble Sort</a>
+            </h3>
+            <p>Cơ chế so sánh và hoán đổi cặp liền kề, sắp xếp tăng/giảm dần, tối ưu dừng sớm khi không còn hoán đổi; ứng dụng bảng xếp hạng điểm.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--medium">Thực hành: Sắp xếp mảng tăng/giảm dần</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-03-07.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 30 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">30</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-03-08.html">Đánh giá độ phức tạp thuật toán và sửa bài Tìm kiếm/Sắp xếp</a>
+            </h3>
+            <p>Đếm số phép toán, khái niệm Big-O cơ bản O(1), O(n), O(n²); thiết kế bộ dữ liệu kiểm thử và chữa lỗi thường gặp.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--hard">Thực hành: Kiểm thử &amp; đánh giá thuật toán</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-03-08.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 31 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">31</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-03-09.html">Chuỗi ký tự (string): khai báo, nhập xuất và duyệt chuỗi</a>
+            </h3>
+            <p>Sử dụng std::string, phân biệt cin và getline, độ dài chuỗi, truy cập và duyệt từng ký tự.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--easy">Thực hành: Đọc và xử lý văn bản cơ bản</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-03-09.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 32 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">32</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-03-10.html">Các hàm xử lý chuỗi thường gặp</a>
+            </h3>
+            <p>substr, find, append/ghép chuỗi, insert, erase, toupper/tolower; chuẩn hóa họ tên và kiểm tra chuỗi đối xứng.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--medium">Thực hành: Kiểm tra, cắt, ghép, chuẩn hóa chuỗi</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-03-10.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+
+        <!-- Buổi 33 -->
+        <article class="lesson-card">
+          <div class="lesson-card__number-box">
+            <span class="lesson-card__number-label">Buổi</span>
+            <span class="lesson-card__number">33</span>
+          </div>
+          <div class="lesson-card__body">
+            <h3 class="lesson-card__title">
+              <a href="lesson/lesson-03-11.html">Mini Project: Tic Tac Toe Console</a>
+            </h3>
+            <p>Xây dựng cờ caro 3x3 cho 2 người chơi trên console: lưu bàn cờ bằng mảng, chia chương trình thành các hàm vẽ bàn cờ, nhập nước đi, kiểm tra thắng/hòa.</p>
+            <div class="lesson-card__tags">
+              <span class="badge badge--tag">90 phút</span>
+              <span class="badge badge--hard">Mini Project: Cờ caro 3x3 console</span>
+              <span class="badge badge--outline-red">Đã có bài học chi tiết</span>
+            </div>
+          </div>
+          <div class="lesson-card__action">
+            <a href="lesson/lesson-03-11.html" class="btn btn--primary btn--sm">Vào học →</a>
+          </div>
+        </article>
+      </div>
+
+      <!-- Bài tập và vận dụng của giai đoạn (theo tài liệu Roadmap) -->
+      <section class="stage-practice" aria-labelledby="practice-title">
+        <h2 id="practice-title" class="stage-practice__title">Bài tập và vận dụng Giai đoạn 03</h2>
+        <p class="stage-practice__intro">Tổng hợp yêu cầu bài tập của cả giai đoạn theo 3 cấp độ, kèm các buổi học có bài luyện tập tương ứng.</p>
+        <div class="stage-practice__grid">
+          <article class="stage-practice__item">
+            <span class="badge badge--easy">Easy (40%)</span>
+            <h3>Tính tổng/max/min của một mảng số.</h3>
+            <p>Luyện tập trong các buổi:</p>
+            <ul class="stage-practice__links">
+              <li><a href="lesson/lesson-03-05.html">Buổi 27 — Tổng, Max, Min trên mảng</a></li>
+            </ul>
+          </article>
+
+          <article class="stage-practice__item">
+            <span class="badge badge--medium">Medium (40%)</span>
+            <h3>Cài đặt hàm tìm kiếm, sắp xếp mảng, xử lý chuỗi họ tên.</h3>
+            <p>Luyện tập trong các buổi:</p>
+            <ul class="stage-practice__links">
+              <li><a href="lesson/lesson-03-06.html">Buổi 28 — Linear Search</a></li>
+              <li><a href="lesson/lesson-03-07.html">Buổi 29 — Bubble Sort</a></li>
+              <li><a href="lesson/lesson-03-10.html">Buổi 32 — Chuẩn hóa &amp; tách họ tên</a></li>
+            </ul>
+          </article>
+
+          <article class="stage-practice__item">
+            <span class="badge badge--hard">Hard (20%)</span>
+            <h3>Hệ thống quản lý và thống kê điểm học viên; hoàn thiện Tic Tac Toe.</h3>
+            <p>Luyện tập trong các buổi:</p>
+            <ul class="stage-practice__links">
+              <li><a href="lesson/lesson-03-10.html">Buổi 32 — Bài 4: Quản lý &amp; thống kê điểm học viên</a></li>
+              <li><a href="lesson/lesson-03-11.html">Buổi 33 — Mini Project Tic Tac Toe</a></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- Navigation giữa các giai đoạn -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-10); padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft); flex-wrap: wrap; gap: var(--space-4);">
+        <a href="stage-02.html" class="btn btn--outline">← Giai đoạn 02: Cấu trúc điều khiển</a>
+        <a href="stage-04.html" class="btn btn--primary">Sang Giai đoạn 04: C++ nâng cao →</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <span>090 198 05 69</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <span>innomindskills@gmail.com</span>
+            </div>
+            <div class="contact-item">
+              <i class="fab fa-facebook"></i>
+              <a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">
+                Facebook
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="site-footer__text">
+          © 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.
+        </div>
+        <div class="site-footer__links">
+          <a href="#" class="site-nav__link">Về đầu trang ↑</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
+

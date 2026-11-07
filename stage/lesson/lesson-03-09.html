@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 31: Chuỗi Ký Tự (string): Khai Báo, Nhập Xuất và Duyệt Chuỗi — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 31: Làm quen std::string — khai báo, gán, nhập bằng cin và getline (kèm cin.ignore), lấy độ dài bằng length/size, truy cập và duyệt từng ký tự trong chuỗi.">
+  <link rel="icon" type="image/png" href="../../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-03.html" class="site-nav__link is-active">Giai đoạn 03</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-03.html" class="breadcrumb__link">Giai đoạn 03</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 31: Chuỗi ký tự (string)</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 31</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--easy">Chuỗi ký tự</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Chuỗi Ký Tự (string): Khai Báo, Nhập Xuất và Duyệt Chuỗi
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Khai báo và sử dụng <code>std::string</code>, phân biệt khi nào dùng <code>std::cin &gt;&gt;</code> và khi nào dùng <code>std::getline</code> (kèm <code>std::cin.ignore</code>), lấy độ dài chuỗi bằng <code>length()/size()</code>, truy cập và duyệt từng ký tự để phân tích tên nhân vật, tin nhắn chat.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-03-08.html" class="btn btn--outline btn--sm">← Buổi 30</a>
+          <a href="lesson-03-10.html" class="btn btn--primary btn--sm">Buổi 32 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+
+      <!-- PHẦN 1: LÝ THUYẾT -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi (35 Phút)</h2>
+
+        <h3>1.1 Chuỗi ký tự là gì?</h3>
+        <p>
+          Từ trước đến nay ta dùng <code>char</code> để lưu <strong>một</strong> ký tự (<code>'y'</code>, <code>'n'</code>). Nhưng tên nhân vật, tin nhắn chat, câu thoại NPC đều là <strong>dãy nhiều ký tự</strong>. C++ cung cấp kiểu <code>std::string</code> (thư viện <code>&lt;string&gt;</code>) để lưu dãy ký tự đó.
+        </p>
+        <p>
+          Có thể hình dung <code>std::string</code> giống một <strong>mảng <code>char</code> thông minh</strong> (Buổi 26): mỗi ký tự có chỉ số bắt đầu từ <code>0</code>, truy cập bằng <code>s[i]</code> — nhưng chuỗi <strong>tự biết độ dài</strong> của mình và có thể co giãn, không cần khai báo kích thước cố định.
+        </p>
+
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Chỉ số</th>
+                <th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>name = "Hiep Si"</code></td>
+                <td>H</td><td>i</td><td>e</td><td>p</td><td>(dấu cách)</td><td>S</td><td>i</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p><code>name.length()</code> bằng <code>7</code> (dấu cách cũng là một ký tự), ký tự cuối là <code>name[6]</code>, tức <code>name[name.length() - 1]</code>.</p>
+
+        <h3>1.2 Bảng tóm tắt cú pháp</h3>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Thao tác</th>
+                <th>Mã C++</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Thư viện</td>
+                <td><code>#include &lt;string&gt;</code></td>
+                <td>Bắt buộc khi dùng <code>std::string</code></td>
+              </tr>
+              <tr>
+                <td>Khai báo &amp; gán</td>
+                <td><code>std::string name = "Mario";</code></td>
+                <td>Chuỗi dùng nháy kép <code>"..."</code>, ký tự dùng nháy đơn <code>'...'</code></td>
+              </tr>
+              <tr>
+                <td>Chuỗi rỗng</td>
+                <td><code>std::string s;</code> hoặc <code>s = "";</code></td>
+                <td>Kiểm tra bằng <code>s.empty()</code></td>
+              </tr>
+              <tr>
+                <td>Nhập một từ</td>
+                <td><code>std::cin &gt;&gt; s;</code></td>
+                <td>Dừng ở dấu cách / xuống dòng đầu tiên</td>
+              </tr>
+              <tr>
+                <td>Nhập cả dòng</td>
+                <td><code>std::getline(std::cin, s);</code></td>
+                <td>Đọc cả dấu cách, dừng ở <code>Enter</code></td>
+              </tr>
+              <tr>
+                <td>Độ dài</td>
+                <td><code>s.length()</code> hoặc <code>s.size()</code></td>
+                <td>Hai hàm giống hệt nhau</td>
+              </tr>
+              <tr>
+                <td>Truy cập ký tự</td>
+                <td><code>s[i]</code></td>
+                <td>Chỉ số hợp lệ: <code>0</code> → <code>s.length() - 1</code></td>
+              </tr>
+              <tr>
+                <td>Sửa ký tự</td>
+                <td><code>s[0] = 'M';</code></td>
+                <td>Gán một <code>char</code> vào vị trí</td>
+              </tr>
+              <tr>
+                <td>So sánh</td>
+                <td><code>s == "admin"</code>, <code>s != t</code></td>
+                <td>So sánh từng ký tự, phân biệt hoa/thường</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>1.3 Code mẫu: Khai báo, truy cập, sửa và so sánh</h3>
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">string_basics.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> playerName = <span class="str">"Hiep Si"</span>;
+    <span class="type">std</span>::<span class="type">string</span> guildName;                        <span class="com">// Chuoi rong ""</span>
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ten: "</span> &lt;&lt; playerName &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Do dai: "</span> &lt;&lt; playerName.<span class="fn">length</span>() &lt;&lt; <span class="str">"\n"</span>;     <span class="com">// 7</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ky tu dau: "</span> &lt;&lt; playerName[<span class="num">0</span>] &lt;&lt; <span class="str">"\n"</span>;        <span class="com">// H</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ky tu cuoi: "</span>
+              &lt;&lt; playerName[playerName.<span class="fn">length</span>() - <span class="num">1</span>] &lt;&lt; <span class="str">"\n"</span>;     <span class="com">// i</span>
+
+    playerName[<span class="num">0</span>] = <span class="str">'K'</span>;                           <span class="com">// Sua mot ky tu</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Sau khi sua: "</span> &lt;&lt; playerName &lt;&lt; <span class="str">"\n"</span>;   <span class="com">// Kiep Si</span>
+
+    <span class="kw">if</span> (guildName.<span class="fn">empty</span>()) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ban chua gia nhap bang hoi nao.\n"</span>;
+    }
+
+    <span class="kw">if</span> (playerName == <span class="str">"Kiep Si"</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ten khop!\n"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+        </div>
+
+        <h3>1.4 <code>std::cin</code> và <code>std::getline</code> — cái bẫy kinh điển</h3>
+        <p>
+          <code>std::cin &gt;&gt; s</code> chỉ đọc đến <strong>dấu cách đầu tiên</strong>: người chơi gõ <code>Hiep Si</code> thì <code>s</code> chỉ nhận <code>"Hiep"</code>. Muốn đọc cả dòng có dấu cách, dùng <code>std::getline(std::cin, s)</code>.
+        </p>
+        <p>
+          Nhưng khi dùng <code>std::cin &gt;&gt; age</code> <strong>trước</strong> rồi mới <code>getline</code>, ký tự xuống dòng <code>'\n'</code> (do bấm Enter) vẫn còn nằm trong bộ đệm → <code>getline</code> đọc ngay dòng trống đó và "bị bỏ qua". Cách chữa: gọi <code>std::cin.ignore(1000, '\n')</code> để dọn bộ đệm trước khi <code>getline</code>.
+        </p>
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">cin_getline.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> level;
+    <span class="type">std</span>::<span class="type">string</span> fullName;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap cap do: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; level;                              <span class="com">// Go "5" + Enter -&gt; con lai '\n'</span>
+
+    <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);                    <span class="com">// Bo '\n' con sot trong bo dem</span>
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap ho ten nhan vat: "</span>;
+    <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, fullName);                  <span class="com">// Doc ca dong, ke ca dau cach</span>
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chao "</span> &lt;&lt; fullName &lt;&lt; <span class="str">" (Lv."</span> &lt;&lt; level &lt;&lt; <span class="str">")\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+        </div>
+
+        <h3>1.5 Duyệt từng ký tự trong chuỗi</h3>
+        <p>
+          Giống duyệt mảng: dùng vòng <code>for</code> với chỉ số từ <code>0</code> đến <code>length() - 1</code>. Nên lưu độ dài vào biến <code>int len</code> trước vòng lặp cho gọn và tránh cảnh báo so sánh số có dấu/không dấu.
+        </p>
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">loop_chars.cpp (đoạn trích)</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="type">std</span>::<span class="type">string</span> word = <span class="str">"RAYLIB"</span>;
+<span class="kw">int</span> len = word.<span class="fn">length</span>();
+
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; len; i++) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"["</span> &lt;&lt; i &lt;&lt; <span class="str">"] = "</span> &lt;&lt; word[i] &lt;&lt; <span class="str">"\n"</span>;
+}
+
+<span class="com">// Dem so chu 'A' trong chuoi</span>
+<span class="kw">int</span> countA = <span class="num">0</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; len; i++) {
+    <span class="kw">if</span> (word[i] == <span class="str">'A'</span>) countA++;
+}</code></pre>
+        </div>
+        <p>
+          Để phân loại ký tự, ta so sánh theo khoảng trong bảng mã ASCII: chữ hoa <code>c &gt;= 'A' &amp;&amp; c &lt;= 'Z'</code>, chữ thường <code>c &gt;= 'a' &amp;&amp; c &lt;= 'z'</code>, chữ số <code>c &gt;= '0' &amp;&amp; c &lt;= '9'</code>. (Buổi 32 sẽ giới thiệu các hàm có sẵn trong <code>&lt;cctype&gt;</code> để làm việc này.)
+        </p>
+
+        <div class="note-box note-box--tip">
+          <strong>🎮 Mẹo tư duy Game:</strong> Chuỗi có mặt ở mọi game: tên nhân vật trên đầu, ô chat, câu thoại NPC, mã cheat code... Trước khi chấp nhận tên người chơi, game thường <strong>duyệt từng ký tự</strong> để kiểm tra: độ dài 3–12 ký tự, chỉ gồm chữ và số, không có từ cấm. Ở Raylib, hàm <code>DrawText</code> cũng nhận một chuỗi để vẽ chữ lên màn hình.
+        </div>
+
+        <div class="note-box note-box--warning">
+          <strong>⚠️ Lỗi thường gặp:</strong>
+          <ul style="margin: var(--space-2) 0 0; padding-left: 1.25rem; line-height: 1.8;">
+            <li><strong>Truy cập ngoài chuỗi:</strong> <code>s[s.length()]</code> hoặc <code>s[0]</code> khi chuỗi rỗng → hành vi không xác định, giống out-of-bounds của mảng. Luôn kiểm tra <code>!s.empty()</code> trước khi lấy ký tự đầu/cuối.</li>
+            <li><strong>Quên <code>std::cin.ignore</code></strong> khi dùng <code>getline</code> sau <code>cin &gt;&gt;</code> → <code>getline</code> nhận chuỗi rỗng.</li>
+            <li><strong>Nhầm nháy đơn và nháy kép:</strong> <code>'A'</code> là một <code>char</code>, <code>"A"</code> là một chuỗi. Viết <code>s[0] == "A"</code> sẽ báo lỗi biên dịch.</li>
+            <li><strong>So sánh <code>i &lt; s.length()</code> với <code>int i</code></strong> → trình biên dịch cảnh báo "signed/unsigned". Lưu <code>int len = s.length();</code> trước để tránh.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: BÀI TẬP TRÊN LỚP -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Bài tập trên lớp (40 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1: Thẻ nhân vật có khung tự co giãn</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Nhập cấp độ (số nguyên) bằng <code>std::cin</code>, sau đó nhập tên nhân vật (có thể có dấu cách) bằng <code>std::getline</code>. In tên trong một khung <code>=</code> có chiều dài <strong>vừa khít</strong> với tên, kèm số ký tự và chữ cái đầu. Nếu tên rỗng, in <code>"Ten khong hop le!"</code>.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">character_card.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+
+<span class="com">// In mot duong vien gom 'count' dau '='</span>
+<span class="kw">void</span> <span class="fn">printBorder</span>(<span class="kw">int</span> count) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; count; i++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"="</span>;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> level;
+    <span class="type">std</span>::<span class="type">string</span> name;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap cap do: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; level;
+    <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap ten nhan vat: "</span>;
+    <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, name);
+
+    <span class="kw">if</span> (name.<span class="fn">empty</span>()) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ten khong hop le!\n"</span>;
+        <span class="kw">return</span> <span class="num">0</span>;
+    }
+
+    <span class="kw">int</span> len = name.<span class="fn">length</span>();
+    <span class="fn">printBorder</span>(len + <span class="num">4</span>);                         <span class="com">// "| " + ten + " |"</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"| "</span> &lt;&lt; name &lt;&lt; <span class="str">" |\n"</span>;
+    <span class="fn">printBorder</span>(len + <span class="num">4</span>);
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Cap do: "</span> &lt;&lt; level &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So ky tu: "</span> &lt;&lt; len &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chu cai dau: "</span> &lt;&lt; name[<span class="num">0</span>] &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+          <div class="note-box note-box--info">
+            <strong>Thử nghiệm:</strong> Xóa dòng <code>std::cin.ignore(...)</code> rồi chạy lại — bạn sẽ thấy chương trình không chờ nhập tên và báo <code>"Ten khong hop le!"</code>. Đó chính là cái bẫy ở mục 1.4.
+          </div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2: Phân tích tin nhắn chat</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Nhập một tin nhắn chat (cả dòng). Đếm và in số: chữ hoa, chữ thường, chữ số, dấu cách, ký tự khác, và nguyên âm (<code>a e i o u</code>, cả hoa lẫn thường). Viết hàm <code>bool isVowel(char c)</code> dùng một chuỗi <code>"aeiouAEIOU"</code> và duyệt chuỗi đó để kiểm tra.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">chat_analyzer.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+
+<span class="kw">bool</span> <span class="fn">isVowel</span>(<span class="kw">char</span> c) {
+    <span class="type">std</span>::<span class="type">string</span> vowels = <span class="str">"aeiouAEIOU"</span>;
+    <span class="kw">int</span> len = vowels.<span class="fn">length</span>();
+    <span class="kw">for</span> (<span class="kw">int</span> k = <span class="num">0</span>; k &lt; len; k++) {
+        <span class="kw">if</span> (c == vowels[k]) <span class="kw">return true</span>;
+    }
+    <span class="kw">return false</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> msg;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap tin nhan: "</span>;
+    <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, msg);
+
+    <span class="kw">int</span> upper = <span class="num">0</span>, lower = <span class="num">0</span>, digits = <span class="num">0</span>;
+    <span class="kw">int</span> spaces = <span class="num">0</span>, others = <span class="num">0</span>, vowelCount = <span class="num">0</span>;
+    <span class="kw">int</span> len = msg.<span class="fn">length</span>();
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; len; i++) {
+        <span class="kw">char</span> c = msg[i];
+        <span class="kw">if</span> (c &gt;= <span class="str">'A'</span> &amp;&amp; c &lt;= <span class="str">'Z'</span>) {
+            upper++;
+        } <span class="kw">else if</span> (c &gt;= <span class="str">'a'</span> &amp;&amp; c &lt;= <span class="str">'z'</span>) {
+            lower++;
+        } <span class="kw">else if</span> (c &gt;= <span class="str">'0'</span> &amp;&amp; c &lt;= <span class="str">'9'</span>) {
+            digits++;
+        } <span class="kw">else if</span> (c == <span class="str">' '</span>) {
+            spaces++;
+        } <span class="kw">else</span> {
+            others++;
+        }
+
+        <span class="kw">if</span> (<span class="fn">isVowel</span>(c)) vowelCount++;
+    }
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong ky tu: "</span> &lt;&lt; len &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chu hoa: "</span> &lt;&lt; upper &lt;&lt; <span class="str">" | Chu thuong: "</span> &lt;&lt; lower &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chu so: "</span> &lt;&lt; digits &lt;&lt; <span class="str">" | Dau cach: "</span> &lt;&lt; spaces
+              &lt;&lt; <span class="str">" | Khac: "</span> &lt;&lt; others &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nguyen am: "</span> &lt;&lt; vowelCount &lt;&lt; <span class="str">"\n"</span>;
+
+    <span class="kw">if</span> (len &gt; <span class="num">0</span> &amp;&amp; upper * <span class="num">2</span> &gt; upper + lower &amp;&amp; upper + lower &gt; <span class="num">5</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"[Canh bao] Dung viet hoa qua nhieu nhe!\n"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+          <div class="note-box note-box--tip">
+            <strong>🎯 Chạy thử:</strong> Nhập <code>GG EZ 123 !!!</code> → 4 chữ hoa, 0 chữ thường, 3 chữ số, 3 dấu cách, 3 ký tự khác, 1 nguyên âm (<code>E</code>). Phần cảnh báo cuối là bộ lọc "spam viết hoa" mà nhiều game online dùng trong khung chat.
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (Tự luyện tập)</h2>
+        <p>Cả 3 bài đều nhập chuỗi bằng <code>std::getline</code>. Nhớ thử với chuỗi rỗng và chuỗi có dấu cách.</p>
+
+        <!-- Bài Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Tên nhân vật soi gương</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Nhập tên nhân vật. In tên theo thứ tự <strong>ngược lại</strong> (ví dụ <code>Hiep Si</code> → <code>iS peiH</code>), sau đó in số ký tự <strong>không tính dấu cách</strong>.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Gợi ý:</strong> Duyệt chỉ số từ <code>len - 1</code> lùi về <code>0</code>. Nếu chuỗi rỗng thì <code>len - 1 = -1</code>, vòng lặp không chạy lần nào — an toàn.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">mirror_name.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> name;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap ten nhan vat: "</span>;
+    <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, name);
+
+    <span class="kw">int</span> len = name.<span class="fn">length</span>();
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ten soi guong: "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = len - <span class="num">1</span>; i &gt;= <span class="num">0</span>; i--) {      <span class="com">// Duyet nguoc</span>
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; name[i];
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+
+    <span class="kw">int</span> letters = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; len; i++) {
+        <span class="kw">if</span> (name[i] != <span class="str">' '</span>) letters++;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So ky tu (khong tinh dau cach): "</span> &lt;&lt; letters &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Kiểm tra mật khẩu tài khoản game</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Viết hàm <code>bool isStrongPassword(std::string pw)</code> kiểm tra mật khẩu mạnh: (1) ít nhất 8 ký tự; (2) có ít nhất 1 chữ hoa; (3) có ít nhất 1 chữ thường; (4) có ít nhất 1 chữ số; (5) không chứa dấu cách. Hàm in ra <strong>từng lý do</strong> chưa đạt. Chương trình chính yêu cầu nhập lại (bằng <code>getline</code>) cho tới khi mật khẩu hợp lệ.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Phân tích:</strong> Duyệt chuỗi một lần, bật các cờ <code>hasUpper</code>, <code>hasLower</code>, <code>hasDigit</code>, <code>hasSpace</code>. Sau vòng lặp mới kết luận — giống kỹ thuật "cờ hiệu" của Linear Search (Buổi 28).</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">password_check.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+
+<span class="kw">bool</span> <span class="fn">isStrongPassword</span>(<span class="type">std</span>::<span class="type">string</span> pw) {
+    <span class="kw">int</span> len = pw.<span class="fn">length</span>();
+    <span class="kw">bool</span> hasUpper = <span class="kw">false</span>, hasLower = <span class="kw">false</span>;
+    <span class="kw">bool</span> hasDigit = <span class="kw">false</span>, hasSpace = <span class="kw">false</span>;
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; len; i++) {
+        <span class="kw">char</span> c = pw[i];
+        <span class="kw">if</span> (c &gt;= <span class="str">'A'</span> &amp;&amp; c &lt;= <span class="str">'Z'</span>) hasUpper = <span class="kw">true</span>;
+        <span class="kw">else if</span> (c &gt;= <span class="str">'a'</span> &amp;&amp; c &lt;= <span class="str">'z'</span>) hasLower = <span class="kw">true</span>;
+        <span class="kw">else if</span> (c &gt;= <span class="str">'0'</span> &amp;&amp; c &lt;= <span class="str">'9'</span>) hasDigit = <span class="kw">true</span>;
+        <span class="kw">else if</span> (c == <span class="str">' '</span>) hasSpace = <span class="kw">true</span>;
+    }
+
+    <span class="kw">bool</span> ok = <span class="kw">true</span>;
+    <span class="kw">if</span> (len &lt; <span class="num">8</span>)  { <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" - Can it nhat 8 ky tu\n"</span>;   ok = <span class="kw">false</span>; }
+    <span class="kw">if</span> (!hasUpper) { <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" - Thieu chu hoa\n"</span>;          ok = <span class="kw">false</span>; }
+    <span class="kw">if</span> (!hasLower) { <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" - Thieu chu thuong\n"</span>;       ok = <span class="kw">false</span>; }
+    <span class="kw">if</span> (!hasDigit) { <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" - Thieu chu so\n"</span>;           ok = <span class="kw">false</span>; }
+    <span class="kw">if</span> (hasSpace)  { <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" - Khong duoc chua dau cach\n"</span>; ok = <span class="kw">false</span>; }
+    <span class="kw">return</span> ok;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> password;
+    <span class="kw">bool</span> valid = <span class="kw">false</span>;
+
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tao mat khau: "</span>;
+        <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, password);
+        valid = <span class="fn">isStrongPassword</span>(password);
+        <span class="kw">if</span> (!valid) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Mat khau yeu, vui long nhap lai.\n\n"</span>;
+        }
+    } <span class="kw">while</span> (!valid);
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tao tai khoan thanh cong!\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Mật thư Caesar giữa hai đồng đội</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Mã hóa Caesar dịch mỗi chữ cái đi <code>k</code> vị trí trong bảng chữ cái, quay vòng về đầu khi vượt <code>z</code> (ví dụ <code>k = 3</code>: <code>a → d</code>, <code>x → a</code>, <code>Z → C</code>). Chữ hoa giữ hoa, chữ thường giữ thường, các ký tự khác giữ nguyên. Viết chương trình có menu:
+          </p>
+          <ul style="padding-left: 1.25rem; line-height: 1.8;">
+            <li><code>1</code> — Mã hóa: nhập thông điệp (cả dòng) và khóa <code>k</code> (1–25).</li>
+            <li><code>2</code> — Giải mã: nhập thông điệp đã mã hóa và khóa <code>k</code>.</li>
+            <li><code>3</code> — Phá mã: không biết khóa, in thử cả 25 khả năng để người chơi tự đọc ra câu có nghĩa.</li>
+          </ul>
+
+          <div class="note-box note-box--info">
+            <strong>Gợi ý:</strong> Viết hàm <code>std::string caesar(std::string text, int shift)</code> trả về chuỗi đã dịch. Công thức cho chữ thường: <code>'a' + (c - 'a' + shift) % 26</code>. Giải mã với khóa <code>k</code> chính là mã hóa với khóa <code>26 - k</code>. Đừng quên <code>std::cin.ignore</code> sau khi nhập lựa chọn menu!
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">caesar_cipher.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+
+<span class="com">// Dich moi chu cai di 'shift' vi tri (0-25), giu nguyen ky tu khac</span>
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">caesar</span>(<span class="type">std</span>::<span class="type">string</span> text, <span class="kw">int</span> shift) {
+    <span class="kw">int</span> len = text.<span class="fn">length</span>();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; len; i++) {
+        <span class="kw">char</span> c = text[i];
+        <span class="kw">if</span> (c &gt;= <span class="str">'a'</span> &amp;&amp; c &lt;= <span class="str">'z'</span>) {
+            text[i] = <span class="str">'a'</span> + (c - <span class="str">'a'</span> + shift) % <span class="num">26</span>;
+        } <span class="kw">else if</span> (c &gt;= <span class="str">'A'</span> &amp;&amp; c &lt;= <span class="str">'Z'</span>) {
+            text[i] = <span class="str">'A'</span> + (c - <span class="str">'A'</span> + shift) % <span class="num">26</span>;
+        }
+    }
+    <span class="kw">return</span> text;                              <span class="com">// Tra ve ban sao da dich</span>
+}
+
+<span class="kw">int</span> <span class="fn">readKey</span>() {
+    <span class="kw">int</span> key;
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap khoa (1-25): "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; key;
+    } <span class="kw">while</span> (key &lt; <span class="num">1</span> || key &gt; <span class="num">25</span>);
+    <span class="kw">return</span> key;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> choice;
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"1 - Ma hoa | 2 - Giai ma | 3 - Pha ma: "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; choice;
+    } <span class="kw">while</span> (choice &lt; <span class="num">1</span> || choice &gt; <span class="num">3</span>);
+    <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);               <span class="com">// Don '\n' truoc getline</span>
+
+    <span class="type">std</span>::<span class="type">string</span> text;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap thong diep: "</span>;
+    <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, text);
+
+    <span class="kw">if</span> (choice == <span class="num">1</span>) {
+        <span class="kw">int</span> key = <span class="fn">readKey</span>();
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Mat thu: "</span> &lt;&lt; <span class="fn">caesar</span>(text, key) &lt;&lt; <span class="str">"\n"</span>;
+    } <span class="kw">else if</span> (choice == <span class="num">2</span>) {
+        <span class="kw">int</span> key = <span class="fn">readKey</span>();
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ban goc: "</span> &lt;&lt; <span class="fn">caesar</span>(text, <span class="num">26</span> - key) &lt;&lt; <span class="str">"\n"</span>;
+    } <span class="kw">else</span> {
+        <span class="kw">for</span> (<span class="kw">int</span> k = <span class="num">1</span>; k &lt;= <span class="num">25</span>; k++) {          <span class="com">// Thu moi khoa co the</span>
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Khoa "</span> &lt;&lt; k &lt;&lt; <span class="str">": "</span> &lt;&lt; <span class="fn">caesar</span>(text, <span class="num">26</span> - k) &lt;&lt; <span class="str">"\n"</span>;
+        }
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <div class="note-box note-box--tip">
+                  <strong>💡 Kiểm tra nhanh:</strong> Mã hóa <code>Tan cong luc 9h!</code> với khóa 3 → <code>Wdq frqj oxf 9k!</code>. Giải mã chuỗi đó với khóa 3 phải ra lại câu gốc. Chế độ 3 cho thấy Caesar rất dễ phá vì chỉ có 25 khóa — một vòng <code>for</code> là đủ "hack".
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION CUỐI TRANG -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft);">
+        <a href="lesson-03-08.html" class="btn btn--outline">← Buổi 30: Độ phức tạp &amp; sửa bài</a>
+        <a href="lesson-03-10.html" class="btn btn--primary">Buổi 32: Các hàm xử lý chuỗi →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span></div>
+            <div class="contact-item"><i class="fas fa-phone"></i><span>090 198 05 69</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><span>innomindskills@gmail.com</span></div>
+            <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">Facebook</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="site-footer__text">© 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.</div>
+        <div class="site-footer__links"><a href="#" class="site-nav__link">Về đầu trang ↑</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

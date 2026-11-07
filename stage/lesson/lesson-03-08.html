@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 30: Đánh Giá Độ Phức Tạp Thuật Toán và Sửa Bài Tìm Kiếm/Sắp Xếp — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 30: Đếm số phép so sánh, khái niệm Big-O cơ bản O(1), O(n), O(n²), thiết kế bộ dữ liệu kiểm thử và chữa lỗi thường gặp trong Linear Search và Bubble Sort.">
+  <link rel="icon" type="image/png" href="../../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-03.html" class="site-nav__link is-active">Giai đoạn 03</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-03.html" class="breadcrumb__link">Giai đoạn 03</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 30: Đánh giá độ phức tạp &amp; sửa bài Tìm kiếm/Sắp xếp</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 30</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--hard">Kiểm thử &amp; Thuật toán</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Đánh Giá Độ Phức Tạp Thuật Toán và Sửa Bài Tìm Kiếm/Sắp Xếp
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Biết đếm số phép so sánh của một thuật toán, phân loại Big-O cơ bản O(1), O(n), O(n²); thiết kế bộ test (mảng rỗng, 1 phần tử, đã sắp, sắp ngược, trùng lặp) và tự phát hiện, chữa lỗi trong code Linear Search / Bubble Sort.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-03-07.html" class="btn btn--outline btn--sm">← Buổi 29</a>
+          <a href="lesson-03-09.html" class="btn btn--primary btn--sm">Buổi 31 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+
+      <!-- PHẦN 1: LÝ THUYẾT -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi (35 Phút)</h2>
+
+        <h3>1.1 Đo "độ nhanh" bằng cách đếm phép toán</h3>
+        <p>
+          Cùng một chương trình chạy trên máy mạnh và máy yếu sẽ cho thời gian khác nhau, nên lập trình viên không đo thuật toán bằng giây. Thay vào đó, ta <strong>đếm số phép toán cơ bản</strong> (thường là số lần so sánh) và xem con số đó <strong>tăng thế nào khi số phần tử <code>n</code> tăng</strong>. Cách mô tả tốc độ tăng này gọi là <strong>độ phức tạp thuật toán</strong>, ký hiệu <strong>Big-O</strong>.
+        </p>
+
+        <h3>1.2 Ba mức Big-O cơ bản</h3>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Big-O</th>
+                <th>Tên gọi</th>
+                <th>Dấu hiệu trong code</th>
+                <th>Ví dụ đã học</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>O(1)</code></td>
+                <td>Hằng số</td>
+                <td>Không có vòng lặp phụ thuộc <code>n</code></td>
+                <td>Truy cập <code>arr[i]</code>, đổi chỗ 2 phần tử</td>
+              </tr>
+              <tr>
+                <td><code>O(n)</code></td>
+                <td>Tuyến tính</td>
+                <td>Một vòng lặp chạy qua <code>n</code> phần tử</td>
+                <td>Tính tổng, tìm Max/Min (Buổi 27), Linear Search (Buổi 28)</td>
+              </tr>
+              <tr>
+                <td><code>O(n²)</code></td>
+                <td>Bình phương</td>
+                <td>Hai vòng lặp lồng nhau, mỗi vòng ~<code>n</code> lần</td>
+                <td>Bubble Sort (Buổi 29), xét mọi cặp phần tử</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>1.3 Số phép so sánh khi <code>n</code> tăng</h3>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>n</th>
+                <th>Linear Search xấu nhất (n)</th>
+                <th>Bubble Sort xấu nhất n(n−1)/2</th>
+                <th>Bubble Sort tốt nhất (đã sắp, có dừng sớm): n − 1</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>10</td><td>10</td><td>45</td><td>9</td></tr>
+              <tr><td>100</td><td>100</td><td>4 950</td><td>99</td></tr>
+              <tr><td>1 000</td><td>1 000</td><td>499 500</td><td>999</td></tr>
+              <tr><td>10 000</td><td>10 000</td><td>49 995 000</td><td>9 999</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>Vì sao Bubble Sort là n(n−1)/2?</strong> Lượt 1 so sánh <code>n − 1</code> cặp, lượt 2 so sánh <code>n − 2</code> cặp, ..., lượt cuối 1 cặp. Tổng <code>(n − 1) + (n − 2) + ... + 1 = n(n − 1)/2</code> ≈ <code>n²/2</code>. Big-O bỏ qua hằng số <code>1/2</code>, nên ta nói Bubble Sort là <code>O(n²)</code>: <strong>n tăng 10 lần → công việc tăng khoảng 100 lần</strong>.
+        </p>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">big_o_examples.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="com">// O(1): so phep toan KHONG phu thuoc n</span>
+<span class="kw">int</span> <span class="fn">getFirst</span>(<span class="kw">int</span> arr[]) {
+    <span class="kw">return</span> arr[<span class="num">0</span>];
+}
+
+<span class="com">// O(n): mot vong lap qua n phan tu</span>
+<span class="kw">int</span> <span class="fn">sumArray</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> sum = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        sum += arr[i];
+    }
+    <span class="kw">return</span> sum;
+}
+
+<span class="com">// O(n^2): xet moi cap (i, j) - hai vong lap long nhau</span>
+<span class="kw">int</span> <span class="fn">countEqualPairs</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> count = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">for</span> (<span class="kw">int</span> j = i + <span class="num">1</span>; j &lt; n; j++) {
+            <span class="kw">if</span> (arr[i] == arr[j]) count++;
+        }
+    }
+    <span class="kw">return</span> count;
+}</code></pre>
+        </div>
+
+        <h3>1.4 Bộ dữ liệu kiểm thử (Test cases) bắt buộc</h3>
+        <p>Code chạy đúng với <em>một</em> ví dụ chưa chắc đã đúng. Hãy luôn thử đủ các trường hợp "khó chịu" sau:</p>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Trường hợp</th>
+                <th>Ví dụ</th>
+                <th>Lỗi thường bị lộ ra</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Mảng rỗng</td><td><code>n = 0</code></td><td>Đọc <code>arr[0]</code> khi không có phần tử; hàm thiếu <code>return</code></td></tr>
+              <tr><td>1 phần tử</td><td><code>{42}</code></td><td>Vòng lặp chạy sai biên, so sánh với ô <code>arr[1]</code> không tồn tại</td></tr>
+              <tr><td>Đã sắp xếp</td><td><code>{1, 2, 3, 4, 5}</code></td><td>Không dừng sớm (tốn thời gian), sắp xếp làm hỏng mảng</td></tr>
+              <tr><td>Sắp ngược</td><td><code>{5, 4, 3, 2, 1}</code></td><td>Trường hợp xấu nhất; thiếu lượt → chưa sắp xong</td></tr>
+              <tr><td>Có phần tử trùng</td><td><code>{3, 1, 3, 1, 2}</code></td><td>Dùng <code>&gt;=</code> thay <code>&gt;</code> → hoán đổi thừa; tìm kiếm trả về sai vị trí</td></tr>
+              <tr><td>Phần tử cần tìm ở đầu / cuối / không có</td><td>target = <code>arr[0]</code>, <code>arr[n − 1]</code>, <code>-999</code></td><td>Trả về <code>-1</code> quá sớm; bỏ sót phần tử cuối</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note-box note-box--info">
+          <strong>📌 Lưu ý về "mảng rỗng":</strong> C++ chuẩn không cho khai báo <code>int a[0]</code>. Để test trường hợp rỗng, ta khai báo mảng bình thường (ví dụ <code>int a[1]</code>) rồi truyền <code>n = 0</code> vào hàm — hàm đúng phải không đụng tới phần tử nào.
+        </div>
+
+        <div class="note-box note-box--tip">
+          <strong>🎮 Mẹo tư duy Game:</strong> Game chạy 60 khung hình/giây, tức mỗi khung chỉ có khoảng 16 mili-giây. Nếu có 1 000 viên đạn và bạn kiểm tra va chạm <em>mọi cặp</em> đạn–đạn (<code>O(n²)</code>) thì mỗi khung phải xét ~500 000 cặp — game sẽ giật. Đó là lý do các engine dùng "lưới không gian" để chỉ kiểm tra những vật ở gần nhau. Biết đếm phép toán giúp bạn đoán trước chỗ nào sẽ làm game chậm.
+        </div>
+
+        <div class="note-box note-box--warning">
+          <strong>⚠️ Bảng lỗi kinh điển cần soi khi chữa bài:</strong>
+          <ul style="margin: var(--space-2) 0 0; padding-left: 1.25rem; line-height: 1.8;">
+            <li><code>i &lt;= n</code> thay vì <code>i &lt; n</code> → đọc ô <code>arr[n]</code> ngoài mảng (off-by-one).</li>
+            <li><code>else return -1;</code> nằm <strong>trong</strong> vòng lặp tìm kiếm → chỉ kiểm tra đúng phần tử đầu tiên.</li>
+            <li>Vòng trong Bubble Sort chạy tới <code>j &lt; n - i</code> → khi <code>i = 0</code>, <code>arr[j + 1]</code> chính là <code>arr[n]</code>.</li>
+            <li>Hoán đổi không dùng biến tạm → hai ô cùng một giá trị, dữ liệu bị nhân bản.</li>
+            <li>Khởi tạo <code>max = 0</code> → sai khi mọi phần tử đều âm; nên khởi tạo <code>max = arr[0]</code> (và kiểm tra <code>n &gt; 0</code> trước).</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: BÀI TẬP TRÊN LỚP -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Bài tập trên lớp (45 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1: Đo Bubble Sort trên bộ test chuẩn</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Sửa hàm Bubble Sort (có dừng sớm) để <strong>trả về số phép so sánh</strong> đã thực hiện. Viết hàm <code>isSorted</code> kiểm tra mảng đã tăng dần chưa, và hàm <code>runTest</code> in kết quả <code>PASS/FAIL</code>. Chạy trên 6 trường hợp: rỗng, 1 phần tử, đã sắp, sắp ngược, ngẫu nhiên, có trùng lặp.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">sort_test_suite.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="com">// Bubble Sort tang dan, tra ve so lan so sanh</span>
+<span class="kw">int</span> <span class="fn">bubbleSortCount</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> comparisons = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n - <span class="num">1</span>; i++) {
+        <span class="kw">bool</span> swapped = <span class="kw">false</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; n - <span class="num">1</span> - i; j++) {
+            comparisons++;                        <span class="com">// Dem moi lan so sanh</span>
+            <span class="kw">if</span> (arr[j] &gt; arr[j + <span class="num">1</span>]) {
+                <span class="kw">int</span> temp = arr[j];
+                arr[j] = arr[j + <span class="num">1</span>];
+                arr[j + <span class="num">1</span>] = temp;
+                swapped = <span class="kw">true</span>;
+            }
+        }
+        <span class="kw">if</span> (!swapped) <span class="kw">break</span>;
+    }
+    <span class="kw">return</span> comparisons;
+}
+
+<span class="com">// Kiem tra mang da tang dan chua - O(n)</span>
+<span class="kw">bool</span> <span class="fn">isSorted</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i + <span class="num">1</span> &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] &gt; arr[i + <span class="num">1</span>]) <span class="kw">return false</span>;
+    }
+    <span class="kw">return true</span>;
+}
+
+<span class="kw">void</span> <span class="fn">runTest</span>(<span class="kw">int</span> testId, <span class="kw">int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> comps = <span class="fn">bubbleSortCount</span>(arr, n);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Test "</span> &lt;&lt; testId &lt;&lt; <span class="str">" | n = "</span> &lt;&lt; n
+              &lt;&lt; <span class="str">" | so sanh: "</span> &lt;&lt; comps;
+    <span class="kw">if</span> (<span class="fn">isSorted</span>(arr, n)) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" | PASS\n"</span>;
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" | FAIL\n"</span>;
+    }
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> emptyArr[<span class="num">1</span>] = {<span class="num">0</span>};
+    <span class="kw">int</span> single[<span class="num">1</span>]   = {<span class="num">42</span>};
+    <span class="kw">int</span> sorted[<span class="num">6</span>]   = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>};
+    <span class="kw">int</span> reversed[<span class="num">6</span>] = {<span class="num">6</span>, <span class="num">5</span>, <span class="num">4</span>, <span class="num">3</span>, <span class="num">2</span>, <span class="num">1</span>};
+    <span class="kw">int</span> mixed[<span class="num">6</span>]    = {<span class="num">4</span>, <span class="num">1</span>, <span class="num">6</span>, <span class="num">2</span>, <span class="num">5</span>, <span class="num">3</span>};
+    <span class="kw">int</span> dup[<span class="num">6</span>]      = {<span class="num">3</span>, <span class="num">1</span>, <span class="num">3</span>, <span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>};
+
+    <span class="fn">runTest</span>(<span class="num">1</span>, emptyArr, <span class="num">0</span>);    <span class="com">// Mang rong</span>
+    <span class="fn">runTest</span>(<span class="num">2</span>, single, <span class="num">1</span>);      <span class="com">// 1 phan tu</span>
+    <span class="fn">runTest</span>(<span class="num">3</span>, sorted, <span class="num">6</span>);      <span class="com">// Da sap - tot nhat</span>
+    <span class="fn">runTest</span>(<span class="num">4</span>, reversed, <span class="num">6</span>);    <span class="com">// Sap nguoc - xau nhat</span>
+    <span class="fn">runTest</span>(<span class="num">5</span>, mixed, <span class="num">6</span>);       <span class="com">// Ngau nhien</span>
+    <span class="fn">runTest</span>(<span class="num">6</span>, dup, <span class="num">6</span>);         <span class="com">// Co trung lap</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr><th>Test</th><th>Trường hợp</th><th>Số so sánh</th><th>Nhận xét</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>Rỗng</td><td>0</td><td>Vòng ngoài không chạy</td></tr>
+                <tr><td>2</td><td>1 phần tử</td><td>0</td><td>Không có cặp nào</td></tr>
+                <tr><td>3</td><td>Đã sắp</td><td>5</td><td>= n − 1, dừng sau 1 lượt</td></tr>
+                <tr><td>4</td><td>Sắp ngược</td><td>15</td><td>= n(n − 1)/2 = 6·5/2</td></tr>
+                <tr><td>5</td><td>Ngẫu nhiên</td><td>14</td><td>Dừng sớm ở lượt 4</td></tr>
+                <tr><td>6</td><td>Trùng lặp</td><td>12</td><td>Dừng sớm ở lượt 3</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2: Săn lỗi (Bug Hunt) trong bài nộp của học viên</h4>
+            <span class="badge badge--hard">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Đoạn code dưới đây có <strong>5 lỗi</strong>. Chia nhóm, dùng bộ test ở mục 1.4 để chỉ ra từng lỗi (test nào làm lộ lỗi đó), sau đó viết lại bản đúng.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">buggy_search_sort.cpp (BẢN CÓ LỖI)</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">int</span> <span class="fn">linearSearch</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt;= n; i++) {
+        <span class="kw">if</span> (arr[i] == target) {
+            <span class="kw">return</span> i;
+        } <span class="kw">else</span> {
+            <span class="kw">return</span> -<span class="num">1</span>;
+        }
+    }
+}
+
+<span class="kw">void</span> <span class="fn">bubbleSort</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; n - i; j++) {
+            <span class="kw">if</span> (arr[j] &gt; arr[j + <span class="num">1</span>]) {
+                arr[j] = arr[j + <span class="num">1</span>];
+                arr[j + <span class="num">1</span>] = arr[j];
+            }
+        }
+    }
+}</code></pre>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr><th>#</th><th>Lỗi</th><th>Test làm lộ lỗi</th><th>Cách sửa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td><code>i &lt;= n</code> đọc <code>arr[n]</code></td><td>Không tìm thấy</td><td><code>i &lt; n</code></td></tr>
+                <tr><td>2</td><td><code>else return -1</code> trong vòng lặp</td><td>target ở cuối mảng</td><td>Chuyển <code>return -1</code> ra sau vòng lặp</td></tr>
+                <tr><td>3</td><td>Thiếu <code>return</code> khi <code>n = 0</code></td><td>Mảng rỗng</td><td>Lỗi 2 sửa xong thì tự hết</td></tr>
+                <tr><td>4</td><td><code>j &lt; n - i</code> vượt biên</td><td>1 phần tử, sắp ngược</td><td><code>j &lt; n - 1 - i</code> (và <code>i &lt; n - 1</code>)</td></tr>
+                <tr><td>5</td><td>Hoán đổi thiếu biến tạm</td><td>Sắp ngược <code>{3, 2, 1}</code> → số <code>3</code> biến mất, có giá trị bị nhân bản</td><td>Dùng <code>int temp</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">fixed_search_sort.cpp (BẢN ĐÃ SỬA)</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">int</span> <span class="fn">linearSearch</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {             <span class="com">// Sua loi 1</span>
+        <span class="kw">if</span> (arr[i] == target) {
+            <span class="kw">return</span> i;
+        }
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;                                  <span class="com">// Sua loi 2, 3: duyet het moi ket luan</span>
+}
+
+<span class="kw">void</span> <span class="fn">bubbleSort</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n - <span class="num">1</span>; i++) {
+        <span class="kw">bool</span> swapped = <span class="kw">false</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; n - <span class="num">1</span> - i; j++) {    <span class="com">// Sua loi 4</span>
+            <span class="kw">if</span> (arr[j] &gt; arr[j + <span class="num">1</span>]) {
+                <span class="kw">int</span> temp = arr[j];                  <span class="com">// Sua loi 5</span>
+                arr[j] = arr[j + <span class="num">1</span>];
+                arr[j + <span class="num">1</span>] = temp;
+                swapped = <span class="kw">true</span>;
+            }
+        }
+        <span class="kw">if</span> (!swapped) <span class="kw">break</span>;                      <span class="com">// Them toi uu dung som</span>
+    }
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (Tự luyện tập)</h2>
+        <p>Mục tiêu tuần này: không chỉ viết code chạy được, mà phải <strong>chứng minh</strong> code đúng bằng bộ test và <strong>giải thích</strong> được độ phức tạp.</p>
+
+        <!-- Bài Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Thấy tận mắt O(n) và O(n²)</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Tạo mảng <code>int arr[1000]</code> với <code>arr[i] = i * 2</code>. Viết hai hàm:
+            (a) <code>int countSearchSteps(int arr[], int n, int target)</code> trả về số lần so sánh Linear Search thực hiện;
+            (b) <code>int countAllPairs(int n)</code> đếm số cặp <code>(i, j)</code> với <code>i &lt; j</code> bằng hai vòng lặp lồng nhau.
+            In bảng kết quả với <code>n = 10, 100, 1000</code> khi tìm <code>target = -1</code> (không có trong mảng — trường hợp xấu nhất).
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">growth_demo.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="com">// Dem so lan so sanh cua Linear Search - O(n)</span>
+<span class="kw">int</span> <span class="fn">countSearchSteps</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+    <span class="kw">int</span> steps = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        steps++;
+        <span class="kw">if</span> (arr[i] == target) <span class="kw">break</span>;
+    }
+    <span class="kw">return</span> steps;
+}
+
+<span class="com">// Dem so cap (i, j) voi i &lt; j - O(n^2)</span>
+<span class="kw">int</span> <span class="fn">countAllPairs</span>(<span class="kw">int</span> n) {
+    <span class="kw">int</span> pairs = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">for</span> (<span class="kw">int</span> j = i + <span class="num">1</span>; j &lt; n; j++) {
+            pairs++;
+        }
+    }
+    <span class="kw">return</span> pairs;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> MAX = <span class="num">1000</span>;
+    <span class="kw">int</span> arr[MAX];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; MAX; i++) {
+        arr[i] = i * <span class="num">2</span>;
+    }
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"n\tO(n) search\tO(n^2) pairs\n"</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> n = <span class="num">10</span>; n &lt;= MAX; n *= <span class="num">10</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; n &lt;&lt; <span class="str">"\t"</span>
+                  &lt;&lt; <span class="fn">countSearchSteps</span>(arr, n, -<span class="num">1</span>) &lt;&lt; <span class="str">"\t\t"</span>
+                  &lt;&lt; <span class="fn">countAllPairs</span>(n) &lt;&lt; <span class="str">"\n"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <p><strong>Kết quả:</strong> cột O(n) là <code>10, 100, 1000</code>; cột O(n²) là <code>45, 4950, 499500</code>. Khi <code>n</code> tăng 10 lần, cột đầu tăng 10 lần còn cột sau tăng ~100 lần.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Viết hàm tìm vị trí Max kèm bộ test tự động</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Viết hàm <code>int findMaxIndex(int arr[], int n)</code> trả về <strong>chỉ số</strong> của phần tử lớn nhất (nếu có nhiều giá trị Max bằng nhau thì trả về chỉ số <strong>đầu tiên</strong>; mảng rỗng trả về <code>-1</code>). Viết hàm <code>void check(int testId, int actual, int expected)</code> in <code>PASS</code>/<code>FAIL</code>, và kiểm tra ít nhất 6 test: rỗng, 1 phần tử, Max ở đầu, Max ở cuối, toàn số âm, Max trùng lặp.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Phân tích:</strong> Khởi tạo <code>maxIdx = 0</code> (không phải giá trị 0!) rồi so sánh bằng dấu <code>&gt;</code> nghiêm ngặt để giữ chỉ số đầu tiên khi bằng nhau. Độ phức tạp <code>O(n)</code>.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">max_index_tests.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">findMaxIndex</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">if</span> (n &lt;= <span class="num">0</span>) <span class="kw">return</span> -<span class="num">1</span>;                     <span class="com">// Mang rong</span>
+    <span class="kw">int</span> maxIdx = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] &gt; arr[maxIdx]) {               <span class="com">// Dau &gt; giu chi so DAU TIEN</span>
+            maxIdx = i;
+        }
+    }
+    <span class="kw">return</span> maxIdx;
+}
+
+<span class="kw">void</span> <span class="fn">check</span>(<span class="kw">int</span> testId, <span class="kw">int</span> actual, <span class="kw">int</span> expected) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Test "</span> &lt;&lt; testId &lt;&lt; <span class="str">": "</span>;
+    <span class="kw">if</span> (actual == expected) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"PASS\n"</span>;
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"FAIL (nhan "</span> &lt;&lt; actual
+                  &lt;&lt; <span class="str">", mong doi "</span> &lt;&lt; expected &lt;&lt; <span class="str">")\n"</span>;
+    }
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> emptyArr[<span class="num">1</span>] = {<span class="num">0</span>};
+    <span class="kw">int</span> single[<span class="num">1</span>]   = {<span class="num">7</span>};
+    <span class="kw">int</span> maxFirst[<span class="num">4</span>] = {<span class="num">90</span>, <span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>};
+    <span class="kw">int</span> maxLast[<span class="num">4</span>]  = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">90</span>};
+    <span class="kw">int</span> negative[<span class="num">4</span>] = {-<span class="num">8</span>, -<span class="num">3</span>, -<span class="num">5</span>, -<span class="num">9</span>};
+    <span class="kw">int</span> dupMax[<span class="num">5</span>]   = {<span class="num">4</span>, <span class="num">9</span>, <span class="num">2</span>, <span class="num">9</span>, <span class="num">1</span>};
+
+    <span class="fn">check</span>(<span class="num">1</span>, <span class="fn">findMaxIndex</span>(emptyArr, <span class="num">0</span>), -<span class="num">1</span>);
+    <span class="fn">check</span>(<span class="num">2</span>, <span class="fn">findMaxIndex</span>(single, <span class="num">1</span>), <span class="num">0</span>);
+    <span class="fn">check</span>(<span class="num">3</span>, <span class="fn">findMaxIndex</span>(maxFirst, <span class="num">4</span>), <span class="num">0</span>);
+    <span class="fn">check</span>(<span class="num">4</span>, <span class="fn">findMaxIndex</span>(maxLast, <span class="num">4</span>), <span class="num">3</span>);
+    <span class="fn">check</span>(<span class="num">5</span>, <span class="fn">findMaxIndex</span>(negative, <span class="num">4</span>), <span class="num">1</span>);
+    <span class="fn">check</span>(<span class="num">6</span>, <span class="fn">findMaxIndex</span>(dupMax, <span class="num">5</span>), <span class="num">1</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Đo "độ hỗn loạn" của bảng xếp hạng</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Một <strong>cặp nghịch thế</strong> là cặp chỉ số <code>i &lt; j</code> mà <code>arr[i] &gt; arr[j]</code> (đứng sai thứ tự). Số cặp nghịch thế cho biết mảng "hỗn loạn" đến mức nào.
+          </p>
+          <ul style="padding-left: 1.25rem; line-height: 1.8;">
+            <li>Viết <code>int countInversions(int arr[], int n)</code> bằng hai vòng lặp lồng nhau — <code>O(n²)</code>.</li>
+            <li>Viết <code>int bubbleSortSwaps(int arr[], int n)</code> sắp xếp tăng dần và trả về <strong>số lần hoán đổi</strong>.</li>
+            <li>Trên bộ test (rỗng, 1 phần tử, đã sắp, sắp ngược, ngẫu nhiên, trùng lặp), chứng minh bằng chương trình rằng <strong>số lần hoán đổi của Bubble Sort luôn bằng số cặp nghịch thế</strong>, đồng thời mảng sau cùng đã được sắp xếp.</li>
+            <li>Trả lời: mảng <code>n</code> phần tử có tối đa bao nhiêu cặp nghịch thế? Rơi vào trường hợp nào?</li>
+          </ul>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Ý tưởng:</strong> Mỗi lần Bubble Sort đổi chỗ hai phần tử liền kề sai thứ tự, nó sửa <strong>đúng một</strong> cặp nghịch thế và không tạo thêm cặp mới. Vì vậy số lần đổi = số cặp nghịch thế ban đầu. Lưu ý phải đếm nghịch thế <strong>trước</strong> khi sắp xếp, vì sắp xong thì số nghịch thế bằng 0.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">inversions.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="com">// Dem cap (i &lt; j) ma arr[i] &gt; arr[j] - O(n^2)</span>
+<span class="kw">int</span> <span class="fn">countInversions</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> count = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">for</span> (<span class="kw">int</span> j = i + <span class="num">1</span>; j &lt; n; j++) {
+            <span class="kw">if</span> (arr[i] &gt; arr[j]) count++;
+        }
+    }
+    <span class="kw">return</span> count;
+}
+
+<span class="com">// Bubble Sort tang dan, tra ve so lan hoan doi</span>
+<span class="kw">int</span> <span class="fn">bubbleSortSwaps</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> swaps = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n - <span class="num">1</span>; i++) {
+        <span class="kw">bool</span> swapped = <span class="kw">false</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; n - <span class="num">1</span> - i; j++) {
+            <span class="kw">if</span> (arr[j] &gt; arr[j + <span class="num">1</span>]) {
+                <span class="kw">int</span> temp = arr[j];
+                arr[j] = arr[j + <span class="num">1</span>];
+                arr[j + <span class="num">1</span>] = temp;
+                swaps++;
+                swapped = <span class="kw">true</span>;
+            }
+        }
+        <span class="kw">if</span> (!swapped) <span class="kw">break</span>;
+    }
+    <span class="kw">return</span> swaps;
+}
+
+<span class="kw">bool</span> <span class="fn">isSorted</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i + <span class="num">1</span> &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] &gt; arr[i + <span class="num">1</span>]) <span class="kw">return false</span>;
+    }
+    <span class="kw">return true</span>;
+}
+
+<span class="kw">void</span> <span class="fn">runTest</span>(<span class="kw">int</span> testId, <span class="kw">int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> inversions = <span class="fn">countInversions</span>(arr, n);   <span class="com">// Dem TRUOC khi sap xep</span>
+    <span class="kw">int</span> swaps = <span class="fn">bubbleSortSwaps</span>(arr, n);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Test "</span> &lt;&lt; testId &lt;&lt; <span class="str">" | nghich the: "</span> &lt;&lt; inversions
+              &lt;&lt; <span class="str">" | hoan doi: "</span> &lt;&lt; swaps;
+    <span class="kw">if</span> (inversions == swaps &amp;&amp; <span class="fn">isSorted</span>(arr, n)) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" | PASS\n"</span>;
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" | FAIL\n"</span>;
+    }
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> emptyArr[<span class="num">1</span>] = {<span class="num">0</span>};
+    <span class="kw">int</span> single[<span class="num">1</span>]   = {<span class="num">42</span>};
+    <span class="kw">int</span> sorted[<span class="num">5</span>]   = {<span class="num">100</span>, <span class="num">200</span>, <span class="num">300</span>, <span class="num">400</span>, <span class="num">500</span>};
+    <span class="kw">int</span> reversed[<span class="num">5</span>] = {<span class="num">500</span>, <span class="num">400</span>, <span class="num">300</span>, <span class="num">200</span>, <span class="num">100</span>};
+    <span class="kw">int</span> mixed[<span class="num">5</span>]    = {<span class="num">300</span>, <span class="num">100</span>, <span class="num">500</span>, <span class="num">200</span>, <span class="num">400</span>};
+    <span class="kw">int</span> dup[<span class="num">5</span>]      = {<span class="num">200</span>, <span class="num">100</span>, <span class="num">200</span>, <span class="num">100</span>, <span class="num">200</span>};
+
+    <span class="fn">runTest</span>(<span class="num">1</span>, emptyArr, <span class="num">0</span>);
+    <span class="fn">runTest</span>(<span class="num">2</span>, single, <span class="num">1</span>);
+    <span class="fn">runTest</span>(<span class="num">3</span>, sorted, <span class="num">5</span>);
+    <span class="fn">runTest</span>(<span class="num">4</span>, reversed, <span class="num">5</span>);
+    <span class="fn">runTest</span>(<span class="num">5</span>, mixed, <span class="num">5</span>);
+    <span class="fn">runTest</span>(<span class="num">6</span>, dup, <span class="num">5</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <div class="note-box note-box--tip">
+                  <strong>💡 Trả lời câu hỏi cuối:</strong> Tối đa là <code>n(n − 1)/2</code> cặp nghịch thế, khi mảng <strong>sắp ngược hoàn toàn</strong> (mọi cặp đều sai thứ tự). Với 5 phần tử: 5·4/2 = 10 — đúng bằng số hoán đổi ở Test 4. Đây cũng là lý do Bubble Sort xấu nhất là <code>O(n²)</code>: nó chỉ sửa được một cặp sai mỗi lần đổi chỗ.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION CUỐI TRANG -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft);">
+        <a href="lesson-03-07.html" class="btn btn--outline">← Buổi 29: Bubble Sort</a>
+        <a href="lesson-03-09.html" class="btn btn--primary">Buổi 31: Chuỗi ký tự (string) →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span></div>
+            <div class="contact-item"><i class="fas fa-phone"></i><span>090 198 05 69</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><span>innomindskills@gmail.com</span></div>
+            <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">Facebook</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="site-footer__text">© 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.</div>
+        <div class="site-footer__links"><a href="#" class="site-nav__link">Về đầu trang ↑</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

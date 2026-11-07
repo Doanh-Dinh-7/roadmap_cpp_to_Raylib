@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 26: Mảng Một Chiều (Arrays): Khai Báo và Duyệt Phần Tử — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 26: Khai báo, khởi tạo mảng tĩnh, chỉ số bắt đầu từ 0, duyệt mảng bằng for và nhận diện lỗi truy cập ngoài phạm vi mảng (out-of-bounds).">
+  <link rel="icon" type="image/png" href="../../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-03.html" class="site-nav__link is-active">Giai đoạn 03</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-03.html" class="breadcrumb__link">Giai đoạn 03</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 26: Mảng một chiều (Arrays)</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 26</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--easy">Mảng</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Mảng Một Chiều (Arrays): Khai Báo và Duyệt Phần Tử
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Khai báo và khởi tạo mảng tĩnh, hiểu chỉ số bắt đầu từ 0, duyệt mảng bằng <code>for</code> để lưu trữ và thao tác danh sách số/ký tự; nhận diện và phòng tránh lỗi truy cập ngoài phạm vi mảng (out-of-bounds).
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-03-03.html" class="btn btn--outline btn--sm">← Buổi 25</a>
+          <a href="lesson-03-05.html" class="btn btn--primary btn--sm">Buổi 27 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+
+      <!-- PHẦN 1: LÝ THUYẾT -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi (35 Phút)</h2>
+
+        <h3>1.1 Vì sao cần mảng?</h3>
+        <p>
+          Giả sử game có 5 con quái, mỗi con có lượng máu (HP) riêng. Nếu chỉ dùng biến đơn, ta phải viết <code>hp1, hp2, hp3, hp4, hp5</code> — và khi muốn trừ máu cả 5 con thì phải viết 5 dòng lệnh. Với 100 con quái thì sao? Không thể!
+        </p>
+        <p>
+          <strong>Mảng (array)</strong> là một dãy các ô nhớ <em>liên tiếp</em>, <em>cùng kiểu dữ liệu</em>, dùng chung <em>một tên</em>. Mỗi ô được truy cập bằng <strong>chỉ số (index)</strong> đặt trong cặp ngoặc vuông. Nhờ chỉ số là một con số, ta có thể dùng vòng lặp <code>for</code> để xử lý toàn bộ mảng chỉ với vài dòng code.
+        </p>
+
+        <div class="note-box note-box--info">
+          <strong>📦 Hình dung mảng <code>int hp[5] = {100, 80, 0, 45, 60};</code></strong>
+          <div class="table-wrapper" style="margin-top: var(--space-3);">
+            <table class="table">
+              <thead>
+                <tr><th>Chỉ số</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Phần tử</td><td><code>hp[0]</code></td><td><code>hp[1]</code></td><td><code>hp[2]</code></td><td><code>hp[3]</code></td><td><code>hp[4]</code></td></tr>
+                <tr><td>Giá trị</td><td>100</td><td>80</td><td>0</td><td>45</td><td>60</td></tr>
+              </tbody>
+            </table>
+          </div>
+          Mảng có 5 phần tử thì chỉ số hợp lệ là <strong>0 đến 4</strong> (tức <code>0</code> đến <code>N - 1</code>). Không có <code>hp[5]</code>!
+        </div>
+
+        <h3>1.2 Bảng tóm tắt cú pháp</h3>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Cú pháp</th>
+                <th>Ý nghĩa</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>int hp[5];</code></td>
+                <td>Khai báo mảng 5 số nguyên</td>
+                <td>Giá trị ban đầu là <strong>rác</strong> (không xác định)</td>
+              </tr>
+              <tr>
+                <td><code>int hp[5] = {100, 80, 0, 45, 60};</code></td>
+                <td>Khai báo và khởi tạo đủ 5 phần tử</td>
+                <td>Số giá trị không được vượt quá kích thước</td>
+              </tr>
+              <tr>
+                <td><code>int score[10] = {0};</code></td>
+                <td>Khởi tạo toàn bộ bằng 0</td>
+                <td>Phần tử thiếu giá trị sẽ tự nhận 0</td>
+              </tr>
+              <tr>
+                <td><code>int lv[] = {1, 2, 3};</code></td>
+                <td>Trình biên dịch tự đếm kích thước (3)</td>
+                <td>Bắt buộc phải có danh sách khởi tạo</td>
+              </tr>
+              <tr>
+                <td><code>const int N = 5;</code><br><code>int hp[N];</code></td>
+                <td>Kích thước là hằng số đặt tên</td>
+                <td>Cách nên dùng — đổi 1 chỗ là đổi cả chương trình</td>
+              </tr>
+              <tr>
+                <td><code>char keys[4] = {'W', 'A', 'S', 'D'};</code></td>
+                <td>Mảng ký tự</td>
+                <td>Mỗi phần tử là 1 ký tự trong nháy đơn</td>
+              </tr>
+              <tr>
+                <td><code>hp[2] = 50;</code> / <code>std::cout &lt;&lt; hp[i];</code></td>
+                <td>Gán / đọc phần tử</td>
+                <td>Chỉ số có thể là biến hoặc biểu thức</td>
+              </tr>
+              <tr>
+                <td><code>for (int i = 0; i &lt; N; i++)</code></td>
+                <td>Duyệt từ đầu đến cuối mảng</td>
+                <td>Điều kiện là <code>&lt; N</code>, <strong>không</strong> phải <code>&lt;= N</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>1.3 Duyệt mảng bằng vòng lặp for</h3>
+        <p>
+          Mẫu duyệt mảng chuẩn: biến đếm <code>i</code> chạy từ <code>0</code> đến <code>N - 1</code>, mỗi vòng xử lý phần tử <code>arr[i]</code>. Ví dụ dưới đây in máu của 5 con quái và trừ máu tất cả do một phép thuật diện rộng:
+        </p>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">monster_hp.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> N = <span class="num">5</span>;
+    <span class="kw">int</span> hp[N] = {<span class="num">100</span>, <span class="num">80</span>, <span class="num">0</span>, <span class="num">45</span>, <span class="num">60</span>};
+
+    <span class="com">// 1. In mau tung con quai</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Quai "</span> &lt;&lt; i &lt;&lt; <span class="str">": HP = "</span> &lt;&lt; hp[i] &lt;&lt; <span class="str">"\n"</span>;
+    }
+
+    <span class="com">// 2. Phep thuat dien rong: tru 30 HP moi con (khong de am)</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) {
+        hp[i] -= <span class="num">30</span>;
+        <span class="kw">if</span> (hp[i] &lt; <span class="num">0</span>) hp[i] = <span class="num">0</span>;
+    }
+
+    <span class="com">// 3. In lai tren mot dong</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Sau phep thuat: "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; hp[i] &lt;&lt; <span class="str">" "</span>;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+        </div>
+
+        <h3>1.4 Nhập dữ liệu vào mảng</h3>
+        <p>
+          Khi số phần tử do người dùng quyết định, ta khai báo mảng với kích thước <strong>tối đa</strong> (ví dụ <code>MAX = 100</code>), rồi dùng biến <code>n</code> để lưu số phần tử thực sự sử dụng. Luôn kiểm tra <code>n</code> nằm trong khoảng <code>1..MAX</code>:
+        </p>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">input_array.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> MAX = <span class="num">100</span>;
+    <span class="kw">int</span> scores[MAX];
+    <span class="kw">int</span> n;
+
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So man choi (1-"</span> &lt;&lt; MAX &lt;&lt; <span class="str">"): "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; n;
+    } <span class="kw">while</span> (n &lt; <span class="num">1</span> || n &gt; MAX);       <span class="com">// Chan truoc loi vuot mang</span>
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Diem man "</span> &lt;&lt; i + <span class="num">1</span> &lt;&lt; <span class="str">": "</span>;   <span class="com">// Hien thi tu 1 cho de doc</span>
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; scores[i];
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="note-box note-box--tip">
+          <strong>🎮 Mẹo tư duy Game:</strong> Mảng có mặt ở khắp nơi trong game: <em>túi đồ (inventory)</em> là mảng các ô chứa mã vật phẩm, <em>thanh kỹ năng</em> là mảng thời gian hồi chiêu, <em>bảng xếp hạng</em> là mảng điểm số. Ở Giai đoạn 06 với Raylib, bạn sẽ dùng mảng để lưu vị trí của hàng chục viên đạn và kẻ địch — mỗi khung hình (frame) chỉ cần một vòng <code>for</code> để cập nhật và vẽ tất cả.
+        </div>
+
+        <div class="note-box note-box--warning">
+          <strong>⚠️ Lỗi truy cập ngoài phạm vi mảng (Out-of-bounds):</strong>
+          <ul style="margin: var(--space-2) 0 0; padding-left: 1.25rem; line-height: 1.8;">
+            <li>C++ <strong>không kiểm tra</strong> chỉ số giúp bạn. Viết <code>hp[5]</code> hay <code>hp[-1]</code> với mảng 5 phần tử vẫn biên dịch được, nhưng chương trình sẽ đọc/ghi vào vùng nhớ của biến khác → giá trị kỳ lạ, game bị sai ngẫu nhiên hoặc crash. Đây là <em>hành vi không xác định (undefined behavior)</em>.</li>
+            <li>Lỗi kinh điển: <code>for (int i = 0; i &lt;= N; i++)</code> — dấu <code>&lt;=</code> làm vòng lặp chạy thêm 1 lần với <code>i = N</code>.</li>
+            <li>Mảng khai báo không khởi tạo (<code>int a[5];</code>) chứa giá trị rác. Nếu cần cộng dồn, hãy khởi tạo <code>= {0}</code>.</li>
+            <li>Kích thước mảng tĩnh phải là <strong>hằng số</strong> biết lúc biên dịch (<code>const int N = 5;</code>). Không viết <code>int n; std::cin &gt;&gt; n; int a[n];</code> — đây không phải C++ chuẩn.</li>
+            <li>Không thể gán cả mảng bằng <code>a = b;</code> — phải chép từng phần tử bằng vòng lặp.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: BÀI TẬP TRÊN LỚP -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Bài tập trên lớp (55 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1: Lịch sử điểm các màn chơi</h4>
+            <span class="badge badge--easy">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Nhập số màn chơi <code>n</code> (1–20) và điểm của từng màn. In ra: (a) danh sách điểm theo thứ tự nhập; (b) danh sách điểm theo thứ tự <strong>ngược lại</strong> (màn gần nhất trước); (c) các màn đạt từ 50 điểm trở lên kèm số thứ tự màn.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">level_history.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> MAX = <span class="num">20</span>;
+    <span class="kw">int</span> scores[MAX];
+    <span class="kw">int</span> n;
+
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So man choi (1-20): "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; n;
+    } <span class="kw">while</span> (n &lt; <span class="num">1</span> || n &gt; MAX);
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Diem man "</span> &lt;&lt; i + <span class="num">1</span> &lt;&lt; <span class="str">": "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; scores[i];
+    }
+
+    <span class="com">// (a) Thu tu nhap</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nThu tu choi : "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; scores[i] &lt;&lt; <span class="str">" "</span>;
+    }
+
+    <span class="com">// (b) Thu tu nguoc: i chay tu n - 1 ve 0</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nGan nhat truoc: "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = n - <span class="num">1</span>; i &gt;= <span class="num">0</span>; i--) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; scores[i] &lt;&lt; <span class="str">" "</span>;
+    }
+
+    <span class="com">// (c) Cac man dat &gt;= 50 diem</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nCac man dat yeu cau (&gt;= 50):\n"</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (scores[i] &gt;= <span class="num">50</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  Man "</span> &lt;&lt; i + <span class="num">1</span> &lt;&lt; <span class="str">": "</span> &lt;&lt; scores[i] &lt;&lt; <span class="str">"\n"</span>;
+        }
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+
+          <div class="note-box note-box--info">
+            <strong>Chú ý chỉ số:</strong> Bên trong chương trình, màn đầu tiên là <code>scores[0]</code>; nhưng khi hiển thị cho người chơi, ta in <code>i + 1</code> để đánh số từ 1 cho tự nhiên. Đừng nhầm lẫn hai cách đánh số này!
+          </div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2: Chuỗi phím combo (mảng ký tự)</h4>
+            <span class="badge badge--easy">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Một combo chiêu thức gồm 8 phím, lưu trong mảng <code>char combo[8]</code>. Người chơi nhập lần lượt 8 phím (chỉ chấp nhận <code>W A S D J K</code>, chữ thường thì tự chuyển sang chữ hoa). Sau đó in combo dạng <code>W-&gt;A-&gt;J...</code> và đếm số lần nhấn phím tấn công <code>J</code>.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">combo_keys.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> LEN = <span class="num">8</span>;
+    <span class="kw">char</span> combo[LEN];
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; LEN; i++) {
+        <span class="kw">char</span> key;
+        <span class="kw">bool</span> valid = <span class="kw">false</span>;
+        <span class="kw">do</span> {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Phim thu "</span> &lt;&lt; i + <span class="num">1</span> &lt;&lt; <span class="str">" (W/A/S/D/J/K): "</span>;
+            <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; key;
+            <span class="kw">if</span> (key &gt;= <span class="str">'a'</span> &amp;&amp; key &lt;= <span class="str">'z'</span>) {
+                key = key - <span class="str">'a'</span> + <span class="str">'A'</span>;          <span class="com">// Chuyen chu thuong -&gt; chu hoa</span>
+            }
+            <span class="kw">switch</span> (key) {
+                <span class="kw">case</span> <span class="str">'W'</span>: <span class="kw">case</span> <span class="str">'A'</span>: <span class="kw">case</span> <span class="str">'S'</span>:
+                <span class="kw">case</span> <span class="str">'D'</span>: <span class="kw">case</span> <span class="str">'J'</span>: <span class="kw">case</span> <span class="str">'K'</span>:
+                    valid = <span class="kw">true</span>;
+                    <span class="kw">break</span>;
+                <span class="kw">default</span>:
+                    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Phim khong hop le!\n"</span>;
+            }
+        } <span class="kw">while</span> (!valid);
+        combo[i] = key;
+    }
+
+    <span class="kw">int</span> attackCount = <span class="num">0</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Combo: "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; LEN; i++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; combo[i];
+        <span class="kw">if</span> (i &lt; LEN - <span class="num">1</span>) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"-&gt;"</span>;   <span class="com">// Khong in mui ten sau phim cuoi</span>
+        <span class="kw">if</span> (combo[i] == <span class="str">'J'</span>) attackCount++;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nSo don tan cong (J): "</span> &lt;&lt; attackCount &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+
+          <div class="note-box note-box--tip">
+            <strong>🎯 Thử nghiệm trên lớp:</strong> Đổi điều kiện vòng in thành <code>i &lt;= LEN</code> rồi chạy lại. Bạn sẽ thấy một ký tự "lạ" xuất hiện ở cuối — đó chính là lỗi out-of-bounds đang đọc vùng nhớ ngoài mảng. Sửa lại ngay sau khi quan sát!
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (Tự luyện tập)</h2>
+        <p>Hoàn thành cả 3 bài để thành thạo khai báo và duyệt mảng trước buổi sau:</p>
+
+        <!-- Bài Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Lọc vật phẩm trong túi đồ</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Túi đồ có 10 ô, mỗi ô chứa mã vật phẩm (số nguyên, <code>0</code> nghĩa là ô trống). Khởi tạo sẵn <code>int bag[10] = {12, 0, 7, 0, 0, 25, 3, 0, 18, 0};</code>. Hãy: (a) in nội dung các ô ở <strong>vị trí chẵn</strong> (0, 2, 4…); (b) đếm số ô trống; (c) in danh sách ô có đồ theo dạng <code>Slot 0: 12</code>.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Gợi ý:</strong> Để duyệt các vị trí chẵn, cho <code>i</code> tăng mỗi lần 2 đơn vị (<code>i += 2</code>) thay vì kiểm tra <code>i % 2 == 0</code>.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">bag_filter.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> SIZE = <span class="num">10</span>;
+    <span class="kw">int</span> bag[SIZE] = {<span class="num">12</span>, <span class="num">0</span>, <span class="num">7</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">25</span>, <span class="num">3</span>, <span class="num">0</span>, <span class="num">18</span>, <span class="num">0</span>};
+
+    <span class="com">// (a) Cac o o vi tri chan</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"O vi tri chan: "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; SIZE; i += <span class="num">2</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; bag[i] &lt;&lt; <span class="str">" "</span>;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+
+    <span class="com">// (b) Dem o trong</span>
+    <span class="kw">int</span> emptyCount = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; SIZE; i++) {
+        <span class="kw">if</span> (bag[i] == <span class="num">0</span>) emptyCount++;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So o trong: "</span> &lt;&lt; emptyCount &lt;&lt; <span class="str">"/"</span> &lt;&lt; SIZE &lt;&lt; <span class="str">"\n"</span>;
+
+    <span class="com">// (c) Danh sach o co do</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Vat pham dang co:\n"</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; SIZE; i++) {
+        <span class="kw">if</span> (bag[i] != <span class="num">0</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  Slot "</span> &lt;&lt; i &lt;&lt; <span class="str">": "</span> &lt;&lt; bag[i] &lt;&lt; <span class="str">"\n"</span>;
+        }
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Bản đồ đối xứng &amp; Đảo ngược</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Một màn chơi 1 chiều được mô tả bằng mảng ký tự <code>char map[7]</code> (ví dụ <code>#</code> = tường, <code>.</code> = đường đi, <code>$</code> = vàng). Người chơi nhập 7 ký tự. Hãy: (a) tạo mảng <code>reversed[7]</code> chứa bản đồ đảo ngược và in ra; (b) kiểm tra bản đồ có <strong>đối xứng</strong> hay không (đọc xuôi giống đọc ngược, ví dụ <code># . $ $ $ . #</code>).
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Phân tích:</strong> Phần tử đối xứng với <code>map[i]</code> là <code>map[N - 1 - i]</code>. Khi kiểm tra đối xứng chỉ cần so sánh nửa đầu với nửa sau, gặp một cặp khác nhau là kết luận ngay (<code>break</code>).</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">mirror_map.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> N = <span class="num">7</span>;
+    <span class="kw">char</span> map[N];
+    <span class="kw">char</span> reversed[N];
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap 7 o ban do (# . $), cach nhau boi dau cach: "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) {
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; map[i];
+    }
+
+    <span class="com">// (a) Tao mang dao nguoc</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) {
+        reversed[i] = map[N - <span class="num">1</span> - i];
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ban do goc    : "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; map[i];
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nBan do dao nguoc: "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; reversed[i];
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+
+    <span class="com">// (b) Kiem tra doi xung: chi can duyet nua dau</span>
+    <span class="kw">bool</span> symmetric = <span class="kw">true</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N / <span class="num">2</span>; i++) {
+        <span class="kw">if</span> (map[i] != map[N - <span class="num">1</span> - i]) {
+            symmetric = <span class="kw">false</span>;
+            <span class="kw">break</span>;
+        }
+    }
+
+    <span class="kw">if</span> (symmetric) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ban do DOI XUNG!\n"</span>;
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ban do khong doi xung.\n"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Trận chiến thanh máu ASCII</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Có 5 con quái, máu ban đầu lưu trong mảng <code>int hp[5] = {100, 70, 50, 90, 30};</code>. Mỗi lượt, người chơi chọn con quái để đánh (nhập 1–5). Sát thương ngẫu nhiên từ 10 đến 35. Sau mỗi lượt, in thanh máu ASCII của cả đàn quái: mỗi ký tự <code>#</code> tương ứng 10 HP (làm tròn lên), quái chết in <code>[DEAD]</code>. Không cho chọn quái đã chết hoặc số ngoài 1–5. Trò chơi kết thúc khi tất cả quái chết; in tổng số lượt đã dùng.
+          </p>
+
+          <div class="note-box note-box--info">
+            <strong>Gợi ý:</strong> Số ký tự <code>#</code> làm tròn lên của <code>hp</code> là <code>(hp + 9) / 10</code>. Để biết còn quái sống không, duyệt mảng đếm số phần tử có <code>hp[i] &gt; 0</code>.
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">hp_bar_battle.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cstdlib&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;ctime&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">srand</span>(<span class="fn">time</span>(<span class="num">0</span>));
+    <span class="kw">const int</span> N = <span class="num">5</span>;
+    <span class="kw">int</span> hp[N] = {<span class="num">100</span>, <span class="num">70</span>, <span class="num">50</span>, <span class="num">90</span>, <span class="num">30</span>};
+    <span class="kw">int</span> turns = <span class="num">0</span>;
+    <span class="kw">int</span> alive = N;
+
+    <span class="kw">while</span> (alive &gt; <span class="num">0</span>) {
+        <span class="com">// --- 1. Ve thanh mau ---</span>
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n===== LUOT "</span> &lt;&lt; turns + <span class="num">1</span> &lt;&lt; <span class="str">" =====\n"</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Quai "</span> &lt;&lt; i + <span class="num">1</span> &lt;&lt; <span class="str">": "</span>;
+            <span class="kw">if</span> (hp[i] &lt;= <span class="num">0</span>) {
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"[DEAD]\n"</span>;
+                <span class="kw">continue</span>;
+            }
+            <span class="kw">int</span> blocks = (hp[i] + <span class="num">9</span>) / <span class="num">10</span>;       <span class="com">// Lam tron len</span>
+            <span class="kw">for</span> (<span class="kw">int</span> b = <span class="num">0</span>; b &lt; blocks; b++) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">'#'</span>;
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" ("</span> &lt;&lt; hp[i] &lt;&lt; <span class="str">")\n"</span>;
+        }
+
+        <span class="com">// --- 2. Chon muc tieu hop le ---</span>
+        <span class="kw">int</span> target;
+        <span class="kw">while</span> (<span class="kw">true</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Danh quai so (1-5): "</span>;
+            <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; target;
+            <span class="kw">if</span> (target &lt; <span class="num">1</span> || target &gt; N) {
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Khong co quai nay!\n"</span>;
+            } <span class="kw">else if</span> (hp[target - <span class="num">1</span>] &lt;= <span class="num">0</span>) {      <span class="com">// Doi tu so thu tu sang chi so</span>
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Quai nay da chet roi!\n"</span>;
+            } <span class="kw">else</span> {
+                <span class="kw">break</span>;
+            }
+        }
+
+        <span class="com">// --- 3. Gay sat thuong ---</span>
+        <span class="kw">int</span> damage = <span class="fn">rand</span>() % <span class="num">26</span> + <span class="num">10</span>;               <span class="com">// 10..35</span>
+        hp[target - <span class="num">1</span>] -= damage;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ban gay "</span> &lt;&lt; damage &lt;&lt; <span class="str">" sat thuong len quai "</span> &lt;&lt; target &lt;&lt; <span class="str">"!\n"</span>;
+        <span class="kw">if</span> (hp[target - <span class="num">1</span>] &lt;= <span class="num">0</span>) {
+            hp[target - <span class="num">1</span>] = <span class="num">0</span>;
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Quai "</span> &lt;&lt; target &lt;&lt; <span class="str">" da bi tieu diet!\n"</span>;
+        }
+        turns++;
+
+        <span class="com">// --- 4. Dem lai so quai con song ---</span>
+        alive = <span class="num">0</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) {
+            <span class="kw">if</span> (hp[i] &gt; <span class="num">0</span>) alive++;
+        }
+    }
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nCHIEN THANG! Ban da tieu diet ca dan quai sau "</span> &lt;&lt; turns &lt;&lt; <span class="str">" luot.\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <div class="note-box note-box--tip">
+                  <strong>💡 Mở rộng:</strong> Thêm mảng thứ hai <code>int maxHp[5]</code> để vẽ thanh máu dạng <code>[###.....]</code> (phần đã mất in dấu chấm). Đây chính là cách game vẽ thanh máu: tỉ lệ <code>hp / maxHp</code> quyết định độ dài phần màu đỏ.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION CUỐI TRANG -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft);">
+        <a href="lesson-03-03.html" class="btn btn--outline">← Buổi 25: Phạm vi biến (Scope)</a>
+        <a href="lesson-03-05.html" class="btn btn--primary">Buổi 27: Thao tác trên mảng →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span></div>
+            <div class="contact-item"><i class="fas fa-phone"></i><span>090 198 05 69</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><span>innomindskills@gmail.com</span></div>
+            <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">Facebook</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="site-footer__text">© 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.</div>
+        <div class="site-footer__links"><a href="#" class="site-nav__link">Về đầu trang ↑</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

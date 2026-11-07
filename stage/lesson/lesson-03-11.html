@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 33: Mini Project: Tic Tac Toe Console — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 33: Xây dựng cờ caro 3x3 (Tic Tac Toe) hai người chơi trên console: lưu bàn cờ bằng mảng char board[9], chia chương trình thành các hàm drawBoard, getMove, checkWin, isFull, vòng lặp game và chơi lại.">
+  <link rel="icon" type="image/png" href="../../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-03.html" class="site-nav__link is-active">Giai đoạn 03</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-03.html" class="breadcrumb__link">Giai đoạn 03</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 33: Mini Project Tic Tac Toe Console</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 33</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--hard">Mini Project 03</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Mini Project: Tic Tac Toe Console
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Xây dựng hoàn chỉnh cờ caro 3x3 cho hai người chơi trên console — lưu bàn cờ bằng mảng <code>char board[9]</code>, chia chương trình thành các hàm <code>drawBoard</code>, <code>getMove</code>, <code>checkWin</code>, <code>isFull</code>, kiểm tra nước đi hợp lệ, vòng lặp game và chơi lại nhiều ván — vận dụng toàn bộ kiến thức Hàm và Mảng của Giai đoạn 03.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-03-10.html" class="btn btn--outline btn--sm">← Buổi 32</a>
+          <a href="../stage-04.html" class="btn btn--primary btn--sm">Sang Giai đoạn 04 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+
+      <!-- PHẦN 1: LÝ THUYẾT -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi — Phân tích &amp; Thiết kế game (20 Phút)</h2>
+
+        <h3>1.1 Luật chơi và ánh xạ sang kiến thức đã học</h3>
+        <p>
+          Hai người chơi lần lượt đánh <code>X</code> và <code>O</code> vào bàn cờ 3x3. Ai có <strong>3 quân thẳng hàng</strong> (ngang, dọc hoặc chéo) trước sẽ thắng; nếu kín 9 ô mà không ai thắng thì <strong>hòa</strong>. Mỗi phần của game tương ứng với một kiến thức bạn đã học:
+        </p>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Thành phần game</th>
+                <th>Kiến thức áp dụng</th>
+                <th>Buổi học</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Lưu 9 ô của bàn cờ</td><td>Mảng một chiều <code>char board[9]</code></td><td>Buổi 26</td></tr>
+              <tr><td>Vẽ bàn cờ, nhập nước đi, kiểm tra thắng/hòa</td><td>Mỗi việc một hàm (<code>void</code>, <code>bool</code>, <code>int</code>), truyền mảng vào hàm</td><td>Buổi 23–25, 27</td></tr>
+              <tr><td>Tìm ô còn trống, kiểm tra 8 đường thắng</td><td>Duyệt mảng, tìm kiếm tuyến tính, mảng song song</td><td>Buổi 26–28</td></tr>
+              <tr><td>Chặn nhập chữ, ô ngoài 1–9, ô đã có quân</td><td>Vòng lặp kiểm tra đầu vào, <code>cin.clear()</code>/<code>cin.ignore()</code></td><td>Buổi 15, 22</td></tr>
+              <tr><td>Luân phiên X ↔ O, vòng lặp đến khi kết thúc</td><td>Vòng lặp <code>while</code>, <code>if</code>, <code>return</code> sớm</td><td>Buổi 08, 12</td></tr>
+              <tr><td>Chơi nhiều ván, đếm tỉ số</td><td><code>do-while</code> "Chơi lại?", biến tích lũy</td><td>Buổi 15, 22</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>1.2 Biểu diễn bàn cờ 3x3 bằng mảng 1 chiều</h3>
+        <p>
+          Ta chưa học mảng 2 chiều (Giai đoạn 04), nhưng chỉ cần đánh số 9 ô theo hàng, từ trái sang phải, trên xuống dưới. Người chơi nhập số <strong>1–9</strong>, còn chỉ số mảng là <strong>0–8</strong> → <code>index = cell - 1</code>. Ô ở hàng <code>row</code>, cột <code>col</code> có chỉ số <code>row * 3 + col</code>.
+        </p>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr><th></th><th>Cột 0</th><th>Cột 1</th><th>Cột 2</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Hàng 0</strong></td><td>Ô 1 → <code>board[0]</code></td><td>Ô 2 → <code>board[1]</code></td><td>Ô 3 → <code>board[2]</code></td></tr>
+              <tr><td><strong>Hàng 1</strong></td><td>Ô 4 → <code>board[3]</code></td><td>Ô 5 → <code>board[4]</code></td><td>Ô 6 → <code>board[5]</code></td></tr>
+              <tr><td><strong>Hàng 2</strong></td><td>Ô 7 → <code>board[6]</code></td><td>Ô 8 → <code>board[7]</code></td><td>Ô 9 → <code>board[8]</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>Mẹo hiển thị:</strong> khởi tạo ô trống bằng chính ký tự số <code>'1'</code>…<code>'9'</code> (<code>board[i] = '1' + i</code>) để người chơi nhìn bàn cờ là biết số ô. Ô còn trống ⇔ ô đó <strong>không phải</strong> <code>'X'</code> và <strong>không phải</strong> <code>'O'</code>.
+        </p>
+
+        <h3>1.3 Tám đường thắng — dùng 3 mảng song song</h3>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr><th>Loại</th><th>Các bộ 3 chỉ số</th><th>Số đường</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Hàng ngang</td><td><code>(0,1,2)</code> <code>(3,4,5)</code> <code>(6,7,8)</code></td><td>3</td></tr>
+              <tr><td>Cột dọc</td><td><code>(0,3,6)</code> <code>(1,4,7)</code> <code>(2,5,8)</code></td><td>3</td></tr>
+              <tr><td>Đường chéo</td><td><code>(0,4,8)</code> <code>(2,4,6)</code></td><td>2</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Thay vì viết 8 câu <code>if</code> dài, ta lưu ô thứ nhất, thứ hai, thứ ba của mỗi đường vào ba mảng hằng <code>WIN_A</code>, <code>WIN_B</code>, <code>WIN_C</code> (cùng chỉ số <code>k</code> → cùng một đường — giống mảng song song tên/điểm ở Buổi 27) rồi duyệt bằng một vòng <code>for</code>.
+        </p>
+
+        <h3>1.4 Thiết kế các hàm</h3>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr><th>Hàm</th><th>Nhiệm vụ</th><th>Trả về</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>void initBoard(char board[])</code></td><td>Đặt lại 9 ô thành <code>'1'</code>…<code>'9'</code></td><td>—</td></tr>
+              <tr><td><code>void drawBoard(char board[])</code></td><td>In bàn cờ 3x3 ra màn hình</td><td>—</td></tr>
+              <tr><td><code>bool isEmptyCell(char board[], int index)</code></td><td>Ô <code>index</code> còn trống?</td><td><code>true/false</code></td></tr>
+              <tr><td><code>int getMove(char board[], char player)</code></td><td>Hỏi đến khi người chơi nhập ô hợp lệ</td><td>Chỉ số 0–8</td></tr>
+              <tr><td><code>bool checkWin(char board[], char player)</code></td><td><code>player</code> đã có 3 quân thẳng hàng?</td><td><code>true/false</code></td></tr>
+              <tr><td><code>bool isFull(char board[])</code></td><td>Kín cả 9 ô?</td><td><code>true/false</code></td></tr>
+              <tr><td><code>char switchPlayer(char player)</code></td><td>Đổi lượt X ↔ O</td><td><code>'X'</code> / <code>'O'</code></td></tr>
+              <tr><td><code>char playRound(char firstPlayer)</code></td><td>Chơi trọn 1 ván</td><td><code>'X'</code>, <code>'O'</code> hoặc <code>'D'</code> (hòa)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note-box note-box--info">
+          <strong>📋 Luồng chạy một ván (Game Loop):</strong>
+          <ol style="margin: var(--space-3) 0 0; padding-left: 1.25rem; line-height: 1.8;">
+            <li><strong>START</strong> → <code>initBoard</code>, người đi đầu là <code>X</code>.</li>
+            <li><strong>Vẽ</strong> bàn cờ (<code>drawBoard</code>).</li>
+            <li><strong>Nhập</strong> nước đi hợp lệ (<code>getMove</code>) → <strong>cập nhật</strong> <code>board[index] = current</code>.</li>
+            <li><strong>Kiểm tra:</strong> <code>checkWin</code> đúng → người hiện tại thắng, kết thúc ván. <code>isFull</code> đúng → hòa, kết thúc ván.</li>
+            <li>Chưa kết thúc → <strong>đổi lượt</strong> (<code>switchPlayer</code>) → quay lại bước 2.</li>
+          </ol>
+        </div>
+
+        <div class="note-box note-box--tip">
+          <strong>🎮 Mẹo tư duy Game:</strong> Vòng lặp <em>Vẽ → Nhập → Cập nhật → Kiểm tra</em> chính là <strong>Game Loop</strong> của mọi trò chơi. Trong Raylib (Giai đoạn 06), mỗi khung hình cũng làm đúng các bước này: đọc chuột/bàn phím, cập nhật dữ liệu, rồi <code>BeginDrawing()</code>…<code>EndDrawing()</code>. Hàm <code>drawBoard</code> hôm nay sau này chỉ cần thay <code>std::cout</code> bằng <code>DrawRectangle</code>, <code>DrawText</code> là thành Tic Tac Toe đồ họa — phần logic <code>checkWin</code>, <code>isFull</code> giữ nguyên!
+        </div>
+
+        <div class="note-box note-box--warning">
+          <strong>⚠️ Lỗi thường gặp:</strong>
+          <ul style="margin: var(--space-2) 0 0; padding-left: 1.25rem;">
+            <li><strong>Lệch chỉ số 1:</strong> quên <code>cell - 1</code> → người chọn ô 9 sẽ ghi vào <code>board[9]</code>, <strong>vượt ngoài mảng</strong> (Buổi 26) và có thể làm hỏng biến khác.</li>
+            <li><strong>Không kiểm tra ô đã có quân</strong> → người chơi đè lên quân của đối thủ.</li>
+            <li><strong>Kiểm tra hòa trước khi kiểm tra thắng:</strong> nước thứ 9 vừa tạo thành 3 quân thẳng hàng sẽ bị báo nhầm là hòa. Luôn gọi <code>checkWin</code> <em>trước</em> <code>isFull</code>.</li>
+            <li><strong>Mảng truyền vào hàm bị sửa trực tiếp:</strong> khác với <code>int</code> hay <code>std::string</code> (được sao chép), khi gọi <code>initBoard(board)</code> thì hàm thay đổi chính mảng <code>board</code> của <code>main</code> — nhờ vậy các hàm mới dùng chung được bàn cờ. Cơ chế bên trong sẽ được giải thích ở Giai đoạn 04 (con trỏ).</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: BÀI TẬP TRÊN LỚP -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Bài tập trên lớp — Xây dựng game từng bước (70 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bước 1: Khởi tạo và vẽ bàn cờ</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Viết <code>initBoard</code> và <code>drawBoard</code>. Trong <code>main</code>, thử đặt vài quân rồi vẽ để kiểm tra bàn cờ hiển thị đúng vị trí.
+          </p>
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">step1_board.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="com">// Dat lai ban co: o trong hien so '1'..'9' de nguoi choi de chon</span>
+<span class="kw">void</span> <span class="fn">initBoard</span>(<span class="kw">char</span> board[]) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">9</span>; i++) {
+        board[i] = <span class="str">'1'</span> + i;
+    }
+}
+
+<span class="com">// Ve ban co 3x3 tu mang 1 chieu 9 phan tu</span>
+<span class="kw">void</span> <span class="fn">drawBoard</span>(<span class="kw">char</span> board[]) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> row = <span class="num">0</span>; row &lt; <span class="num">3</span>; row++) {
+        <span class="kw">int</span> start = row * <span class="num">3</span>;                     <span class="com">// Chi so o dau tien cua hang</span>
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" "</span> &lt;&lt; board[start] &lt;&lt; <span class="str">" | "</span> &lt;&lt; board[start + <span class="num">1</span>]
+                  &lt;&lt; <span class="str">" | "</span> &lt;&lt; board[start + <span class="num">2</span>] &lt;&lt; <span class="str">"\n"</span>;
+        <span class="kw">if</span> (row &lt; <span class="num">2</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"---+---+---\n"</span>;
+        }
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">char</span> board[<span class="num">9</span>];
+    <span class="fn">initBoard</span>(board);
+    board[<span class="num">4</span>] = <span class="str">'X'</span>;                              <span class="com">// Thu dat X vao o giua (o so 5)</span>
+    board[<span class="num">0</span>] = <span class="str">'O'</span>;                              <span class="com">// Thu dat O vao goc trai tren (o so 1)</span>
+    <span class="fn">drawBoard</span>(board);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+          <div class="note-box note-box--info">
+            <strong>Kết quả mong đợi:</strong> hàng đầu in <code>O | 2 | 3</code>, hàng giữa <code>4 | X | 6</code>, hàng cuối <code>7 | 8 | 9</code>, giữa các hàng là <code>---+---+---</code>.
+          </div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bước 2: Nhập nước đi hợp lệ</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Viết <code>isEmptyCell</code> và <code>getMove</code>. <code>getMove</code> lặp đến khi người chơi nhập một số từ 1–9 ứng với ô còn trống; gõ chữ, số ngoài khoảng hay ô đã có quân đều phải báo lỗi và hỏi lại.
+          </p>
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">step2_getmove.cpp (thêm vào trước main)</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="com">// O con trong khi chua bi danh X hoac O</span>
+<span class="kw">bool</span> <span class="fn">isEmptyCell</span>(<span class="kw">char</span> board[], <span class="kw">int</span> index) {
+    <span class="kw">return</span> board[index] != <span class="str">'X'</span> &amp;&amp; board[index] != <span class="str">'O'</span>;
+}
+
+<span class="com">// Hoi nuoc di den khi hop le, tra ve chi so mang 0-8</span>
+<span class="kw">int</span> <span class="fn">getMove</span>(<span class="kw">char</span> board[], <span class="kw">char</span> player) {
+    <span class="kw">int</span> cell = <span class="num">0</span>;
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nguoi choi "</span> &lt;&lt; player &lt;&lt; <span class="str">", chon o (1-9): "</span>;
+        <span class="kw">if</span> (!(<span class="type">std</span>::<span class="type">cin</span> &gt;&gt; cell)) {               <span class="com">// Go chu -&gt; cin bi loi</span>
+            <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">clear</span>();
+            <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Vui long nhap mot so!\n"</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> (cell &lt; <span class="num">1</span> || cell &gt; <span class="num">9</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chi duoc chon o tu 1 den 9!\n"</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> (!<span class="fn">isEmptyCell</span>(board, cell - <span class="num">1</span>)) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"O nay da co quan co, chon o khac!\n"</span>;
+        } <span class="kw">else</span> {
+            <span class="kw">return</span> cell - <span class="num">1</span>;                     <span class="com">// So 1-9 cua nguoi choi -&gt; chi so 0-8</span>
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bước 3: Kiểm tra thắng và hòa</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Khai báo ba mảng hằng chứa 8 đường thắng, viết <code>checkWin</code> (duyệt 8 đường) và <code>isFull</code> (tìm kiếm tuyến tính một ô trống).
+          </p>
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">step3_checkwin.cpp (thêm vào trước main)</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="com">// 8 duong thang: duong thu k gom 3 o WIN_A[k], WIN_B[k], WIN_C[k]</span>
+<span class="com">//                  hang 1  hang 2  hang 3  cot 1   cot 2   cot 3   cheo \  cheo /</span>
+<span class="kw">const</span> <span class="kw">int</span> WIN_A[<span class="num">8</span>] = {<span class="num">0</span>,      <span class="num">3</span>,      <span class="num">6</span>,      <span class="num">0</span>,      <span class="num">1</span>,      <span class="num">2</span>,      <span class="num">0</span>,      <span class="num">2</span>};
+<span class="kw">const</span> <span class="kw">int</span> WIN_B[<span class="num">8</span>] = {<span class="num">1</span>,      <span class="num">4</span>,      <span class="num">7</span>,      <span class="num">3</span>,      <span class="num">4</span>,      <span class="num">5</span>,      <span class="num">4</span>,      <span class="num">4</span>};
+<span class="kw">const</span> <span class="kw">int</span> WIN_C[<span class="num">8</span>] = {<span class="num">2</span>,      <span class="num">5</span>,      <span class="num">8</span>,      <span class="num">6</span>,      <span class="num">7</span>,      <span class="num">8</span>,      <span class="num">8</span>,      <span class="num">6</span>};
+
+<span class="kw">bool</span> <span class="fn">checkWin</span>(<span class="kw">char</span> board[], <span class="kw">char</span> player) {
+    <span class="kw">for</span> (<span class="kw">int</span> k = <span class="num">0</span>; k &lt; <span class="num">8</span>; k++) {
+        <span class="kw">if</span> (board[WIN_A[k]] == player &amp;&amp;
+            board[WIN_B[k]] == player &amp;&amp;
+            board[WIN_C[k]] == player) {
+            <span class="kw">return</span> <span class="kw">true</span>;                         <span class="com">// Du 3 o thang hang</span>
+        }
+    }
+    <span class="kw">return</span> <span class="kw">false</span>;
+}
+
+<span class="kw">bool</span> <span class="fn">isFull</span>(<span class="kw">char</span> board[]) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">9</span>; i++) {
+        <span class="kw">if</span> (<span class="fn">isEmptyCell</span>(board, i)) {
+            <span class="kw">return</span> <span class="kw">false</span>;                        <span class="com">// Con it nhat 1 o trong</span>
+        }
+    }
+    <span class="kw">return</span> <span class="kw">true</span>;
+}</code></pre>
+          </div>
+          <div class="note-box note-box--info">
+            <strong>Vì sao <code>WIN_A</code>, <code>WIN_B</code>, <code>WIN_C</code> là biến toàn cục?</strong> Đây là <strong>hằng số</strong> (<code>const</code>) dùng chung, không bao giờ thay đổi — trường hợp hợp lý để khai báo toàn cục (Buổi 25). Biến có thể thay đổi như <code>board</code> vẫn nên để cục bộ và truyền qua tham số.
+          </div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bước 4: Ghép hoàn chỉnh — Game loop, tỉ số, chơi lại</h4>
+            <span class="badge badge--hard">Mini Project</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Viết <code>switchPlayer</code> và <code>playRound</code> theo luồng ở mục 1.4. Trong <code>main</code>, bọc <code>playRound</code> trong vòng <code>do-while</code> "Chơi lại?", đếm số ván X thắng, O thắng và hòa.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem mã nguồn hoàn chỉnh của game</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">tic_tac_toe.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="com">// ===== DU LIEU: 8 duong thang de thang =====</span>
+<span class="kw">const</span> <span class="kw">int</span> WIN_A[<span class="num">8</span>] = {<span class="num">0</span>, <span class="num">3</span>, <span class="num">6</span>, <span class="num">0</span>, <span class="num">1</span>, <span class="num">2</span>, <span class="num">0</span>, <span class="num">2</span>};
+<span class="kw">const</span> <span class="kw">int</span> WIN_B[<span class="num">8</span>] = {<span class="num">1</span>, <span class="num">4</span>, <span class="num">7</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">4</span>, <span class="num">4</span>};
+<span class="kw">const</span> <span class="kw">int</span> WIN_C[<span class="num">8</span>] = {<span class="num">2</span>, <span class="num">5</span>, <span class="num">8</span>, <span class="num">6</span>, <span class="num">7</span>, <span class="num">8</span>, <span class="num">8</span>, <span class="num">6</span>};
+
+<span class="kw">void</span> <span class="fn">initBoard</span>(<span class="kw">char</span> board[]) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">9</span>; i++) {
+        board[i] = <span class="str">'1'</span> + i;
+    }
+}
+
+<span class="kw">void</span> <span class="fn">drawBoard</span>(<span class="kw">char</span> board[]) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> row = <span class="num">0</span>; row &lt; <span class="num">3</span>; row++) {
+        <span class="kw">int</span> start = row * <span class="num">3</span>;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">" "</span> &lt;&lt; board[start] &lt;&lt; <span class="str">" | "</span> &lt;&lt; board[start + <span class="num">1</span>]
+                  &lt;&lt; <span class="str">" | "</span> &lt;&lt; board[start + <span class="num">2</span>] &lt;&lt; <span class="str">"\n"</span>;
+        <span class="kw">if</span> (row &lt; <span class="num">2</span>) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"---+---+---\n"</span>;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+}
+
+<span class="kw">bool</span> <span class="fn">isEmptyCell</span>(<span class="kw">char</span> board[], <span class="kw">int</span> index) {
+    <span class="kw">return</span> board[index] != <span class="str">'X'</span> &amp;&amp; board[index] != <span class="str">'O'</span>;
+}
+
+<span class="kw">int</span> <span class="fn">getMove</span>(<span class="kw">char</span> board[], <span class="kw">char</span> player) {
+    <span class="kw">int</span> cell = <span class="num">0</span>;
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nguoi choi "</span> &lt;&lt; player &lt;&lt; <span class="str">", chon o (1-9): "</span>;
+        <span class="kw">if</span> (!(<span class="type">std</span>::<span class="type">cin</span> &gt;&gt; cell)) {
+            <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">clear</span>();
+            <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Vui long nhap mot so!\n"</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> (cell &lt; <span class="num">1</span> || cell &gt; <span class="num">9</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chi duoc chon o tu 1 den 9!\n"</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> (!<span class="fn">isEmptyCell</span>(board, cell - <span class="num">1</span>)) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"O nay da co quan co, chon o khac!\n"</span>;
+        } <span class="kw">else</span> {
+            <span class="kw">return</span> cell - <span class="num">1</span>;
+        }
+    }
+}
+
+<span class="kw">bool</span> <span class="fn">checkWin</span>(<span class="kw">char</span> board[], <span class="kw">char</span> player) {
+    <span class="kw">for</span> (<span class="kw">int</span> k = <span class="num">0</span>; k &lt; <span class="num">8</span>; k++) {
+        <span class="kw">if</span> (board[WIN_A[k]] == player &amp;&amp;
+            board[WIN_B[k]] == player &amp;&amp;
+            board[WIN_C[k]] == player) {
+            <span class="kw">return</span> <span class="kw">true</span>;
+        }
+    }
+    <span class="kw">return</span> <span class="kw">false</span>;
+}
+
+<span class="kw">bool</span> <span class="fn">isFull</span>(<span class="kw">char</span> board[]) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">9</span>; i++) {
+        <span class="kw">if</span> (<span class="fn">isEmptyCell</span>(board, i)) <span class="kw">return</span> <span class="kw">false</span>;
+    }
+    <span class="kw">return</span> <span class="kw">true</span>;
+}
+
+<span class="kw">char</span> <span class="fn">switchPlayer</span>(<span class="kw">char</span> player) {
+    <span class="kw">if</span> (player == <span class="str">'X'</span>) <span class="kw">return</span> <span class="str">'O'</span>;
+    <span class="kw">return</span> <span class="str">'X'</span>;
+}
+
+<span class="com">// Choi 1 van. Tra ve 'X' hoac 'O' neu co nguoi thang, 'D' neu hoa</span>
+<span class="kw">char</span> <span class="fn">playRound</span>(<span class="kw">char</span> firstPlayer) {
+    <span class="kw">char</span> board[<span class="num">9</span>];
+    <span class="fn">initBoard</span>(board);
+    <span class="kw">char</span> current = firstPlayer;
+
+    <span class="kw">while</span> (<span class="kw">true</span>) {                               <span class="com">// GAME LOOP</span>
+        <span class="fn">drawBoard</span>(board);                        <span class="com">// 1. Ve ban co</span>
+        <span class="kw">int</span> index = <span class="fn">getMove</span>(board, current);     <span class="com">// 2. Nhan nuoc di hop le</span>
+        board[index] = current;                  <span class="com">// 3. Cap nhat ban co</span>
+
+        <span class="kw">if</span> (<span class="fn">checkWin</span>(board, current)) {          <span class="com">// 4. Kiem tra ket thuc</span>
+            <span class="fn">drawBoard</span>(board);
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"&gt;&gt;&gt; Nguoi choi "</span> &lt;&lt; current &lt;&lt; <span class="str">" THANG! &lt;&lt;&lt;\n"</span>;
+            <span class="kw">return</span> current;
+        }
+        <span class="kw">if</span> (<span class="fn">isFull</span>(board)) {
+            <span class="fn">drawBoard</span>(board);
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"&gt;&gt;&gt; HOA! Ban co da day. &lt;&lt;&lt;\n"</span>;
+            <span class="kw">return</span> <span class="str">'D'</span>;
+        }
+        current = <span class="fn">switchPlayer</span>(current);         <span class="com">// 5. Doi luot</span>
+    }
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> winsX = <span class="num">0</span>, winsO = <span class="num">0</span>, draws = <span class="num">0</span>;
+    <span class="kw">char</span> again = <span class="str">'y'</span>;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"===== TIC TAC TOE =====\n"</span>;
+    <span class="kw">do</span> {
+        <span class="kw">char</span> result = <span class="fn">playRound</span>(<span class="str">'X'</span>);
+        <span class="kw">if</span> (result == <span class="str">'X'</span>) winsX++;
+        <span class="kw">else</span> <span class="kw">if</span> (result == <span class="str">'O'</span>) winsO++;
+        <span class="kw">else</span> draws++;
+
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ti so -&gt; X: "</span> &lt;&lt; winsX &lt;&lt; <span class="str">" | O: "</span> &lt;&lt; winsO
+                  &lt;&lt; <span class="str">" | Hoa: "</span> &lt;&lt; draws &lt;&lt; <span class="str">"\n"</span>;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Choi lai? (y/n): "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; again;
+    } <span class="kw">while</span> (again == <span class="str">'y'</span> || again == <span class="str">'Y'</span>);
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Cam on ban da choi!\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box note-box--tip">
+            <strong>🎯 Kiểm thử bắt buộc trước khi nộp:</strong> (1) X thắng hàng ngang 1-2-3; (2) O thắng cột dọc; (3) thắng đường chéo 3-5-7; (4) ván hòa kín 9 ô; (5) thắng đúng ở nước thứ 9 (phải báo thắng, không báo hòa); (6) nhập chữ <code>abc</code>; (7) nhập <code>0</code> hoặc <code>10</code>; (8) chọn ô đã có quân; (9) chơi 3 ván rồi kiểm tra tỉ số.
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (Hoàn thiện Tic Tac Toe)</h2>
+        <p>Học viên làm cả 3 bài để hoàn thiện sản phẩm cuối Giai đoạn 03:</p>
+
+        <!-- Bài Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Tên người chơi &amp; đổi lượt đi trước</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Đầu chương trình nhập tên hai người chơi bằng <code>std::getline</code>. Mỗi lượt in <code>"Luot cua An (X)"</code>; khi thắng in tên người thắng. Sau mỗi ván in bảng tỉ số theo tên, và <strong>ván sau đổi người đi trước</strong> (ván 1 X đi trước, ván 2 O đi trước, …).
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Gợi ý:</strong> Truyền thêm tham số <code>std::string</code> cho <code>getMove</code> và <code>playRound</code>. Biến <code>first</code> nằm ngoài vòng ván chơi, cuối mỗi ván gọi <code>first = switchPlayer(first)</code>. Các hàm không liệt kê bên dưới giữ nguyên như bản hoàn chỉnh trên lớp.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">tic_tac_toe_names.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+
+<span class="com">// Giu nguyen: WIN_A/B/C, initBoard, drawBoard, isEmptyCell,</span>
+<span class="com">//             checkWin, isFull, switchPlayer (nhu tic_tac_toe.cpp)</span>
+
+<span class="com">// getMove nhan them ten nguoi choi de hien thi</span>
+<span class="kw">int</span> <span class="fn">getMove</span>(<span class="kw">char</span> board[], <span class="kw">char</span> player, <span class="type">std</span>::<span class="type">string</span> name) {
+    <span class="kw">int</span> cell = <span class="num">0</span>;
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Luot cua "</span> &lt;&lt; name &lt;&lt; <span class="str">" ("</span> &lt;&lt; player &lt;&lt; <span class="str">"), chon o (1-9): "</span>;
+        <span class="kw">if</span> (!(<span class="type">std</span>::<span class="type">cin</span> &gt;&gt; cell)) {
+            <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">clear</span>();
+            <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Vui long nhap mot so!\n"</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> (cell &lt; <span class="num">1</span> || cell &gt; <span class="num">9</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chi duoc chon o tu 1 den 9!\n"</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> (!<span class="fn">isEmptyCell</span>(board, cell - <span class="num">1</span>)) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"O nay da co quan co, chon o khac!\n"</span>;
+        } <span class="kw">else</span> {
+            <span class="kw">return</span> cell - <span class="num">1</span>;
+        }
+    }
+}
+
+<span class="kw">char</span> <span class="fn">playRound</span>(<span class="kw">char</span> firstPlayer, <span class="type">std</span>::<span class="type">string</span> nameX, <span class="type">std</span>::<span class="type">string</span> nameO) {
+    <span class="kw">char</span> board[<span class="num">9</span>];
+    <span class="fn">initBoard</span>(board);
+    <span class="kw">char</span> current = firstPlayer;
+
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="fn">drawBoard</span>(board);
+        <span class="type">std</span>::<span class="type">string</span> name = nameX;
+        <span class="kw">if</span> (current == <span class="str">'O'</span>) name = nameO;        <span class="com">// Ten cua nguoi dang toi luot</span>
+
+        <span class="kw">int</span> index = <span class="fn">getMove</span>(board, current, name);
+        board[index] = current;
+
+        <span class="kw">if</span> (<span class="fn">checkWin</span>(board, current)) {
+            <span class="fn">drawBoard</span>(board);
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"&gt;&gt;&gt; "</span> &lt;&lt; name &lt;&lt; <span class="str">" ("</span> &lt;&lt; current &lt;&lt; <span class="str">") THANG! &lt;&lt;&lt;\n"</span>;
+            <span class="kw">return</span> current;
+        }
+        <span class="kw">if</span> (<span class="fn">isFull</span>(board)) {
+            <span class="fn">drawBoard</span>(board);
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"&gt;&gt;&gt; HOA! &lt;&lt;&lt;\n"</span>;
+            <span class="kw">return</span> <span class="str">'D'</span>;
+        }
+        current = <span class="fn">switchPlayer</span>(current);
+    }
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> nameX, nameO;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ten nguoi choi X: "</span>;
+    <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, nameX);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ten nguoi choi O: "</span>;
+    <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, nameO);
+
+    <span class="kw">int</span> winsX = <span class="num">0</span>, winsO = <span class="num">0</span>, draws = <span class="num">0</span>;
+    <span class="kw">char</span> first = <span class="str">'X'</span>;
+    <span class="kw">char</span> again = <span class="str">'y'</span>;
+
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n--- Van moi: "</span> &lt;&lt; first &lt;&lt; <span class="str">" di truoc ---\n"</span>;
+        <span class="kw">char</span> result = <span class="fn">playRound</span>(first, nameX, nameO);
+        <span class="kw">if</span> (result == <span class="str">'X'</span>) winsX++;
+        <span class="kw">else</span> <span class="kw">if</span> (result == <span class="str">'O'</span>) winsO++;
+        <span class="kw">else</span> draws++;
+
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"BANG TI SO: "</span> &lt;&lt; nameX &lt;&lt; <span class="str">" "</span> &lt;&lt; winsX &lt;&lt; <span class="str">" - "</span>
+                  &lt;&lt; winsO &lt;&lt; <span class="str">" "</span> &lt;&lt; nameO &lt;&lt; <span class="str">" (Hoa: "</span> &lt;&lt; draws &lt;&lt; <span class="str">")\n"</span>;
+
+        first = <span class="fn">switchPlayer</span>(first);             <span class="com">// Van sau doi nguoi di truoc</span>
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Choi lai? (y/n): "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; again;
+    } <span class="kw">while</span> (again == <span class="str">'y'</span> || again == <span class="str">'Y'</span>);
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Hoàn tác nước đi (Undo)</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Cho phép người chơi nhập <code>0</code> để <strong>hoàn tác</strong> nước đi gần nhất: ô đó trở lại trống và lượt quay về người vừa đánh. Có thể hoàn tác liên tiếp nhiều nước cho đến khi bàn cờ trống. Khi thắng, in thêm tổng số nước đã đi.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Phân tích:</strong> Dùng mảng <code>int moves[9]</code> làm <strong>lịch sử</strong> các ô đã đánh và biến <code>moveCount</code>. Đánh → ghi vào <code>moves[moveCount]</code> rồi tăng; hoàn tác → giảm <code>moveCount</code>, lấy <code>moves[moveCount]</code> và trả ô về <code>'1' + index</code>. Khi đã có <code>moveCount</code> thì kiểm tra hòa chỉ cần <code>moveCount == 9</code>.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">tic_tac_toe_undo.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="com">// Giu nguyen: WIN_A/B/C, initBoard, drawBoard, isEmptyCell,</span>
+<span class="com">//             checkWin, isFull, switchPlayer, main (nhu tic_tac_toe.cpp)</span>
+
+<span class="com">// Nhap 0 de hoan tac -&gt; tra ve -1</span>
+<span class="kw">int</span> <span class="fn">getMove</span>(<span class="kw">char</span> board[], <span class="kw">char</span> player) {
+    <span class="kw">int</span> cell = <span class="num">0</span>;
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nguoi choi "</span> &lt;&lt; player &lt;&lt; <span class="str">", chon o (1-9, 0 = hoan tac): "</span>;
+        <span class="kw">if</span> (!(<span class="type">std</span>::<span class="type">cin</span> &gt;&gt; cell)) {
+            <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">clear</span>();
+            <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Vui long nhap mot so!\n"</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> (cell == <span class="num">0</span>) {
+            <span class="kw">return</span> -<span class="num">1</span>;                           <span class="com">// Tin hieu xin hoan tac</span>
+        } <span class="kw">else</span> <span class="kw">if</span> (cell &lt; <span class="num">1</span> || cell &gt; <span class="num">9</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chi duoc chon o tu 0 den 9!\n"</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> (!<span class="fn">isEmptyCell</span>(board, cell - <span class="num">1</span>)) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"O nay da co quan co, chon o khac!\n"</span>;
+        } <span class="kw">else</span> {
+            <span class="kw">return</span> cell - <span class="num">1</span>;
+        }
+    }
+}
+
+<span class="kw">char</span> <span class="fn">playRound</span>(<span class="kw">char</span> firstPlayer) {
+    <span class="kw">char</span> board[<span class="num">9</span>];
+    <span class="fn">initBoard</span>(board);
+    <span class="kw">char</span> current = firstPlayer;
+
+    <span class="kw">int</span> moves[<span class="num">9</span>];                                <span class="com">// Lich su: chi so o theo thu tu da danh</span>
+    <span class="kw">int</span> moveCount = <span class="num">0</span>;
+
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="fn">drawBoard</span>(board);
+        <span class="kw">int</span> index = <span class="fn">getMove</span>(board, current);
+
+        <span class="kw">if</span> (index == -<span class="num">1</span>) {                       <span class="com">// ----- HOAN TAC -----</span>
+            <span class="kw">if</span> (moveCount == <span class="num">0</span>) {
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chua co nuoc nao de hoan tac!\n"</span>;
+                <span class="kw">continue</span>;
+            }
+            moveCount--;
+            <span class="kw">int</span> last = moves[moveCount];         <span class="com">// O vua danh gan nhat</span>
+            board[last] = <span class="str">'1'</span> + last;            <span class="com">// Tra o ve trang thai trong</span>
+            current = <span class="fn">switchPlayer</span>(current);     <span class="com">// Tra luot cho nguoi vua danh</span>
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Da hoan tac nuoc di o so "</span> &lt;&lt; last + <span class="num">1</span> &lt;&lt; <span class="str">"\n"</span>;
+            <span class="kw">continue</span>;
+        }
+
+        board[index] = current;
+        moves[moveCount] = index;                <span class="com">// Ghi vao lich su</span>
+        moveCount++;
+
+        <span class="kw">if</span> (<span class="fn">checkWin</span>(board, current)) {
+            <span class="fn">drawBoard</span>(board);
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"&gt;&gt;&gt; Nguoi choi "</span> &lt;&lt; current &lt;&lt; <span class="str">" THANG sau "</span>
+                      &lt;&lt; moveCount &lt;&lt; <span class="str">" nuoc! &lt;&lt;&lt;\n"</span>;
+            <span class="kw">return</span> current;
+        }
+        <span class="kw">if</span> (moveCount == <span class="num">9</span>) {                    <span class="com">// Thay cho isFull: da danh du 9 o</span>
+            <span class="fn">drawBoard</span>(board);
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"&gt;&gt;&gt; HOA! &lt;&lt;&lt;\n"</span>;
+            <span class="kw">return</span> <span class="str">'D'</span>;
+        }
+        current = <span class="fn">switchPlayer</span>(current);
+    }
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Chơi với máy tính (AI đơn giản)</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Thêm menu chọn chế độ: <code>1</code> hai người, <code>2</code> <strong>máy dễ</strong> — máy (cầm O) chọn ngẫu nhiên một ô trống, <code>3</code> <strong>máy khó</strong> — máy suy nghĩ theo thứ tự ưu tiên:
+          </p>
+          <ol style="padding-left: 1.25rem; line-height: 1.8;">
+            <li>Nếu có ô đánh vào là <strong>thắng ngay</strong> → đánh ô đó.</li>
+            <li>Nếu người chơi có ô sắp thắng → <strong>chặn</strong> ô đó.</li>
+            <li>Nếu ô giữa (ô 5) còn trống → chiếm ô giữa.</li>
+            <li>Còn lại → chọn ngẫu nhiên một ô trống.</li>
+          </ol>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Ý tưởng "thử rồi hoàn lại":</strong> Hàm <code>findWinningMove</code> lần lượt <em>thử</em> đặt quân vào từng ô trống, gọi <code>checkWin</code>, rồi <em>trả ô về như cũ</em>. Gọi với quân của máy → tìm nước thắng; gọi với quân của người → tìm nước cần chặn. Để chọn ngẫu nhiên, gom chỉ số các ô trống vào mảng <code>empty[]</code> rồi lấy <code>empty[rand() % count]</code>.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">tic_tac_toe_ai.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cstdlib&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;ctime&gt;</span>
+
+<span class="com">// Giu nguyen: WIN_A/B/C, initBoard, drawBoard, isEmptyCell, getMove,</span>
+<span class="com">//             checkWin, isFull, switchPlayer (nhu tic_tac_toe.cpp)</span>
+
+<span class="com">// ===== AI CUA MAY =====</span>
+
+<span class="com">// Chon ngau nhien 1 o trong (chi goi khi ban co chua day)</span>
+<span class="kw">int</span> <span class="fn">getRandomEmptyCell</span>(<span class="kw">char</span> board[]) {
+    <span class="kw">int</span> empty[<span class="num">9</span>];                                <span class="com">// Danh sach chi so cac o trong</span>
+    <span class="kw">int</span> count = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">9</span>; i++) {
+        <span class="kw">if</span> (<span class="fn">isEmptyCell</span>(board, i)) {
+            empty[count] = i;
+            count++;
+        }
+    }
+    <span class="kw">return</span> empty[<span class="fn">rand</span>() % count];
+}
+
+<span class="com">// Thu tung o trong: neu player danh vao do ma thang -&gt; tra ve o do, khong co -&gt; -1</span>
+<span class="kw">int</span> <span class="fn">findWinningMove</span>(<span class="kw">char</span> board[], <span class="kw">char</span> player) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">9</span>; i++) {
+        <span class="kw">if</span> (<span class="fn">isEmptyCell</span>(board, i)) {
+            <span class="kw">char</span> backup = board[i];
+            board[i] = player;                   <span class="com">// Thu danh</span>
+            <span class="kw">bool</span> win = <span class="fn">checkWin</span>(board, player);
+            board[i] = backup;                   <span class="com">// Hoan lai nhu cu</span>
+            <span class="kw">if</span> (win) <span class="kw">return</span> i;
+        }
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;
+}
+
+<span class="kw">int</span> <span class="fn">getSmartMove</span>(<span class="kw">char</span> board[], <span class="kw">char</span> computer, <span class="kw">char</span> human) {
+    <span class="kw">int</span> move = <span class="fn">findWinningMove</span>(board, computer); <span class="com">// 1. Thang duoc thi thang ngay</span>
+    <span class="kw">if</span> (move != -<span class="num">1</span>) <span class="kw">return</span> move;
+    move = <span class="fn">findWinningMove</span>(board, human);        <span class="com">// 2. Doi thu sap thang -&gt; chan</span>
+    <span class="kw">if</span> (move != -<span class="num">1</span>) <span class="kw">return</span> move;
+    <span class="kw">if</span> (<span class="fn">isEmptyCell</span>(board, <span class="num">4</span>)) <span class="kw">return</span> <span class="num">4</span>;         <span class="com">// 3. Chiem o giua</span>
+    <span class="kw">return</span> <span class="fn">getRandomEmptyCell</span>(board);            <span class="com">// 4. Con lai: chon ngau nhien</span>
+}
+
+<span class="com">// mode: 1 = hai nguoi, 2 = may de (ngau nhien), 3 = may kho (thang/chan)</span>
+<span class="kw">char</span> <span class="fn">playRound</span>(<span class="kw">int</span> mode) {
+    <span class="kw">char</span> board[<span class="num">9</span>];
+    <span class="fn">initBoard</span>(board);
+    <span class="kw">char</span> current = <span class="str">'X'</span>;                          <span class="com">// Nguoi luon cam X va di truoc</span>
+
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="fn">drawBoard</span>(board);
+        <span class="kw">int</span> index;
+        <span class="kw">if</span> (mode != <span class="num">1</span> &amp;&amp; current == <span class="str">'O'</span>) {       <span class="com">// Luot cua may</span>
+            <span class="kw">if</span> (mode == <span class="num">2</span>) index = <span class="fn">getRandomEmptyCell</span>(board);
+            <span class="kw">else</span> index = <span class="fn">getSmartMove</span>(board, <span class="str">'O'</span>, <span class="str">'X'</span>);
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"May danh vao o "</span> &lt;&lt; index + <span class="num">1</span> &lt;&lt; <span class="str">"\n"</span>;
+        } <span class="kw">else</span> {
+            index = <span class="fn">getMove</span>(board, current);
+        }
+        board[index] = current;
+
+        <span class="kw">if</span> (<span class="fn">checkWin</span>(board, current)) {
+            <span class="fn">drawBoard</span>(board);
+            <span class="kw">if</span> (mode != <span class="num">1</span> &amp;&amp; current == <span class="str">'O'</span>) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"&gt;&gt;&gt; MAY THANG! &lt;&lt;&lt;\n"</span>;
+            <span class="kw">else</span> <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"&gt;&gt;&gt; Nguoi choi "</span> &lt;&lt; current &lt;&lt; <span class="str">" THANG! &lt;&lt;&lt;\n"</span>;
+            <span class="kw">return</span> current;
+        }
+        <span class="kw">if</span> (<span class="fn">isFull</span>(board)) {
+            <span class="fn">drawBoard</span>(board);
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"&gt;&gt;&gt; HOA! &lt;&lt;&lt;\n"</span>;
+            <span class="kw">return</span> <span class="str">'D'</span>;
+        }
+        current = <span class="fn">switchPlayer</span>(current);
+    }
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">srand</span>(<span class="fn">time</span>(<span class="num">0</span>));
+    <span class="kw">int</span> winsX = <span class="num">0</span>, winsO = <span class="num">0</span>, draws = <span class="num">0</span>;
+    <span class="kw">char</span> again = <span class="str">'y'</span>;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"===== TIC TAC TOE vs MAY =====\n"</span>;
+    <span class="kw">do</span> {
+        <span class="kw">int</span> mode = <span class="num">0</span>;
+        <span class="kw">do</span> {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Che do: 1-Hai nguoi  2-May de  3-May kho : "</span>;
+            <span class="kw">if</span> (!(<span class="type">std</span>::<span class="type">cin</span> &gt;&gt; mode)) {
+                <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">clear</span>();
+                <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);
+                mode = <span class="num">0</span>;
+            }
+        } <span class="kw">while</span> (mode &lt; <span class="num">1</span> || mode &gt; <span class="num">3</span>);
+
+        <span class="kw">char</span> result = <span class="fn">playRound</span>(mode);
+        <span class="kw">if</span> (result == <span class="str">'X'</span>) winsX++;
+        <span class="kw">else</span> <span class="kw">if</span> (result == <span class="str">'O'</span>) winsO++;
+        <span class="kw">else</span> draws++;
+
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ti so -&gt; X: "</span> &lt;&lt; winsX &lt;&lt; <span class="str">" | O: "</span> &lt;&lt; winsO
+                  &lt;&lt; <span class="str">" | Hoa: "</span> &lt;&lt; draws &lt;&lt; <span class="str">"\n"</span>;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Choi lai? (y/n): "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; again;
+    } <span class="kw">while</span> (again == <span class="str">'y'</span> || again == <span class="str">'Y'</span>);
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <div class="note-box note-box--tip">
+                  <strong>💡 Thử thách thêm:</strong> Máy khó vẫn có thể thua khi bạn tạo "thế hai đường" (hai đường cùng chờ thắng, máy chỉ chặn được một). Hãy tìm nước đi để thắng máy! Muốn máy <em>không bao giờ thua</em> cần thuật toán <strong>Minimax</strong> (đệ quy) — một chủ đề thú vị bạn có thể tìm hiểu sau khóa học.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- KẾT THÚC GIAI ĐOẠN 03 -->
+      <div style="background: var(--color-primary-light); border: 1px solid rgba(229, 57, 53, 0.2); border-radius: var(--radius-lg); padding: var(--space-6); text-align: center; margin-bottom: var(--space-8);">
+        <h3 style="color: var(--color-primary); margin-bottom: var(--space-2);">🎉 Chúc Mừng Bạn Đã Hoàn Thành Giai Đoạn 03!</h3>
+        <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+          Bạn đã biết chia chương trình thành <strong>hàm</strong>, lưu dữ liệu bằng <strong>mảng</strong>, tìm kiếm, sắp xếp, đánh giá độ phức tạp, xử lý <strong>chuỗi</strong> và tự tay làm game Tic Tac Toe hoàn chỉnh. Ở <strong>Giai đoạn 04</strong>, bạn sẽ học <strong>mảng 2 chiều</strong> (bàn cờ <code>board[3][3]</code> thật sự), <strong>struct</strong>, <strong>enum</strong>, <strong>con trỏ</strong>, <strong>tham chiếu</strong> và <strong>vector</strong> — hiểu vì sao mảng truyền vào hàm lại bị sửa trực tiếp và quản lý dữ liệu game chuyên nghiệp hơn!
+        </p>
+        <a href="../stage-04.html" class="btn btn--primary">Tiếp tục hành trình: Khám phá Giai đoạn 04 →</a>
+      </div>
+
+      <!-- NAVIGATION CUỐI TRANG -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft);">
+        <a href="lesson-03-10.html" class="btn btn--outline">← Buổi 32: Các hàm xử lý chuỗi</a>
+        <a href="../stage-04.html" class="btn btn--primary">Sang Giai đoạn 04 →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span></div>
+            <div class="contact-item"><i class="fas fa-phone"></i><span>090 198 05 69</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><span>innomindskills@gmail.com</span></div>
+            <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">Facebook</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="site-footer__text">© 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.</div>
+        <div class="site-footer__links"><a href="#" class="site-nav__link">Về đầu trang ↑</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 27: Thao Tác Trên Mảng: Cập Nhật, Tính Tổng, Tìm Max/Min — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 27: Cập nhật phần tử, tính tổng/trung bình, tìm giá trị lớn nhất/nhỏ nhất và vị trí của chúng; truyền mảng vào hàm.">
+  <link rel="icon" type="image/png" href="../../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-03.html" class="site-nav__link is-active">Giai đoạn 03</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-03.html" class="breadcrumb__link">Giai đoạn 03</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 27: Thao tác trên mảng</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 27</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--medium">Mảng &amp; Hàm</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Thao Tác Trên Mảng: Cập Nhật, Tính Tổng, Tìm Max/Min
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Cập nhật hàng loạt phần tử, tính tổng/trung bình, tìm giá trị lớn nhất/nhỏ nhất cùng vị trí của chúng; viết hàm nhận mảng làm tham số (<code>int arr[], int n</code>) để thống kê dữ liệu game.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-03-04.html" class="btn btn--outline btn--sm">← Buổi 26</a>
+          <a href="lesson-03-06.html" class="btn btn--primary btn--sm">Buổi 28 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+
+      <!-- PHẦN 1: LÝ THUYẾT -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi (35 Phút)</h2>
+
+        <h3>1.1 Bốn mẫu thuật toán kinh điển trên mảng</h3>
+        <p>
+          Hầu hết các thao tác thống kê trên mảng đều dựa trên một vòng <code>for</code> duyệt từ đầu đến cuối, kết hợp với một <strong>biến tích lũy</strong> hoặc <strong>biến ghi nhớ</strong>. Hãy thuộc lòng 4 mẫu sau:
+        </p>
+
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Mẫu</th>
+                <th>Khởi tạo</th>
+                <th>Trong vòng lặp</th>
+                <th>Ví dụ game</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cập nhật</td>
+                <td>—</td>
+                <td><code>arr[i] = arr[i] + x;</code></td>
+                <td>Hồi máu cả đội, x2 điểm thưởng</td>
+              </tr>
+              <tr>
+                <td>Tính tổng</td>
+                <td><code>int sum = 0;</code></td>
+                <td><code>sum += arr[i];</code></td>
+                <td>Tổng sát thương của cả đội</td>
+              </tr>
+              <tr>
+                <td>Trung bình</td>
+                <td>Sau khi có <code>sum</code></td>
+                <td><code>double avg = (double)sum / n;</code></td>
+                <td>Điểm trung bình mỗi màn</td>
+              </tr>
+              <tr>
+                <td>Tìm Max</td>
+                <td><code>int mx = arr[0];</code></td>
+                <td><code>if (arr[i] &gt; mx) mx = arr[i];</code></td>
+                <td>Điểm cao nhất (High Score)</td>
+              </tr>
+              <tr>
+                <td>Tìm Min</td>
+                <td><code>int mn = arr[0];</code></td>
+                <td><code>if (arr[i] &lt; mn) mn = arr[i];</code></td>
+                <td>Quái yếu máu nhất để kết liễu</td>
+              </tr>
+              <tr>
+                <td>Vị trí Max</td>
+                <td><code>int idx = 0;</code></td>
+                <td><code>if (arr[i] &gt; arr[idx]) idx = i;</code></td>
+                <td>Người chơi MVP là ai</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>1.2 Ví dụ: Bảng điểm một trận đấu</h3>
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">match_stats.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> N = <span class="num">6</span>;
+    <span class="kw">int</span> scores[N] = {<span class="num">120</span>, <span class="num">85</span>, <span class="num">240</span>, <span class="num">60</span>, <span class="num">240</span>, <span class="num">150</span>};
+
+    <span class="com">// Cap nhat: moi nguoi duoc thuong 10 diem</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) {
+        scores[i] += <span class="num">10</span>;
+    }
+
+    <span class="kw">int</span> sum = <span class="num">0</span>;
+    <span class="kw">int</span> maxIdx = <span class="num">0</span>;                <span class="com">// Gia su phan tu dau la lon nhat</span>
+    <span class="kw">int</span> minIdx = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) {
+        sum += scores[i];
+        <span class="kw">if</span> (scores[i] &gt; scores[maxIdx]) maxIdx = i;
+        <span class="kw">if</span> (scores[i] &lt; scores[minIdx]) minIdx = i;
+    }
+    <span class="kw">double</span> avg = (<span class="kw">double</span>)sum / N;  <span class="com">// Ep kieu de khong mat phan thap phan</span>
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong diem : "</span> &lt;&lt; sum &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Trung binh: "</span> &lt;&lt; avg &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Cao nhat  : "</span> &lt;&lt; scores[maxIdx] &lt;&lt; <span class="str">" (nguoi choi "</span> &lt;&lt; maxIdx + <span class="num">1</span> &lt;&lt; <span class="str">")\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Thap nhat : "</span> &lt;&lt; scores[minIdx] &lt;&lt; <span class="str">" (nguoi choi "</span> &lt;&lt; minIdx + <span class="num">1</span> &lt;&lt; <span class="str">")\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+        </div>
+        <p>
+          Lưu ý: hai người chơi số 3 và số 5 cùng có 250 điểm, nhưng vì điều kiện là <code>&gt;</code> (không phải <code>&gt;=</code>) nên <code>maxIdx</code> giữ vị trí <strong>xuất hiện đầu tiên</strong> (người chơi 3). Đổi thành <code>&gt;=</code> sẽ lấy vị trí cuối cùng.
+        </p>
+
+        <h3>1.3 Truyền mảng vào hàm</h3>
+        <p>
+          Kết hợp kiến thức Hàm (Buổi 23–25) với mảng, ta tách mỗi phép thống kê thành một hàm riêng. Cú pháp tham số mảng: <code>int arr[]</code> (không ghi kích thước) và <strong>luôn kèm thêm tham số <code>int n</code></strong> cho biết số phần tử, vì bên trong hàm không có cách nào biết mảng dài bao nhiêu.
+        </p>
+
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Thành phần</th>
+                <th>Cú pháp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Prototype</td><td><code>int sumArray(int arr[], int n);</code></td></tr>
+              <tr><td>Định nghĩa</td><td><code>int sumArray(int arr[], int n) { ... }</code></td></tr>
+              <tr><td>Gọi hàm</td><td><code>int total = sumArray(scores, N);</code> — chỉ ghi <strong>tên mảng</strong>, không có <code>[]</code></td></tr>
+              <tr><td>Hàm chỉ đọc mảng</td><td><code>int findMax(const int arr[], int n);</code> — <code>const</code> chặn việc vô tình sửa mảng</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">array_functions.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">sumArray</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n);
+<span class="kw">void</span> <span class="fn">healAll</span>(<span class="kw">int</span> hp[], <span class="kw">int</span> n, <span class="kw">int</span> amount, <span class="kw">int</span> maxHp);
+<span class="kw">void</span> <span class="fn">printArray</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n);
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> N = <span class="num">4</span>;
+    <span class="kw">int</span> teamHp[N] = {<span class="num">40</span>, <span class="num">95</span>, <span class="num">10</span>, <span class="num">70</span>};
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Truoc khi hoi mau: "</span>;
+    <span class="fn">printArray</span>(teamHp, N);
+
+    <span class="fn">healAll</span>(teamHp, N, <span class="num">30</span>, <span class="num">100</span>);         <span class="com">// Ham sua TRUC TIEP mang teamHp</span>
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Sau khi hoi mau : "</span>;
+    <span class="fn">printArray</span>(teamHp, N);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong HP ca doi : "</span> &lt;&lt; <span class="fn">sumArray</span>(teamHp, N) &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+
+<span class="kw">int</span> <span class="fn">sumArray</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> sum = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) sum += arr[i];
+    <span class="kw">return</span> sum;
+}
+
+<span class="kw">void</span> <span class="fn">healAll</span>(<span class="kw">int</span> hp[], <span class="kw">int</span> n, <span class="kw">int</span> amount, <span class="kw">int</span> maxHp) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        hp[i] += amount;
+        <span class="kw">if</span> (hp[i] &gt; maxHp) hp[i] = maxHp;    <span class="com">// Khong vuot qua mau toi da</span>
+    }
+}
+
+<span class="kw">void</span> <span class="fn">printArray</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; arr[i] &lt;&lt; <span class="str">" "</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+}</code></pre>
+        </div>
+
+        <div class="note-box note-box--info">
+          <strong>📌 Mảng truyền vào hàm bị sửa trực tiếp:</strong> Ở Buổi 24 ta biết tham số kiểu <code>int</code> được truyền <em>tham trị</em> (hàm nhận bản sao, sửa không ảnh hưởng biến gốc). <strong>Mảng thì khác</strong>: hàm <code>healAll</code> làm việc trên chính mảng <code>teamHp</code> của <code>main</code>, nên sau khi gọi hàm, máu cả đội đã thay đổi thật. Cơ chế bên dưới (con trỏ) sẽ được giải thích ở Giai đoạn 04 — hiện tại chỉ cần nhớ quy tắc này và dùng <code>const</code> cho hàm chỉ đọc.
+        </div>
+
+        <div class="note-box note-box--tip">
+          <strong>🎮 Mẹo tư duy Game:</strong> Màn hình kết thúc trận (end-game screen) của mọi game đối kháng đều là bài toán thống kê mảng: tổng sát thương, sát thương trung bình, ai là MVP (max), ai "gánh team" kém nhất (min). Viết sẵn các hàm <code>sumArray</code>, <code>findMaxIndex</code>, <code>findMinIndex</code> một lần là có thể tái sử dụng cho mọi loại dữ liệu số: điểm, vàng, số mạng hạ gục…
+        </div>
+
+        <div class="note-box note-box--warning">
+          <strong>⚠️ Lỗi thường gặp:</strong>
+          <ul style="margin: var(--space-2) 0 0; padding-left: 1.25rem; line-height: 1.8;">
+            <li><strong>Khởi tạo Max bằng 0:</strong> <code>int mx = 0;</code> sai khi mọi phần tử đều âm (ví dụ chỉ số nhiệt độ, điểm trừ). Luôn khởi tạo bằng <code>arr[0]</code>.</li>
+            <li><strong>Chia nguyên khi tính trung bình:</strong> <code>sum / n</code> với hai số <code>int</code> sẽ cắt mất phần thập phân (7 / 2 = 3). Hãy ép kiểu <code>(double)sum / n</code>.</li>
+            <li><strong>Quên khởi tạo <code>sum = 0</code>:</strong> biến cục bộ chưa khởi tạo chứa giá trị rác.</li>
+            <li><strong>Mảng rỗng (<code>n == 0</code>):</strong> khi đó <code>arr[0]</code> không tồn tại và chia cho <code>n</code> gây lỗi. Hàm thống kê nên kiểm tra <code>n &gt; 0</code> trước.</li>
+            <li><strong>Gọi hàm sai:</strong> <code>sumArray(scores[], N)</code> hoặc <code>sumArray(scores[N], N)</code> đều sai — chỉ truyền tên mảng <code>scores</code>.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: BÀI TẬP TRÊN LỚP -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Bài tập trên lớp (55 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1: Thư viện hàm thống kê điểm</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Nhập <code>n</code> (1–50) điểm số của các lượt chơi. Viết các hàm: <code>sumArray</code>, <code>average</code> (trả về <code>double</code>), <code>findMaxIndex</code>, <code>findMinIndex</code>. Trong <code>main</code> chỉ nhập dữ liệu, gọi hàm và in kết quả: tổng, trung bình (2 chữ số thập phân không bắt buộc), điểm cao nhất/thấp nhất kèm lượt chơi đạt được.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">score_library.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">sumArray</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> sum = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) sum += arr[i];
+    <span class="kw">return</span> sum;
+}
+
+<span class="kw">double</span> <span class="fn">average</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">if</span> (n &lt;= <span class="num">0</span>) <span class="kw">return</span> <span class="num">0</span>;                       <span class="com">// Tranh chia cho 0</span>
+    <span class="kw">return</span> (<span class="kw">double</span>)<span class="fn">sumArray</span>(arr, n) / n;       <span class="com">// Tai su dung ham da viet</span>
+}
+
+<span class="kw">int</span> <span class="fn">findMaxIndex</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> idx = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; n; i++) {               <span class="com">// Bat dau tu 1 vi arr[0] da la ung vien</span>
+        <span class="kw">if</span> (arr[i] &gt; arr[idx]) idx = i;
+    }
+    <span class="kw">return</span> idx;
+}
+
+<span class="kw">int</span> <span class="fn">findMinIndex</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> idx = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] &lt; arr[idx]) idx = i;
+    }
+    <span class="kw">return</span> idx;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> MAX = <span class="num">50</span>;
+    <span class="kw">int</span> scores[MAX];
+    <span class="kw">int</span> n;
+
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So luot choi (1-50): "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; n;
+    } <span class="kw">while</span> (n &lt; <span class="num">1</span> || n &gt; MAX);
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Diem luot "</span> &lt;&lt; i + <span class="num">1</span> &lt;&lt; <span class="str">": "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; scores[i];
+    }
+
+    <span class="kw">int</span> best = <span class="fn">findMaxIndex</span>(scores, n);
+    <span class="kw">int</span> worst = <span class="fn">findMinIndex</span>(scores, n);
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n===== THONG KE =====\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong diem : "</span> &lt;&lt; <span class="fn">sumArray</span>(scores, n) &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Trung binh: "</span> &lt;&lt; <span class="fn">average</span>(scores, n) &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Cao nhat  : "</span> &lt;&lt; scores[best] &lt;&lt; <span class="str">" (luot "</span> &lt;&lt; best + <span class="num">1</span> &lt;&lt; <span class="str">")\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Thap nhat : "</span> &lt;&lt; scores[worst] &lt;&lt; <span class="str">" (luot "</span> &lt;&lt; worst + <span class="num">1</span> &lt;&lt; <span class="str">")\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+
+          <div class="note-box note-box--info">
+            <strong>Vì sao trả về chỉ số thay vì giá trị?</strong> Có chỉ số <code>idx</code> thì lấy được cả giá trị (<code>arr[idx]</code>) lẫn vị trí. Ngược lại, chỉ có giá trị thì không biết nó nằm ở đâu. Hàm trả về chỉ số linh hoạt hơn.
+          </div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2: Bùa x2 vàng và trừ phí sửa đồ</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Mảng <code>int gold[5] = {120, 45, 300, 0, 80};</code> là số vàng của 5 thành viên trong đội. Viết hàm <code>void multiplyAll(int arr[], int n, int factor)</code> nhân tất cả với <code>factor</code> và hàm <code>int chargeFee(int arr[], int n, int fee)</code> trừ phí sửa đồ của <em>từng người</em> (ai không đủ tiền thì về 0) và trả về <strong>tổng số vàng thực sự thu được</strong>. In mảng trước và sau mỗi bước.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">gold_update.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">void</span> <span class="fn">printArray</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; arr[i] &lt;&lt; <span class="str">"\t"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+}
+
+<span class="kw">void</span> <span class="fn">multiplyAll</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> factor) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) arr[i] *= factor;
+}
+
+<span class="kw">int</span> <span class="fn">chargeFee</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> fee) {
+    <span class="kw">int</span> collected = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] &gt;= fee) {
+            arr[i] -= fee;
+            collected += fee;
+        } <span class="kw">else</span> {
+            collected += arr[i];           <span class="com">// Thu het so vang con lai</span>
+            arr[i] = <span class="num">0</span>;
+        }
+    }
+    <span class="kw">return</span> collected;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> N = <span class="num">5</span>;
+    <span class="kw">int</span> gold[N] = {<span class="num">120</span>, <span class="num">45</span>, <span class="num">300</span>, <span class="num">0</span>, <span class="num">80</span>};
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ban dau   : "</span>;
+    <span class="fn">printArray</span>(gold, N);
+
+    <span class="fn">multiplyAll</span>(gold, N, <span class="num">2</span>);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Bua x2    : "</span>;
+    <span class="fn">printArray</span>(gold, N);
+
+    <span class="kw">int</span> total = <span class="fn">chargeFee</span>(gold, N, <span class="num">150</span>);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Sau phi   : "</span>;
+    <span class="fn">printArray</span>(gold, N);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Lo ren thu duoc "</span> &lt;&lt; total &lt;&lt; <span class="str">" vang.\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+
+          <div class="note-box note-box--tip">
+            <strong>🎯 Câu hỏi thảo luận:</strong> Vì sao hàm <code>printArray</code> có <code>const</code> còn <code>multiplyAll</code> và <code>chargeFee</code> thì không? Thử thêm <code>const</code> vào <code>multiplyAll</code> rồi biên dịch để xem thông báo lỗi của trình biên dịch.
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (Tự luyện tập)</h2>
+        <p>Ba bài dưới đây rèn kỹ năng thống kê mảng và thiết kế hàm nhận mảng:</p>
+
+        <!-- Bài Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Tổng, Max, Min của dãy sát thương</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Nhập <code>n</code> (1–30) giá trị sát thương (có thể âm nếu bị phản đòn). In: tổng sát thương, sát thương trung bình, đòn mạnh nhất và đòn yếu nhất. Không cần viết hàm riêng — làm trực tiếp trong <code>main</code> bằng <strong>một vòng lặp duy nhất</strong>.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Gợi ý:</strong> Vì có thể có giá trị âm, phải khởi tạo <code>mx</code> và <code>mn</code> bằng <code>dmg[0]</code> chứ không phải 0.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">damage_stats.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> MAX = <span class="num">30</span>;
+    <span class="kw">int</span> dmg[MAX];
+    <span class="kw">int</span> n;
+
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So don danh (1-30): "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; n;
+    } <span class="kw">while</span> (n &lt; <span class="num">1</span> || n &gt; MAX);
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Sat thuong don "</span> &lt;&lt; i + <span class="num">1</span> &lt;&lt; <span class="str">": "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; dmg[i];
+    }
+
+    <span class="kw">int</span> sum = <span class="num">0</span>;
+    <span class="kw">int</span> mx = dmg[<span class="num">0</span>];
+    <span class="kw">int</span> mn = dmg[<span class="num">0</span>];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        sum += dmg[i];
+        <span class="kw">if</span> (dmg[i] &gt; mx) mx = dmg[i];
+        <span class="kw">if</span> (dmg[i] &lt; mn) mn = dmg[i];
+    }
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong sat thuong: "</span> &lt;&lt; sum &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Trung binh     : "</span> &lt;&lt; (<span class="kw">double</span>)sum / n &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Don manh nhat  : "</span> &lt;&lt; mx &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Don yeu nhat   : "</span> &lt;&lt; mn &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Á quân và người trên trung bình</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Cho mảng điểm <code>int scores[8] = {70, 95, 60, 95, 88, 40, 88, 75};</code>. Viết các hàm: (a) <code>int countAboveAverage(const int arr[], int n)</code> — đếm số người có điểm <strong>lớn hơn</strong> điểm trung bình; (b) <code>int findSecondMax(const int arr[], int n)</code> — trả về điểm cao thứ hai <strong>khác</strong> điểm cao nhất (với dữ liệu trên là 88), nếu mọi điểm bằng nhau thì trả về <code>-1</code>.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Phân tích:</strong> Tìm điểm cao thứ hai bằng 2 lượt duyệt: lượt 1 tìm <code>mx</code>; lượt 2 tìm giá trị lớn nhất trong các phần tử <code>&lt; mx</code>. Dùng cờ <code>found</code> để biết đã gặp phần tử nào nhỏ hơn <code>mx</code> chưa.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">runner_up.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">countAboveAverage</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">if</span> (n &lt;= <span class="num">0</span>) <span class="kw">return</span> <span class="num">0</span>;
+    <span class="kw">int</span> sum = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) sum += arr[i];
+    <span class="kw">double</span> avg = (<span class="kw">double</span>)sum / n;
+
+    <span class="kw">int</span> count = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] &gt; avg) count++;
+    }
+    <span class="kw">return</span> count;
+}
+
+<span class="kw">int</span> <span class="fn">findSecondMax</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">if</span> (n &lt;= <span class="num">0</span>) <span class="kw">return</span> -<span class="num">1</span>;
+    <span class="com">// Luot 1: tim gia tri lon nhat</span>
+    <span class="kw">int</span> mx = arr[<span class="num">0</span>];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] &gt; mx) mx = arr[i];
+    }
+    <span class="com">// Luot 2: tim lon nhat trong cac phan tu nho hon mx</span>
+    <span class="kw">bool</span> found = <span class="kw">false</span>;
+    <span class="kw">int</span> second = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] &lt; mx) {
+            <span class="kw">if</span> (!found || arr[i] &gt; second) {
+                second = arr[i];
+                found = <span class="kw">true</span>;
+            }
+        }
+    }
+    <span class="kw">if</span> (!found) <span class="kw">return</span> -<span class="num">1</span>;        <span class="com">// Moi phan tu deu bang nhau</span>
+    <span class="kw">return</span> second;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> N = <span class="num">8</span>;
+    <span class="kw">int</span> scores[N] = {<span class="num">70</span>, <span class="num">95</span>, <span class="num">60</span>, <span class="num">95</span>, <span class="num">88</span>, <span class="num">40</span>, <span class="num">88</span>, <span class="num">75</span>};
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So nguoi tren trung binh: "</span> &lt;&lt; <span class="fn">countAboveAverage</span>(scores, N) &lt;&lt; <span class="str">"\n"</span>;
+
+    <span class="kw">int</span> second = <span class="fn">findSecondMax</span>(scores, N);
+    <span class="kw">if</span> (second == -<span class="num">1</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Khong co a quan (moi diem bang nhau).\n"</span>;
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Diem a quan: "</span> &lt;&lt; second &lt;&lt; <span class="str">"\n"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <p>Kết quả với dữ liệu mẫu: trung bình = 76.375 → có 4 người trên trung bình (95, 95, 88, 88); điểm á quân là 88.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Bảng tổng kết trận đấu đội 6 người</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Dùng <strong>hai mảng song song</strong> <code>kills[6]</code> và <code>deaths[6]</code>: phần tử thứ <code>i</code> của hai mảng cùng thuộc về người chơi số <code>i + 1</code>. Người dùng nhập số mạng hạ gục và số lần chết của 6 người. Chương trình:
+          </p>
+          <ul>
+            <li>Tính chỉ số <strong>K/D</strong> của từng người = <code>kills / deaths</code> (nếu <code>deaths == 0</code> thì K/D = <code>kills</code>).</li>
+            <li>In bảng tổng kết: số thứ tự, kills, deaths, K/D và biểu đồ ngang gồm <code>kills</code> dấu <code>*</code>.</li>
+            <li>Tìm <strong>MVP</strong> (K/D cao nhất) và tổng kills/deaths của cả đội.</li>
+            <li>Viết ít nhất 3 hàm nhận mảng làm tham số (ví dụ <code>sumArray</code>, <code>kdRatio</code>, <code>findMvp</code>).</li>
+          </ul>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Thiết kế:</strong> Hàm <code>kdRatio(kills, deaths, i)</code> nhận cả 2 mảng và chỉ số người chơi, trả về <code>double</code>. Hàm <code>findMvp</code> duyệt và so sánh K/D bằng cách gọi lại <code>kdRatio</code> — mỗi hàm một việc như đã học ở Buổi 25.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">team_scoreboard.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">sumArray</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> sum = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) sum += arr[i];
+    <span class="kw">return</span> sum;
+}
+
+<span class="kw">double</span> <span class="fn">kdRatio</span>(<span class="kw">const int</span> kills[], <span class="kw">const int</span> deaths[], <span class="kw">int</span> i) {
+    <span class="kw">if</span> (deaths[i] == <span class="num">0</span>) <span class="kw">return</span> kills[i];          <span class="com">// Khong chet lan nao</span>
+    <span class="kw">return</span> (<span class="kw">double</span>)kills[i] / deaths[i];
+}
+
+<span class="kw">int</span> <span class="fn">findMvp</span>(<span class="kw">const int</span> kills[], <span class="kw">const int</span> deaths[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> best = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (<span class="fn">kdRatio</span>(kills, deaths, i) &gt; <span class="fn">kdRatio</span>(kills, deaths, best)) {
+            best = i;
+        }
+    }
+    <span class="kw">return</span> best;
+}
+
+<span class="kw">void</span> <span class="fn">printStars</span>(<span class="kw">int</span> count) {
+    <span class="kw">for</span> (<span class="kw">int</span> s = <span class="num">0</span>; s &lt; count; s++) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">'*'</span>;
+}
+
+<span class="kw">void</span> <span class="fn">readNonNegative</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> i, <span class="kw">const char</span> label[]) {
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  "</span> &lt;&lt; label &lt;&lt; <span class="str">": "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; arr[i];
+    } <span class="kw">while</span> (arr[i] &lt; <span class="num">0</span>);
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> N = <span class="num">6</span>;
+    <span class="kw">int</span> kills[N];
+    <span class="kw">int</span> deaths[N];
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nguoi choi "</span> &lt;&lt; i + <span class="num">1</span> &lt;&lt; <span class="str">":\n"</span>;
+        <span class="fn">readNonNegative</span>(kills, i, <span class="str">"Kills"</span>);
+        <span class="fn">readNonNegative</span>(deaths, i, <span class="str">"Deaths"</span>);
+    }
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n#\tKills\tDeaths\tK/D\tBieu do\n"</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; i + <span class="num">1</span> &lt;&lt; <span class="str">"\t"</span> &lt;&lt; kills[i] &lt;&lt; <span class="str">"\t"</span> &lt;&lt; deaths[i] &lt;&lt; <span class="str">"\t"</span>
+                  &lt;&lt; <span class="fn">kdRatio</span>(kills, deaths, i) &lt;&lt; <span class="str">"\t"</span>;
+        <span class="fn">printStars</span>(kills[i]);
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+    }
+
+    <span class="kw">int</span> mvp = <span class="fn">findMvp</span>(kills, deaths, N);
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nTong kills ca doi : "</span> &lt;&lt; <span class="fn">sumArray</span>(kills, N) &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tong deaths ca doi: "</span> &lt;&lt; <span class="fn">sumArray</span>(deaths, N) &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"MVP: Nguoi choi "</span> &lt;&lt; mvp + <span class="num">1</span>
+              &lt;&lt; <span class="str">" voi K/D = "</span> &lt;&lt; <span class="fn">kdRatio</span>(kills, deaths, mvp) &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <div class="note-box note-box--info">
+                  <strong>Về mảng song song:</strong> Đây là cách lưu "nhiều thuộc tính của cùng một đối tượng" khi chưa học <code>struct</code>. Nhược điểm: phải luôn giữ đúng chỉ số giữa các mảng — ở Giai đoạn 04, <code>struct Player { int kills; int deaths; }</code> sẽ gom chúng lại gọn gàng hơn. Tham số <code>const char label[]</code> chỉ là một mảng ký tự chứa chữ để in ra; cách làm việc với chuỗi đầy đủ sẽ học ở Buổi 31.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION CUỐI TRANG -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft);">
+        <a href="lesson-03-04.html" class="btn btn--outline">← Buổi 26: Mảng một chiều</a>
+        <a href="lesson-03-06.html" class="btn btn--primary">Buổi 28: Linear Search →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span></div>
+            <div class="contact-item"><i class="fas fa-phone"></i><span>090 198 05 69</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><span>innomindskills@gmail.com</span></div>
+            <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">Facebook</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="site-footer__text">© 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.</div>
+        <div class="site-footer__links"><a href="#" class="site-nav__link">Về đầu trang ↑</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

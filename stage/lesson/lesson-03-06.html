@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 28: Tìm Kiếm Cơ Bản: Linear Search — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 28: Thuật toán tìm kiếm tuần tự (Linear Search), trả về vị trí hoặc -1; đếm và tìm tất cả phần tử thỏa điều kiện trong mảng.">
+  <link rel="icon" type="image/png" href="../../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-03.html" class="site-nav__link is-active">Giai đoạn 03</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-03.html" class="breadcrumb__link">Giai đoạn 03</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 28: Tìm kiếm cơ bản (Linear Search)</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 28</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--medium">Thuật toán</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Tìm Kiếm Cơ Bản: Linear Search
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Cài đặt thuật toán tìm kiếm tuần tự dưới dạng hàm trả về chỉ số hoặc <code>-1</code>; biến thể tìm vị trí cuối, đếm số lần xuất hiện, liệt kê và tìm phần tử đầu tiên thỏa điều kiện — áp dụng cho túi đồ và danh sách kẻ địch trong game.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-03-05.html" class="btn btn--outline btn--sm">← Buổi 27</a>
+          <a href="lesson-03-07.html" class="btn btn--primary btn--sm">Buổi 29 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+
+      <!-- PHẦN 1: LÝ THUYẾT -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi (35 Phút)</h2>
+
+        <h3>1.1 Ý tưởng tìm kiếm tuần tự</h3>
+        <p>
+          <strong>Linear Search</strong> (tìm kiếm tuần tự / tuyến tính) là cách tìm đơn giản nhất: <em>kiểm tra lần lượt từng phần tử từ đầu đến cuối</em>, gặp phần tử cần tìm thì dừng và báo vị trí. Nếu đi hết mảng mà không thấy thì báo "không tìm thấy". Giống như bạn lục từng ô trong túi đồ để tìm bình máu.
+        </p>
+
+        <div class="note-box note-box--info">
+          <strong>📋 Các bước thuật toán — tìm <code>target</code> trong mảng <code>arr</code> có <code>n</code> phần tử:</strong>
+          <ol style="margin: var(--space-3) 0 0; padding-left: 1.25rem; line-height: 1.8;">
+            <li>Cho <code>i</code> chạy từ <code>0</code> đến <code>n - 1</code>.</li>
+            <li>Nếu <code>arr[i] == target</code> → <strong>trả về <code>i</code></strong> ngay (dừng tìm).</li>
+            <li>Nếu vòng lặp kết thúc mà chưa trả về → <strong>trả về <code>-1</code></strong>.</li>
+          </ol>
+          Vì sao là <code>-1</code>? Vì chỉ số hợp lệ luôn ≥ 0, nên <code>-1</code> là "giá trị canh gác" không bao giờ trùng với một vị trí thật.
+        </div>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">linear_search.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="com">// Tra ve chi so dau tien co gia tri target, hoac -1 neu khong co</span>
+<span class="kw">int</span> <span class="fn">linearSearch</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] == target) {
+            <span class="kw">return</span> i;              <span class="com">// Tim thay -&gt; thoat ham ngay</span>
+        }
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;                  <span class="com">// Duyet het ma khong thay</span>
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> N = <span class="num">6</span>;
+    <span class="kw">int</span> enemyIds[N] = {<span class="num">304</span>, <span class="num">17</span>, <span class="num">88</span>, <span class="num">512</span>, <span class="num">17</span>, <span class="num">9</span>};
+
+    <span class="kw">int</span> pos = <span class="fn">linearSearch</span>(enemyIds, N, <span class="num">17</span>);
+    <span class="kw">if</span> (pos != -<span class="num">1</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ke dich 17 o vi tri "</span> &lt;&lt; pos &lt;&lt; <span class="str">"\n"</span>;   <span class="com">// In 1</span>
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Khong tim thay!\n"</span>;
+    }
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="fn">linearSearch</span>(enemyIds, N, <span class="num">999</span>) &lt;&lt; <span class="str">"\n"</span>;   <span class="com">// In -1</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+        </div>
+
+        <h3>1.2 Các biến thể thường gặp</h3>
+        <p>Chỉ cần thay đổi một chút ở hướng duyệt, điều kiện hoặc hành động khi tìm thấy, ta có cả "họ" thuật toán tìm kiếm:</p>
+
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Biến thể</th>
+                <th>Điểm khác biệt</th>
+                <th>Trả về</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tìm vị trí <strong>đầu tiên</strong></td>
+                <td>Duyệt <code>i = 0 → n-1</code>, gặp là <code>return i</code></td>
+                <td>Chỉ số hoặc <code>-1</code></td>
+              </tr>
+              <tr>
+                <td>Tìm vị trí <strong>cuối cùng</strong></td>
+                <td>Duyệt ngược <code>i = n-1 → 0</code></td>
+                <td>Chỉ số hoặc <code>-1</code></td>
+              </tr>
+              <tr>
+                <td>Kiểm tra <strong>có tồn tại</strong></td>
+                <td>Gặp là <code>return true</code>, hết vòng <code>return false</code></td>
+                <td><code>bool</code></td>
+              </tr>
+              <tr>
+                <td><strong>Đếm</strong> số lần xuất hiện</td>
+                <td>Không dừng sớm, gặp thì <code>count++</code></td>
+                <td>Số lượng (≥ 0)</td>
+              </tr>
+              <tr>
+                <td><strong>Liệt kê tất cả</strong> vị trí</td>
+                <td>Không dừng sớm, gặp thì in <code>i</code></td>
+                <td><code>void</code> (in ra màn hình)</td>
+              </tr>
+              <tr>
+                <td>Tìm theo <strong>điều kiện</strong></td>
+                <td>Thay <code>arr[i] == target</code> bằng điều kiện bất kỳ, ví dụ <code>arr[i] &lt; 30</code></td>
+                <td>Chỉ số hoặc <code>-1</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">search_variants.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">int</span> <span class="fn">findLast</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = n - <span class="num">1</span>; i &gt;= <span class="num">0</span>; i--) {          <span class="com">// Duyet nguoc tu cuoi</span>
+        <span class="kw">if</span> (arr[i] == target) <span class="kw">return</span> i;
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;
+}
+
+<span class="kw">bool</span> <span class="fn">contains</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+    <span class="kw">return</span> <span class="fn">linearSearch</span>(arr, n, target) != -<span class="num">1</span>;  <span class="com">// Tai su dung ham co san</span>
+}
+
+<span class="kw">int</span> <span class="fn">countOf</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+    <span class="kw">int</span> count = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] == target) count++;             <span class="com">// Khong return -&gt; duyet het mang</span>
+    }
+    <span class="kw">return</span> count;
+}
+
+<span class="kw">int</span> <span class="fn">findFirstLowHp</span>(<span class="kw">const int</span> hp[], <span class="kw">int</span> n, <span class="kw">int</span> limit) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (hp[i] &gt; <span class="num">0</span> &amp;&amp; hp[i] &lt; limit) <span class="kw">return</span> i; <span class="com">// Con song va yeu mau</span>
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;
+}</code></pre>
+        </div>
+
+        <h3>1.3 Chi phí của Linear Search</h3>
+        <p>
+          Với mảng <code>n</code> phần tử: <strong>trường hợp tốt nhất</strong> phần tử nằm ngay ô đầu → 1 phép so sánh; <strong>trường hợp xấu nhất</strong> phần tử ở cuối hoặc không có → <code>n</code> phép so sánh. Số phép so sánh tăng tỉ lệ thuận với <code>n</code>; ở Buổi 30 ta sẽ gọi tên chính xác điều này là độ phức tạp <strong>O(n)</strong>. Ưu điểm lớn: hoạt động trên <strong>mọi mảng</strong>, không cần mảng đã sắp xếp.
+        </p>
+
+        <div class="note-box note-box--tip">
+          <strong>🎮 Mẹo tư duy Game:</strong> Linear Search xuất hiện liên tục trong game: "người chơi có chìa khóa vàng trong túi không?" (<code>contains</code>), "ô trống đầu tiên trong túi đồ ở đâu để nhặt vật phẩm?" (tìm phần tử bằng 0), "kẻ địch nào đang yếu máu để kết liễu?" (tìm theo điều kiện). Với vài chục phần tử, máy tính duyệt hết chỉ mất vài phần triệu giây — hoàn toàn đủ nhanh cho 60 khung hình mỗi giây.
+        </div>
+
+        <div class="note-box note-box--warning">
+          <strong>⚠️ Lỗi thường gặp:</strong>
+          <ul style="margin: var(--space-2) 0 0; padding-left: 1.25rem; line-height: 1.8;">
+            <li><strong>Đặt <code>return -1</code> trong nhánh <code>else</code> bên trong vòng lặp:</strong>
+              <code>if (arr[i] == target) return i; else return -1;</code> — hàm sẽ thoát ngay ở phần tử đầu tiên, chỉ kiểm tra đúng 1 ô! <code>return -1</code> phải nằm <strong>sau</strong> vòng lặp.</li>
+            <li><strong>Dùng kết quả mà không kiểm tra <code>-1</code>:</strong> <code>arr[linearSearch(arr, n, x)]</code> khi không tìm thấy sẽ thành <code>arr[-1]</code> → truy cập ngoài mảng.</li>
+            <li><strong>Lỡ <code>return</code> trong hàm đếm:</strong> hàm đếm/liệt kê phải duyệt hết mảng, không được dừng sớm.</li>
+            <li><strong>Nhầm chỉ số và số thứ tự:</strong> hàm trả về chỉ số từ 0; khi in cho người chơi nhớ cộng 1 nếu giao diện đánh số từ 1.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: BÀI TẬP TRÊN LỚP -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Bài tập trên lớp (55 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1: Tra cứu túi đồ</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Túi đồ 8 ô <code>int bag[8] = {101, 0, 205, 101, 0, 330, 0, 101};</code> (<code>0</code> là ô trống, <code>101</code> là Bình máu, <code>205</code> là Chìa khóa, <code>330</code> là Bom). Người chơi nhập mã vật phẩm cần tìm (nhập <code>-1</code> để thoát). Với mỗi lần nhập, in: ô đầu tiên chứa vật phẩm (đánh số từ 1), số lượng vật phẩm đó, hoặc báo "Khong co trong tui". Cuối cùng in vị trí ô trống đầu tiên.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">bag_lookup.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">linearSearch</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] == target) <span class="kw">return</span> i;
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;
+}
+
+<span class="kw">int</span> <span class="fn">countOf</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+    <span class="kw">int</span> count = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] == target) count++;
+    }
+    <span class="kw">return</span> count;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> SIZE = <span class="num">8</span>;
+    <span class="kw">int</span> bag[SIZE] = {<span class="num">101</span>, <span class="num">0</span>, <span class="num">205</span>, <span class="num">101</span>, <span class="num">0</span>, <span class="num">330</span>, <span class="num">0</span>, <span class="num">101</span>};
+    <span class="kw">int</span> code;
+
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nNhap ma vat pham (-1 de thoat): "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; code;
+        <span class="kw">if</span> (code == -<span class="num">1</span>) <span class="kw">break</span>;
+        <span class="kw">if</span> (code == <span class="num">0</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ma 0 la o trong, hay nhap ma vat pham.\n"</span>;
+            <span class="kw">continue</span>;
+        }
+
+        <span class="kw">int</span> pos = <span class="fn">linearSearch</span>(bag, SIZE, code);
+        <span class="kw">if</span> (pos == -<span class="num">1</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Khong co trong tui.\n"</span>;
+        } <span class="kw">else</span> {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tim thay o o so "</span> &lt;&lt; pos + <span class="num">1</span>
+                      &lt;&lt; <span class="str">", so luong: "</span> &lt;&lt; <span class="fn">countOf</span>(bag, SIZE, code) &lt;&lt; <span class="str">"\n"</span>;
+        }
+    }
+
+    <span class="kw">int</span> emptySlot = <span class="fn">linearSearch</span>(bag, SIZE, <span class="num">0</span>);   <span class="com">// Tim o trong = tim gia tri 0</span>
+    <span class="kw">if</span> (emptySlot == -<span class="num">1</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tui da day!\n"</span>;
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"O trong dau tien: o so "</span> &lt;&lt; emptySlot + <span class="num">1</span> &lt;&lt; <span class="str">"\n"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2: Radar tìm mục tiêu yếu máu</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Mảng <code>int hp[10]</code> chứa máu của 10 kẻ địch, sinh ngẫu nhiên từ 0 đến 100 (0 = đã chết). Viết các hàm: <code>printAllBelow(hp, n, limit)</code> liệt kê tất cả kẻ địch <strong>còn sống</strong> có máu dưới <code>limit</code>; <code>countAlive(hp, n)</code> đếm số kẻ địch còn sống; <code>findFirstLowHp(hp, n, limit)</code> trả về chỉ số mục tiêu đầu tiên để kết liễu. Người chơi nhập ngưỡng <code>limit</code>.
+          </p>
+
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">low_hp_radar.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cstdlib&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;ctime&gt;</span>
+
+<span class="kw">void</span> <span class="fn">printAllBelow</span>(<span class="kw">const int</span> hp[], <span class="kw">int</span> n, <span class="kw">int</span> limit) {
+    <span class="kw">bool</span> any = <span class="kw">false</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (hp[i] &gt; <span class="num">0</span> &amp;&amp; hp[i] &lt; limit) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  Ke dich #"</span> &lt;&lt; i &lt;&lt; <span class="str">" - HP "</span> &lt;&lt; hp[i] &lt;&lt; <span class="str">"\n"</span>;
+            any = <span class="kw">true</span>;
+        }
+    }
+    <span class="kw">if</span> (!any) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"  (Khong co muc tieu nao)\n"</span>;
+}
+
+<span class="kw">int</span> <span class="fn">countAlive</span>(<span class="kw">const int</span> hp[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> count = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (hp[i] &gt; <span class="num">0</span>) count++;
+    }
+    <span class="kw">return</span> count;
+}
+
+<span class="kw">int</span> <span class="fn">findFirstLowHp</span>(<span class="kw">const int</span> hp[], <span class="kw">int</span> n, <span class="kw">int</span> limit) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (hp[i] &gt; <span class="num">0</span> &amp;&amp; hp[i] &lt; limit) <span class="kw">return</span> i;
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">srand</span>(<span class="fn">time</span>(<span class="num">0</span>));
+    <span class="kw">const int</span> N = <span class="num">10</span>;
+    <span class="kw">int</span> hp[N];
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Radar: "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++) {
+        hp[i] = <span class="fn">rand</span>() % <span class="num">101</span>;                  <span class="com">// 0..100</span>
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; hp[i] &lt;&lt; <span class="str">" "</span>;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nCon song: "</span> &lt;&lt; <span class="fn">countAlive</span>(hp, N) &lt;&lt; <span class="str">"/"</span> &lt;&lt; N &lt;&lt; <span class="str">"\n"</span>;
+
+    <span class="kw">int</span> limit;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nguong mau yeu: "</span>;
+    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; limit;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Cac muc tieu yeu mau:\n"</span>;
+    <span class="fn">printAllBelow</span>(hp, N, limit);
+
+    <span class="kw">int</span> target = <span class="fn">findFirstLowHp</span>(hp, N, limit);
+    <span class="kw">if</span> (target != -<span class="num">1</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Uu tien ket lieu ke dich #"</span> &lt;&lt; target &lt;&lt; <span class="str">"\n"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+
+          <div class="note-box note-box--tip">
+            <strong>🎯 Câu hỏi thảo luận:</strong> Nếu muốn ưu tiên kẻ địch có máu <em>thấp nhất</em> (thay vì kẻ đầu tiên dưới ngưỡng), ta dùng thuật toán nào của Buổi 27? Gợi ý: tìm Min nhưng bỏ qua các phần tử bằng 0.
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (Tự luyện tập)</h2>
+        <p>Ba bài dưới đây giúp bạn thành thạo các biến thể của tìm kiếm tuần tự:</p>
+
+        <!-- Bài Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Lần cuối cùng đạt điểm tuyệt đối</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Nhập <code>n</code> (1–20) điểm của các màn chơi (thang 0–100). Viết hàm <code>findFirst</code> và <code>findLast</code> để in ra màn <strong>đầu tiên</strong> và màn <strong>cuối cùng</strong> đạt 100 điểm (đánh số màn từ 1). Nếu chưa từng đạt 100, in <code>"Chua co man nao dat diem tuyet doi"</code>.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Gợi ý:</strong> Nếu <code>findFirst</code> trả về <code>-1</code> thì chắc chắn <code>findLast</code> cũng trả về <code>-1</code>, chỉ cần kiểm tra một lần.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">perfect_score.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">findFirst</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] == target) <span class="kw">return</span> i;
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;
+}
+
+<span class="kw">int</span> <span class="fn">findLast</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = n - <span class="num">1</span>; i &gt;= <span class="num">0</span>; i--) {
+        <span class="kw">if</span> (arr[i] == target) <span class="kw">return</span> i;
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> MAX = <span class="num">20</span>;
+    <span class="kw">int</span> scores[MAX];
+    <span class="kw">int</span> n;
+
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"So man (1-20): "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; n;
+    } <span class="kw">while</span> (n &lt; <span class="num">1</span> || n &gt; MAX);
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">do</span> {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Diem man "</span> &lt;&lt; i + <span class="num">1</span> &lt;&lt; <span class="str">" (0-100): "</span>;
+            <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; scores[i];
+        } <span class="kw">while</span> (scores[i] &lt; <span class="num">0</span> || scores[i] &gt; <span class="num">100</span>);
+    }
+
+    <span class="kw">int</span> first = <span class="fn">findFirst</span>(scores, n, <span class="num">100</span>);
+    <span class="kw">if</span> (first == -<span class="num">1</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chua co man nao dat diem tuyet doi\n"</span>;
+    } <span class="kw">else</span> {
+        <span class="kw">int</span> last = <span class="fn">findLast</span>(scores, n, <span class="num">100</span>);
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Lan dau dat 100: man "</span> &lt;&lt; first + <span class="num">1</span> &lt;&lt; <span class="str">"\n"</span>;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Lan cuoi dat 100: man "</span> &lt;&lt; last + <span class="num">1</span> &lt;&lt; <span class="str">"\n"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Quản lý túi đồ có menu</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Túi đồ 6 ô, ban đầu trống hết (<code>int bag[6] = {0};</code>). Viết chương trình có menu lặp lại: <code>1</code> – Nhặt vật phẩm (nhập mã &gt; 0, đặt vào <strong>ô trống đầu tiên</strong>; túi đầy thì báo lỗi); <code>2</code> – Vứt vật phẩm (nhập mã, xóa <strong>ô đầu tiên</strong> chứa mã đó về 0; không có thì báo lỗi); <code>3</code> – Xem túi; <code>0</code> – Thoát. Mọi thao tác tìm kiếm phải dùng chung <strong>một hàm</strong> <code>linearSearch</code>.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Ý tưởng then chốt:</strong> "Tìm ô trống" chính là <code>linearSearch(bag, SIZE, 0)</code>; "tìm vật phẩm" là <code>linearSearch(bag, SIZE, code)</code>. Một hàm phục vụ cả hai việc.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">inventory_menu.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+
+<span class="kw">int</span> <span class="fn">linearSearch</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] == target) <span class="kw">return</span> i;
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;
+}
+
+<span class="kw">void</span> <span class="fn">showBag</span>(<span class="kw">const int</span> bag[], <span class="kw">int</span> n) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tui do: "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (bag[i] == <span class="num">0</span>) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"[ -- ] "</span>;
+        <span class="kw">else</span>             <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"["</span> &lt;&lt; bag[i] &lt;&lt; <span class="str">"] "</span>;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> SIZE = <span class="num">6</span>;
+    <span class="kw">int</span> bag[SIZE] = {<span class="num">0</span>};
+    <span class="kw">int</span> choice;
+
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n1-Nhat  2-Vut  3-Xem  0-Thoat: "</span>;
+        <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; choice;
+
+        <span class="kw">switch</span> (choice) {
+            <span class="kw">case</span> <span class="num">1</span>: {
+                <span class="kw">int</span> slot = <span class="fn">linearSearch</span>(bag, SIZE, <span class="num">0</span>);   <span class="com">// O trong dau tien</span>
+                <span class="kw">if</span> (slot == -<span class="num">1</span>) {
+                    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tui da day!\n"</span>;
+                    <span class="kw">break</span>;
+                }
+                <span class="kw">int</span> code;
+                <span class="kw">do</span> {
+                    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ma vat pham (&gt; 0): "</span>;
+                    <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; code;
+                } <span class="kw">while</span> (code &lt;= <span class="num">0</span>);
+                bag[slot] = code;
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Da cat vao o "</span> &lt;&lt; slot + <span class="num">1</span> &lt;&lt; <span class="str">"\n"</span>;
+                <span class="kw">break</span>;
+            }
+            <span class="kw">case</span> <span class="num">2</span>: {
+                <span class="kw">int</span> code;
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ma vat pham can vut: "</span>;
+                <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; code;
+                <span class="kw">int</span> pos = -<span class="num">1</span>;
+                <span class="kw">if</span> (code &gt; <span class="num">0</span>) pos = <span class="fn">linearSearch</span>(bag, SIZE, code);  <span class="com">// Ma 0 la o trong</span>
+                <span class="kw">if</span> (pos == -<span class="num">1</span>) {
+                    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Khong co vat pham nay!\n"</span>;
+                } <span class="kw">else</span> {
+                    bag[pos] = <span class="num">0</span>;
+                    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Da vut vat pham o o "</span> &lt;&lt; pos + <span class="num">1</span> &lt;&lt; <span class="str">"\n"</span>;
+                }
+                <span class="kw">break</span>;
+            }
+            <span class="kw">case</span> <span class="num">3</span>:
+                <span class="fn">showBag</span>(bag, SIZE);
+                <span class="kw">break</span>;
+            <span class="kw">case</span> <span class="num">0</span>:
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tam biet!\n"</span>;
+                <span class="kw">break</span>;
+            <span class="kw">default</span>:
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Lua chon khong hop le!\n"</span>;
+        }
+    } <span class="kw">while</span> (choice != <span class="num">0</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <div class="note-box note-box--info">
+                  <strong>Vì sao <code>case</code> có cặp ngoặc <code>{ }</code>?</strong> Khi khai báo biến mới (<code>slot</code>, <code>code</code>, <code>pos</code>) bên trong một <code>case</code>, cần bọc trong khối <code>{ }</code> để giới hạn phạm vi biến (Buổi 25), nếu không trình biên dịch sẽ báo lỗi "jump to case label".
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Săn kho báu trên bản đồ 1 chiều</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Bản đồ có 20 ô (đánh số 1–20). Máy giấu ngẫu nhiên <strong>3 kho báu ở 3 ô khác nhau</strong> — lưu vị trí trong mảng <code>int treasure[3]</code>, dùng Linear Search để đảm bảo không sinh trùng. Người chơi có 8 lượt đào: mỗi lượt nhập một ô (1–20, không được đào lại ô đã đào — lưu các ô đã đào trong mảng <code>dug[8]</code>). Nếu trúng kho báu → +1 kho báu tìm được; nếu không → in khoảng cách tới kho báu <strong>chưa tìm thấy gần nhất</strong>. Thắng khi tìm đủ 3 kho báu; hết lượt thì thua và in vị trí các kho báu.
+          </p>
+
+          <div class="note-box note-box--info">
+            <strong>Gợi ý:</strong> Khi đào trúng, đánh dấu kho báu đó đã tìm thấy bằng cách gán <code>treasure[k] = -1</code> (vị trí không tồn tại). Khi tính khoảng cách gần nhất, bỏ qua các phần tử bằng <code>-1</code>.
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">treasure_hunt.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cstdlib&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;ctime&gt;</span>
+
+<span class="kw">const int</span> MAP_SIZE = <span class="num">20</span>;
+<span class="kw">const int</span> NUM_TREASURE = <span class="num">3</span>;
+<span class="kw">const int</span> MAX_TURNS = <span class="num">8</span>;
+
+<span class="kw">int</span> <span class="fn">linearSearch</span>(<span class="kw">const int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (arr[i] == target) <span class="kw">return</span> i;
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;
+}
+
+<span class="com">// Khoang cach toi kho bau chua tim thay gan nhat (bo qua o = -1)</span>
+<span class="kw">int</span> <span class="fn">nearestDistance</span>(<span class="kw">const int</span> treasure[], <span class="kw">int</span> n, <span class="kw">int</span> cell) {
+    <span class="kw">int</span> best = -<span class="num">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (treasure[i] == -<span class="num">1</span>) <span class="kw">continue</span>;
+        <span class="kw">int</span> d = treasure[i] - cell;
+        <span class="kw">if</span> (d &lt; <span class="num">0</span>) d = -d;
+        <span class="kw">if</span> (best == -<span class="num">1</span> || d &lt; best) best = d;
+    }
+    <span class="kw">return</span> best;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">srand</span>(<span class="fn">time</span>(<span class="num">0</span>));
+    <span class="kw">int</span> treasure[NUM_TREASURE];
+    <span class="kw">int</span> original[NUM_TREASURE];        <span class="com">// Ban sao de in dap an cuoi game</span>
+
+    <span class="com">// 1. Giau kho bau, dung Linear Search de tranh trung vi tri</span>
+    <span class="kw">int</span> placed = <span class="num">0</span>;
+    <span class="kw">while</span> (placed &lt; NUM_TREASURE) {
+        <span class="kw">int</span> cell = <span class="fn">rand</span>() % MAP_SIZE + <span class="num">1</span>;
+        <span class="kw">if</span> (<span class="fn">linearSearch</span>(treasure, placed, cell) == -<span class="num">1</span>) {  <span class="com">// Chi tim trong phan da dat</span>
+            treasure[placed] = cell;
+            original[placed] = cell;
+            placed++;
+        }
+    }
+
+    <span class="kw">int</span> dug[MAX_TURNS];
+    <span class="kw">int</span> turns = <span class="num">0</span>;
+    <span class="kw">int</span> found = <span class="num">0</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"=== SAN KHO BAU ===\nCo "</span> &lt;&lt; NUM_TREASURE &lt;&lt; <span class="str">" kho bau trong "</span>
+              &lt;&lt; MAP_SIZE &lt;&lt; <span class="str">" o. Ban co "</span> &lt;&lt; MAX_TURNS &lt;&lt; <span class="str">" luot dao.\n"</span>;
+
+    <span class="com">// 2. Vong choi</span>
+    <span class="kw">while</span> (turns &lt; MAX_TURNS &amp;&amp; found &lt; NUM_TREASURE) {
+        <span class="kw">int</span> cell;
+        <span class="kw">while</span> (<span class="kw">true</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n[Luot "</span> &lt;&lt; turns + <span class="num">1</span> &lt;&lt; <span class="str">"/"</span> &lt;&lt; MAX_TURNS &lt;&lt; <span class="str">"] Dao o (1-20): "</span>;
+            <span class="type">std</span>::<span class="type">cin</span> &gt;&gt; cell;
+            <span class="kw">if</span> (cell &lt; <span class="num">1</span> || cell &gt; MAP_SIZE) {
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"O khong ton tai!\n"</span>;
+            } <span class="kw">else if</span> (<span class="fn">linearSearch</span>(dug, turns, cell) != -<span class="num">1</span>) {
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"O nay da dao roi!\n"</span>;
+            } <span class="kw">else</span> {
+                <span class="kw">break</span>;
+            }
+        }
+        dug[turns] = cell;
+        turns++;
+
+        <span class="kw">int</span> k = <span class="fn">linearSearch</span>(treasure, NUM_TREASURE, cell);
+        <span class="kw">if</span> (k != -<span class="num">1</span>) {
+            treasure[k] = -<span class="num">1</span>;                        <span class="com">// Danh dau da tim thay</span>
+            found++;
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"KHO BAU! ("</span> &lt;&lt; found &lt;&lt; <span class="str">"/"</span> &lt;&lt; NUM_TREASURE &lt;&lt; <span class="str">")\n"</span>;
+        } <span class="kw">else</span> {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Trong rong. Kho bau gan nhat cach "</span>
+                      &lt;&lt; <span class="fn">nearestDistance</span>(treasure, NUM_TREASURE, cell) &lt;&lt; <span class="str">" o.\n"</span>;
+        }
+    }
+
+    <span class="com">// 3. Ket qua</span>
+    <span class="kw">if</span> (found == NUM_TREASURE) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nCHIEN THANG! Tim du kho bau sau "</span> &lt;&lt; turns &lt;&lt; <span class="str">" luot.\n"</span>;
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nHET LUOT! Kho bau nam o cac o: "</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; NUM_TREASURE; i++) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; original[i] &lt;&lt; <span class="str">" "</span>;
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <div class="note-box note-box--tip">
+                  <strong>💡 Mẹo hay:</strong> Lời gọi <code>linearSearch(treasure, placed, cell)</code> chỉ tìm trong <code>placed</code> phần tử đầu — phần đã được gán giá trị. Truyền <code>n</code> nhỏ hơn kích thước thật là kỹ thuật rất hay dùng để làm việc với "phần đã dùng" của mảng, đồng thời tránh đọc các ô chưa khởi tạo.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION CUỐI TRANG -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft);">
+        <a href="lesson-03-05.html" class="btn btn--outline">← Buổi 27: Thao tác trên mảng</a>
+        <a href="lesson-03-07.html" class="btn btn--primary">Buổi 29: Bubble Sort →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span></div>
+            <div class="contact-item"><i class="fas fa-phone"></i><span>090 198 05 69</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><span>innomindskills@gmail.com</span></div>
+            <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">Facebook</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="site-footer__text">© 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.</div>
+        <div class="site-footer__links"><a href="#" class="site-nav__link">Về đầu trang ↑</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

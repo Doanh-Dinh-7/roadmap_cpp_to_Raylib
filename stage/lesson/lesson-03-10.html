@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buổi 32: Các Hàm Xử Lý Chuỗi Thường Gặp — Roadmap Game Dev</title>
+  <meta name="description" content="Buổi 32: Các hàm xử lý chuỗi std::string thường gặp: substr, find, npos, append, insert, erase, toupper/tolower; chuẩn hóa họ tên và kiểm tra chuỗi đối xứng.">
+  <link rel="icon" type="image/png" href="../../assets/images/logo-browser.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <!-- ==================== SITE HEADER ==================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+        <div>
+          <div class="brand__text">InnoMind • Game Dev</div>
+          <div class="brand__sub">C++ &amp; Raylib • 78 Buổi</div>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <ul class="site-nav__list">
+          <li><a href="../../index.html" class="site-nav__link">Trang chủ</a></li>
+          <li><a href="../stage-03.html" class="site-nav__link is-active">Giai đoạn 03</a></li>
+          <li><a href="../../index.html#pedagogy" class="site-nav__link">Phương pháp</a></li>
+          <li><a href="../../index.html#tools" class="site-nav__link">Công cụ</a></li>
+        </ul>
+        <button class="nav-toggle-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LESSON HEADER & BREADCRUMB ==================== -->
+  <div style="background-color: var(--color-bg-surface); border-bottom: 1px solid var(--color-border-soft); padding: var(--space-6) 0;">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Trang chủ</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../stage-03.html" class="breadcrumb__link">Giai đoạn 03</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Buổi 32: Các hàm xử lý chuỗi thường gặp</span>
+      </nav>
+
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <span class="badge badge--primary">BUỔI 32</span>
+            <span class="badge badge--tag">90 phút</span>
+            <span class="badge badge--medium">Chuỗi ký tự</span>
+          </div>
+          <h1 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-2);">
+            Các Hàm Xử Lý Chuỗi Thường Gặp
+          </h1>
+          <p style="color: var(--color-text-secondary); margin: 0;">
+            Mục tiêu đầu ra: Dùng thành thạo <code>substr</code>, <code>find</code> (và <code>npos</code>), ghép chuỗi bằng <code>+</code>/<code>append</code>, <code>insert</code>, <code>erase</code>, <code>toupper</code>/<code>tolower</code> trong <code>&lt;cctype&gt;</code> để cắt, ghép, kiểm tra và chuẩn hóa chuỗi — áp dụng chuẩn hóa họ tên và kiểm tra chuỗi đối xứng (palindrome).
+          </p>
+        </div>
+
+        <div style="display: flex; gap: var(--space-2);">
+          <a href="lesson-03-09.html" class="btn btn--outline btn--sm">← Buổi 31</a>
+          <a href="lesson-03-11.html" class="btn btn--primary btn--sm">Buổi 33 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="section">
+    <div class="container container--narrow">
+
+      <!-- PHẦN 1: LÝ THUYẾT -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>1. Lý thuyết cốt lõi (30 Phút)</h2>
+        <p>
+          Ở Buổi 31, bạn đã biết khai báo <code>std::string</code>, nhập bằng <code>std::getline</code> và duyệt từng ký tự. Nhưng game thật cần nhiều hơn thế: tách tên clan khỏi tên nhân vật, lọc từ cấm trong khung chat, đọc lệnh <code>/heal 30</code>, chuẩn hóa tên người chơi... <code>std::string</code> có sẵn một bộ <strong>hàm thành viên</strong> (gọi bằng dấu chấm: <code>s.ten_ham(...)</code>) giúp làm các việc này chỉ trong một dòng.
+        </p>
+
+        <h3>1.1 Bảng tóm tắt các hàm xử lý chuỗi</h3>
+        <p>Giả sử <code>std::string s = "Hello World";</code> (chỉ số bắt đầu từ 0):</p>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Hàm</th>
+                <th>Ý nghĩa</th>
+                <th>Ví dụ</th>
+                <th>Kết quả</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>s.substr(pos, len)</code></td><td>Cắt chuỗi con dài <code>len</code> bắt đầu tại <code>pos</code></td><td><code>s.substr(0, 5)</code></td><td><code>"Hello"</code></td></tr>
+              <tr><td><code>s.substr(pos)</code></td><td>Cắt từ <code>pos</code> đến hết chuỗi</td><td><code>s.substr(6)</code></td><td><code>"World"</code></td></tr>
+              <tr><td><code>s.find(x)</code></td><td>Vị trí xuất hiện <strong>đầu tiên</strong> của <code>x</code>; không thấy → <code>std::string::npos</code></td><td><code>s.find("o")</code></td><td><code>4</code></td></tr>
+              <tr><td><code>s.find(x, start)</code></td><td>Tìm <code>x</code> bắt đầu từ vị trí <code>start</code></td><td><code>s.find("o", 5)</code></td><td><code>7</code></td></tr>
+              <tr><td><code>s.rfind(x)</code></td><td>Vị trí xuất hiện <strong>cuối cùng</strong> của <code>x</code></td><td><code>s.rfind("o")</code></td><td><code>7</code></td></tr>
+              <tr><td><code>s + t</code>, <code>s += t</code></td><td>Ghép chuỗi (tạo mới / nối vào cuối)</td><td><code>s + "!"</code></td><td><code>"Hello World!"</code></td></tr>
+              <tr><td><code>s.append(t)</code></td><td>Nối <code>t</code> vào cuối <code>s</code> (giống <code>+=</code>)</td><td><code>s.append("!!")</code></td><td><code>"Hello World!!"</code></td></tr>
+              <tr><td><code>s.insert(pos, t)</code></td><td>Chèn <code>t</code> vào trước vị trí <code>pos</code></td><td><code>s.insert(5, ",")</code></td><td><code>"Hello, World"</code></td></tr>
+              <tr><td><code>s.erase(pos, len)</code></td><td>Xóa <code>len</code> ký tự bắt đầu tại <code>pos</code></td><td><code>s.erase(0, 6)</code></td><td><code>"World"</code></td></tr>
+              <tr><td><code>std::toupper(c)</code> / <code>std::tolower(c)</code></td><td>Đổi <strong>một ký tự</strong> sang chữ hoa / thường (thư viện <code>&lt;cctype&gt;</code>)</td><td><code>std::toupper('a')</code></td><td><code>'A'</code></td></tr>
+              <tr><td><code>std::isalpha</code>, <code>isdigit</code>, <code>isalnum</code>, <code>isupper</code>, <code>islower</code></td><td>Kiểm tra loại ký tự: chữ cái, chữ số, chữ hoặc số, hoa, thường (<code>&lt;cctype&gt;</code>)</td><td><code>std::isdigit('7')</code></td><td>khác 0 (đúng)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>Lưu ý:</strong> <code>insert</code>, <code>erase</code>, <code>append</code> <em>sửa trực tiếp</em> chuỗi <code>s</code>; còn <code>substr</code>, <code>find</code> chỉ <em>đọc</em> và trả về kết quả mới, <code>s</code> giữ nguyên.
+        </p>
+
+        <h3>1.2 Cắt, ghép, chèn, xóa — Tạo danh hiệu nhân vật</h3>
+        <p>Ví dụ dưới đây tách tên clan <code>VN</code> khỏi tag <code>"[VN]DragonSlayer"</code>, rồi tạo một danh hiệu mới:</p>
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">string_basics.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> tag = <span class="str">"[VN]DragonSlayer"</span>;
+
+    <span class="com">// substr(vi_tri, so_ky_tu): cat lay chuoi con</span>
+    <span class="type">std</span>::<span class="type">string</span> clan = tag.<span class="fn">substr</span>(<span class="num">1</span>, <span class="num">2</span>);        <span class="com">// "VN"</span>
+    <span class="type">std</span>::<span class="type">string</span> name = tag.<span class="fn">substr</span>(<span class="num">4</span>);           <span class="com">// "DragonSlayer" (lay den het chuoi)</span>
+
+    <span class="com">// find: tim vi tri xuat hien dau tien</span>
+    <span class="type">std</span>::<span class="type">size_t</span> pos = name.<span class="fn">find</span>(<span class="str">"Slayer"</span>);      <span class="com">// 6</span>
+    <span class="kw">if</span> (pos != <span class="type">std</span>::<span class="type">string</span>::<span class="type">npos</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tim thay 'Slayer' tai vi tri "</span> &lt;&lt; pos &lt;&lt; <span class="str">"\n"</span>;
+    }
+
+    <span class="com">// Ghep chuoi bang + va append</span>
+    <span class="type">std</span>::<span class="type">string</span> title = name + <span class="str">" Lv."</span>;
+    title.<span class="fn">append</span>(<span class="str">"99"</span>);                         <span class="com">// "DragonSlayer Lv.99"</span>
+
+    <span class="com">// insert(vi_tri, chuoi): chen vao giua</span>
+    title.<span class="fn">insert</span>(<span class="num">0</span>, <span class="str">"Sir "</span>);                    <span class="com">// "Sir DragonSlayer Lv.99"</span>
+
+    <span class="com">// erase(vi_tri, so_ky_tu): xoa bot mot doan</span>
+    title.<span class="fn">erase</span>(<span class="num">4</span>, <span class="num">6</span>);                          <span class="com">// "Sir Slayer Lv.99"</span>
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Clan: "</span> &lt;&lt; clan &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ten: "</span> &lt;&lt; name &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Danh hieu: "</span> &lt;&lt; title &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+        </div>
+
+        <h3>1.3 <code>find</code> và giá trị đặc biệt <code>npos</code></h3>
+        <p>
+          Khi không tìm thấy, <code>find</code> trả về hằng số <code>std::string::npos</code> (một số nguyên không âm rất lớn). Vì vậy <strong>luôn so sánh với <code>npos</code></strong> trước khi dùng vị trí tìm được. Kiểu dữ liệu chuẩn để lưu vị trí là <code>std::size_t</code> (số nguyên không âm). Muốn đếm số lần xuất hiện, ta gọi <code>find</code> lặp lại, mỗi lần bắt đầu tìm từ <em>sau</em> vị trí vừa thấy:
+        </p>
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">chat_counter.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> chat = <span class="str">"gg ez, gg wp, gg"</span>;
+    <span class="type">std</span>::<span class="type">string</span> word = <span class="str">"gg"</span>;
+
+    <span class="kw">int</span> count = <span class="num">0</span>;
+    <span class="type">std</span>::<span class="type">size_t</span> pos = chat.<span class="fn">find</span>(word);                <span class="com">// Tim lan dau tien</span>
+    <span class="kw">while</span> (pos != <span class="type">std</span>::<span class="type">string</span>::<span class="type">npos</span>) {
+        count++;
+        pos = chat.<span class="fn">find</span>(word, pos + word.<span class="fn">length</span>());   <span class="com">// Tim tiep tu sau lan truoc</span>
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"'"</span> &lt;&lt; word &lt;&lt; <span class="str">"' xuat hien "</span> &lt;&lt; count &lt;&lt; <span class="str">" lan\n"</span>;   <span class="com">// 3 lan</span>
+
+    <span class="kw">if</span> (chat.<span class="fn">find</span>(<span class="str">"noob"</span>) == <span class="type">std</span>::<span class="type">string</span>::<span class="type">npos</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tin nhan sach, khong co tu cam.\n"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+        </div>
+
+        <h3>1.4 <code>erase</code> trong vòng lặp — Cắt khoảng trắng thừa</h3>
+        <p>Người chơi hay gõ thừa dấu cách khi đặt tên. Hàm <code>trim</code> xóa dần ký tự trống ở hai đầu cho đến khi gặp ký tự thật:</p>
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">trim.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+
+<span class="com">// Xoa khoang trang thua o dau va cuoi chuoi</span>
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">trim</span>(<span class="type">std</span>::<span class="type">string</span> s) {
+    <span class="kw">while</span> (s.<span class="fn">length</span>() &gt; <span class="num">0</span> &amp;&amp; s[<span class="num">0</span>] == <span class="str">' '</span>) {
+        s.<span class="fn">erase</span>(<span class="num">0</span>, <span class="num">1</span>);                       <span class="com">// Xoa ky tu dau tien</span>
+    }
+    <span class="kw">while</span> (s.<span class="fn">length</span>() &gt; <span class="num">0</span> &amp;&amp; s[s.<span class="fn">length</span>() - <span class="num">1</span>] == <span class="str">' '</span>) {
+        s.<span class="fn">erase</span>(s.<span class="fn">length</span>() - <span class="num">1</span>, <span class="num">1</span>);          <span class="com">// Xoa ky tu cuoi cung</span>
+    }
+    <span class="kw">return</span> s;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> input = <span class="str">"    Shadow Knight   "</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"["</span> &lt;&lt; <span class="fn">trim</span>(input) &lt;&lt; <span class="str">"]\n"</span>;    <span class="com">// [Shadow Knight]</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"["</span> &lt;&lt; input &lt;&lt; <span class="str">"]\n"</span>;          <span class="com">// Chuoi goc van con khoang trang</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+        </div>
+        <p>
+          Chú ý: chuỗi <code>std::string</code> truyền vào hàm theo kiểu <strong>tham trị</strong> (Buổi 24) nên hàm làm việc trên <em>bản sao</em> — chuỗi <code>input</code> ở <code>main</code> không bị thay đổi. Đây là điểm <strong>khác với mảng</strong>: mảng truyền vào hàm sẽ bị sửa trực tiếp (cơ chế này sẽ được giải thích ở Giai đoạn 04).
+        </p>
+
+        <h3>1.5 Đổi hoa/thường với <code>&lt;cctype&gt;</code></h3>
+        <p>
+          <code>std::toupper</code> và <code>std::tolower</code> chỉ xử lý <strong>một ký tự</strong>. Muốn đổi cả chuỗi, ta duyệt từng ký tự bằng vòng <code>for</code>:
+        </p>
+        <div class="code-block">
+          <div class="code-block__header">
+            <span class="code-block__lang">case_convert.cpp</span>
+            <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+          </div>
+          <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cctype&gt;</span>
+
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">toUpperStr</span>(<span class="type">std</span>::<span class="type">string</span> s) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; s.<span class="fn">length</span>(); i++) {
+        s[i] = <span class="type">std</span>::<span class="fn">toupper</span>(s[i]);           <span class="com">// Doi tung ky tu sang chu hoa</span>
+    }
+    <span class="kw">return</span> s;                                <span class="com">// s la ban sao -&gt; chuoi goc khong doi</span>
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> boss = <span class="str">"Dark Lord"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="fn">toUpperStr</span>(boss) &lt;&lt; <span class="str">"\n"</span>;   <span class="com">// DARK LORD</span>
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; boss &lt;&lt; <span class="str">"\n"</span>;               <span class="com">// Dark Lord (khong bi sua)</span>
+
+    <span class="kw">char</span> key = <span class="str">'w'</span>;
+    <span class="kw">if</span> (<span class="type">std</span>::<span class="fn">islower</span>(key)) {
+        key = <span class="type">std</span>::<span class="fn">toupper</span>(key);
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Phim: "</span> &lt;&lt; key &lt;&lt; <span class="str">"\n"</span>;    <span class="com">// Phim: W</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="note-box note-box--tip">
+          <strong>🎮 Mẹo tư duy Game:</strong> Xử lý chuỗi có mặt khắp nơi trong game: <em>chat filter</em> dùng <code>find</code> để phát hiện từ cấm; <em>console lệnh</em> (<code>/give sword 3</code>) dùng <code>find(' ')</code> + <code>substr</code> để tách lệnh và tham số; <em>so sánh không phân biệt hoa thường</em> (người chơi gõ <code>YES</code>, <code>yes</code> hay <code>Yes</code>) bằng cách <code>tolower</code> toàn bộ trước khi so sánh. Trong Raylib, bạn sẽ ghép chuỗi kiểu <code>"Player: " + name</code> để vẽ chữ lên màn hình.
+        </div>
+
+        <div class="note-box note-box--warning">
+          <strong>⚠️ Lỗi thường gặp:</strong>
+          <ul style="margin: var(--space-2) 0 0; padding-left: 1.25rem;">
+            <li><strong>Quên kiểm tra <code>npos</code>:</strong> dùng thẳng <code>s.substr(s.find(' '))</code> khi chuỗi không có dấu cách → <code>substr</code> nhận vị trí khổng lồ và chương trình <strong>dừng đột ngột</strong> (lỗi <code>out_of_range</code>).</li>
+            <li><strong><code>substr(pos)</code> với <code>pos &gt; s.length()</code></strong> cũng gây lỗi tương tự. Riêng <code>len</code> quá dài thì an toàn — <code>substr</code> chỉ lấy đến hết chuỗi.</li>
+            <li><strong>Lưu vị trí vào <code>int</code></strong> rồi so sánh với <code>npos</code> có thể cho kết quả sai — hãy dùng <code>std::size_t</code>.</li>
+            <li><strong><code>erase</code> trong vòng <code>for</code> tăng <code>i</code>:</strong> sau khi xóa, các ký tự phía sau dồn lên một ô, nếu vẫn <code>i++</code> sẽ bỏ sót ký tự. Hoặc dùng <code>while</code> như hàm <code>trim</code>, hoặc xây chuỗi kết quả mới (cách ở bài tập trên lớp).</li>
+            <li><strong>Tiếng Việt có dấu</strong> (<code>"Nguyễn"</code>) dùng nhiều byte cho một chữ, nên <code>toupper</code>, <code>isalpha</code>, <code>length()</code> không hoạt động như mong đợi. Trong khóa học, dữ liệu chuỗi viết <strong>không dấu</strong>.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: BÀI TẬP TRÊN LỚP -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>2. Bài tập trên lớp (60 Phút)</h2>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1: Chuẩn hóa họ tên người chơi</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Viết hàm <code>std::string normalizeName(std::string s)</code> chuẩn hóa họ tên: bỏ khoảng trắng ở đầu/cuối, giữa hai từ chỉ còn <strong>đúng một</strong> dấu cách, chữ cái đầu mỗi từ viết hoa, các chữ còn lại viết thường.<br>
+            Ví dụ: <code>"   nGUyen   vAN    aN  "</code> → <code>"Nguyen Van An"</code>.
+          </p>
+          <div class="note-box note-box--info">
+            <strong>Ý tưởng:</strong> Thay vì <code>erase</code> nhiều lần trên chuỗi gốc (dễ bỏ sót ký tự), ta <strong>xây chuỗi kết quả mới</strong>: duyệt từng ký tự, gặp dấu cách thì đánh dấu "sắp sang từ mới" (<code>newWord = true</code>); gặp chữ cái thì nếu là đầu từ → thêm 1 dấu cách (trừ từ đầu tiên) và viết hoa, ngược lại viết thường.
+          </div>
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">normalize_name.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cctype&gt;</span>
+
+<span class="com">// Chuan hoa ho ten: bo khoang trang thua, viet hoa chu cai dau moi tu</span>
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">normalizeName</span>(<span class="type">std</span>::<span class="type">string</span> s) {
+    <span class="type">std</span>::<span class="type">string</span> result = <span class="str">""</span>;
+    <span class="kw">bool</span> newWord = <span class="kw">true</span>;                     <span class="com">// Ky tu tiep theo la dau mot tu?</span>
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; s.<span class="fn">length</span>(); i++) {
+        <span class="kw">char</span> c = s[i];
+        <span class="kw">if</span> (c == <span class="str">' '</span>) {
+            newWord = <span class="kw">true</span>;                  <span class="com">// Gap khoang trang -&gt; sap sang tu moi</span>
+            <span class="kw">continue</span>;
+        }
+        <span class="kw">if</span> (newWord) {
+            <span class="kw">if</span> (result.<span class="fn">length</span>() &gt; <span class="num">0</span>) {
+                result += <span class="str">' '</span>;               <span class="com">// Chi them 1 khoang trang giua 2 tu</span>
+            }
+            <span class="kw">char</span> up = <span class="type">std</span>::<span class="fn">toupper</span>(c);
+            result += up;
+            newWord = <span class="kw">false</span>;
+        } <span class="kw">else</span> {
+            <span class="kw">char</span> low = <span class="type">std</span>::<span class="fn">tolower</span>(c);
+            result += low;
+        }
+    }
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> fullName;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap ho ten: "</span>;
+    <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, fullName);
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Truoc: ["</span> &lt;&lt; fullName &lt;&lt; <span class="str">"]\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Sau:   ["</span> &lt;&lt; <span class="fn">normalizeName</span>(fullName) &lt;&lt; <span class="str">"]\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2: Kiểm tra chuỗi đối xứng (Palindrome)</h4>
+            <span class="badge badge--medium">Trên lớp</span>
+          </div>
+          <p>
+            <strong>Đề bài:</strong> Viết hàm <code>bool isPalindrome(std::string s)</code> kiểm tra một câu có đọc xuôi và ngược giống nhau không, <strong>bỏ qua</strong> dấu cách, dấu câu và hoa/thường.<br>
+            Test: <code>"level"</code> → đúng; <code>"Race car"</code> → đúng; <code>"Was it a car or a cat I saw?"</code> → đúng; <code>"hello"</code> → sai.
+          </p>
+          <div class="code-block">
+            <div class="code-block__header">
+              <span class="code-block__lang">palindrome.cpp</span>
+              <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+            </div>
+            <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cctype&gt;</span>
+
+<span class="kw">bool</span> <span class="fn">isPalindrome</span>(<span class="type">std</span>::<span class="type">string</span> s) {
+    <span class="com">// Buoc 1: Lam sach - chi giu chu cai/chu so, doi het ve chu thuong</span>
+    <span class="type">std</span>::<span class="type">string</span> clean = <span class="str">""</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; s.<span class="fn">length</span>(); i++) {
+        <span class="kw">if</span> (<span class="type">std</span>::<span class="fn">isalnum</span>(s[i])) {
+            <span class="kw">char</span> low = <span class="type">std</span>::<span class="fn">tolower</span>(s[i]);
+            clean += low;
+        }
+    }
+
+    <span class="com">// Buoc 2: Hai chi so chay tu hai dau vao giua</span>
+    <span class="kw">int</span> n = clean.<span class="fn">length</span>();
+    <span class="kw">int</span> left = <span class="num">0</span>;
+    <span class="kw">int</span> right = n - <span class="num">1</span>;
+    <span class="kw">while</span> (left &lt; right) {
+        <span class="kw">if</span> (clean[left] != clean[right]) {
+            <span class="kw">return</span> <span class="kw">false</span>;                    <span class="com">// Lech 1 cap la khong doi xung</span>
+        }
+        left++;
+        right--;
+    }
+    <span class="kw">return</span> <span class="kw">true</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> line;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap mot cau: "</span>;
+    <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, line);
+
+    <span class="kw">if</span> (<span class="fn">isPalindrome</span>(line)) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"-&gt; La chuoi doi xung (palindrome)!\n"</span>;
+    } <span class="kw">else</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"-&gt; Khong phai chuoi doi xung.\n"</span>;
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+          </div>
+          <div class="note-box note-box--tip">
+            <strong>🎯 Kỹ thuật hai con trỏ chỉ số:</strong> <code>left</code> chạy từ đầu, <code>right</code> chạy từ cuối, gặp nhau ở giữa → chỉ cần <code>n/2</code> lần so sánh, tức độ phức tạp <strong>O(n)</strong> (Buổi 30). Kỹ thuật này còn dùng để đảo ngược mảng hoặc chuỗi tại chỗ.
+          </div>
+        </div>
+      </section>
+
+      <!-- PHẦN 3: BÀI TẬP VỀ NHÀ -->
+      <section style="margin-bottom: var(--space-10);">
+        <h2>3. Bài tập về nhà (Tự luyện tập)</h2>
+
+        <!-- Bài Easy -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 1 [Easy]: Tạo tag hiển thị cho nhân vật</h4>
+            <span class="badge badge--easy">Easy (40%)</span>
+          </div>
+          <p>
+            Nhập tên nhân vật (có thể có dấu cách). In ra: tên viết <strong>HOA</strong> toàn bộ, tên viết <strong>thường</strong> toàn bộ, và dòng hiển thị dạng <code>[TAG] Ten</code>, trong đó <code>TAG</code> là 3 ký tự đầu của tên viết hoa. Ví dụ: <code>"Shadow"</code> → <code>[SHA] Shadow</code>. Viết các hàm <code>toUpperStr</code>, <code>toLowerStr</code>, <code>makeTag</code>.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Gợi ý:</strong> <code>substr(0, 3)</code> vẫn an toàn khi tên chỉ có 1–2 ký tự — nó lấy đến hết chuỗi.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">player_tag.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cctype&gt;</span>
+
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">toUpperStr</span>(<span class="type">std</span>::<span class="type">string</span> s) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; s.<span class="fn">length</span>(); i++) {
+        s[i] = <span class="type">std</span>::<span class="fn">toupper</span>(s[i]);
+    }
+    <span class="kw">return</span> s;
+}
+
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">toLowerStr</span>(<span class="type">std</span>::<span class="type">string</span> s) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; s.<span class="fn">length</span>(); i++) {
+        s[i] = <span class="type">std</span>::<span class="fn">tolower</span>(s[i]);
+    }
+    <span class="kw">return</span> s;
+}
+
+<span class="com">// Tag = 3 ky tu dau cua ten, viet hoa, dat trong ngoac vuong</span>
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">makeTag</span>(<span class="type">std</span>::<span class="type">string</span> name) {
+    <span class="type">std</span>::<span class="type">string</span> head = name.<span class="fn">substr</span>(<span class="num">0</span>, <span class="num">3</span>);    <span class="com">// Ten ngan hon 3 ky tu -&gt; substr tu lay het</span>
+    <span class="kw">return</span> <span class="str">"["</span> + <span class="fn">toUpperStr</span>(head) + <span class="str">"]"</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> name;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap ten nhan vat: "</span>;
+    <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, name);
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chu hoa:    "</span> &lt;&lt; <span class="fn">toUpperStr</span>(name) &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Chu thuong: "</span> &lt;&lt; <span class="fn">toLowerStr</span>(name) &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Hien thi:   "</span> &lt;&lt; <span class="fn">makeTag</span>(name) &lt;&lt; <span class="str">" "</span> &lt;&lt; name &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Medium -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 2 [Medium]: Tách họ, tên đệm, tên và tạo username</h4>
+            <span class="badge badge--medium">Medium (40%)</span>
+          </div>
+          <p>
+            Nhập họ tên bất kỳ, chuẩn hóa bằng <code>normalizeName</code> (bài trên lớp), sau đó tách ra <strong>Họ</strong> (từ đầu), <strong>Tên</strong> (từ cuối) và <strong>Tên đệm</strong> (phần giữa, có thể rỗng hoặc nhiều từ). Cuối cùng tạo username = tên viết thường + chữ cái đầu của họ và của từng từ tên đệm.<br>
+            Ví dụ: <code>"  nguyen  van AN"</code> → Họ: <code>Nguyen</code>, Tên đệm: <code>Van</code>, Tên: <code>An</code>, Username: <code>annv</code>.
+          </p>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Phân tích:</strong> <code>find(' ')</code> cho dấu cách <em>đầu tiên</em> (kết thúc họ), <code>rfind(' ')</code> cho dấu cách <em>cuối cùng</em> (bắt đầu tên). Phần nằm giữa hai vị trí này là tên đệm, độ dài <code>last - first - 1</code>. Nếu không có dấu cách nào (<code>npos</code>) thì cả chuỗi là tên.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">split_name.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cctype&gt;</span>
+
+<span class="com">// Giu nguyen ham normalizeName tu bai tap tren lop (dat o day)</span>
+
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">toLowerStr</span>(<span class="type">std</span>::<span class="type">string</span> s) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; s.<span class="fn">length</span>(); i++) {
+        s[i] = <span class="type">std</span>::<span class="fn">tolower</span>(s[i]);
+    }
+    <span class="kw">return</span> s;
+}
+
+<span class="com">// Username = ten (chu thuong) + chu cai dau cua ho + chu cai dau moi tu ten dem</span>
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">makeUsername</span>(<span class="type">std</span>::<span class="type">string</span> ho, <span class="type">std</span>::<span class="type">string</span> tenDem, <span class="type">std</span>::<span class="type">string</span> ten) {
+    <span class="type">std</span>::<span class="type">string</span> user = <span class="fn">toLowerStr</span>(ten);
+    <span class="kw">if</span> (ho.<span class="fn">length</span>() &gt; <span class="num">0</span>) {
+        <span class="kw">char</span> c = <span class="type">std</span>::<span class="fn">tolower</span>(ho[<span class="num">0</span>]);
+        user += c;
+    }
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; tenDem.<span class="fn">length</span>(); i++) {
+        <span class="kw">if</span> (i == <span class="num">0</span> || tenDem[i - <span class="num">1</span>] == <span class="str">' '</span>) {    <span class="com">// Ky tu dau moi tu</span>
+            <span class="kw">char</span> c = <span class="type">std</span>::<span class="fn">tolower</span>(tenDem[i]);
+            user += c;
+        }
+    }
+    <span class="kw">return</span> user;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> full;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap ho ten: "</span>;
+    <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, full);
+    full = <span class="fn">normalizeName</span>(full);
+
+    <span class="type">std</span>::<span class="type">size_t</span> first = full.<span class="fn">find</span>(<span class="str">' '</span>);      <span class="com">// Khoang trang dau tien</span>
+    <span class="type">std</span>::<span class="type">size_t</span> last = full.<span class="fn">rfind</span>(<span class="str">' '</span>);      <span class="com">// Khoang trang cuoi cung</span>
+
+    <span class="type">std</span>::<span class="type">string</span> ho = <span class="str">""</span>, tenDem = <span class="str">""</span>, ten = <span class="str">""</span>;
+    <span class="kw">if</span> (first == <span class="type">std</span>::<span class="type">string</span>::<span class="type">npos</span>) {
+        ten = full;                          <span class="com">// Chi co 1 tu</span>
+    } <span class="kw">else</span> {
+        ho = full.<span class="fn">substr</span>(<span class="num">0</span>, first);
+        ten = full.<span class="fn">substr</span>(last + <span class="num">1</span>);
+        <span class="kw">if</span> (last &gt; first) {
+            tenDem = full.<span class="fn">substr</span>(first + <span class="num">1</span>, last - first - <span class="num">1</span>);
+        }
+    }
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ho ten chuan: "</span> &lt;&lt; full &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ho:       "</span> &lt;&lt; ho &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ten dem:  "</span> &lt;&lt; tenDem &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ten:      "</span> &lt;&lt; ten &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Username: "</span> &lt;&lt; <span class="fn">makeUsername</span>(ho, tenDem, ten) &lt;&lt; <span class="str">"\n"</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bài Hard -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 3 [Hard]: Bảng điều khiển lệnh trong game (Game Console)</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Viết chương trình đọc liên tục từng dòng bằng <code>getline</code>. Dòng không bắt đầu bằng <code>/</code> là tin nhắn chat, in ra <code>Ten: noi dung</code>. Dòng bắt đầu bằng <code>/</code> là lệnh:
+          </p>
+          <ul style="padding-left: 1.25rem; line-height: 1.8;">
+            <li><code>/heal n</code>, <code>/damage n</code>: hồi / trừ máu (HP trong khoảng 0–100). <code>n</code> phải là số nguyên dương — tự viết hàm <code>isNumber</code> và <code>toNumber</code> để đổi chuỗi sang số.</li>
+            <li><code>/rename ten</code>: đổi tên nhân vật (1–12 ký tự).</li>
+            <li><code>/shout noi dung</code>: in nội dung viết HOA.</li>
+            <li><code>/status</code>, <code>/help</code>, <code>/quit</code>. Lệnh lạ → báo lỗi.</li>
+          </ul>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem lời giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Phân tích:</strong> Mọi lệnh có dạng <code>lenh tham_so</code>. Hàm <code>getCommand</code> cắt phần trước dấu cách đầu tiên, <code>getArgument</code> cắt phần sau. Đổi <code>"123"</code> thành số: mỗi bước <code>value = value * 10 + (c - '0')</code>, vì mã ASCII của <code>'0'</code>…<code>'9'</code> liên tiếp nhau.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">game_console.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cctype&gt;</span>
+
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">toUpperStr</span>(<span class="type">std</span>::<span class="type">string</span> s) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; s.<span class="fn">length</span>(); i++) {
+        s[i] = <span class="type">std</span>::<span class="fn">toupper</span>(s[i]);
+    }
+    <span class="kw">return</span> s;
+}
+
+<span class="com">// Ten lenh: phan truoc khoang trang dau tien ("/heal 30" -&gt; "/heal")</span>
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">getCommand</span>(<span class="type">std</span>::<span class="type">string</span> line) {
+    <span class="type">std</span>::<span class="type">size_t</span> pos = line.<span class="fn">find</span>(<span class="str">' '</span>);
+    <span class="kw">if</span> (pos == <span class="type">std</span>::<span class="type">string</span>::<span class="type">npos</span>) <span class="kw">return</span> line;
+    <span class="kw">return</span> line.<span class="fn">substr</span>(<span class="num">0</span>, pos);
+}
+
+<span class="com">// Tham so: phan sau khoang trang dau tien ("/heal 30" -&gt; "30")</span>
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">getArgument</span>(<span class="type">std</span>::<span class="type">string</span> line) {
+    <span class="type">std</span>::<span class="type">size_t</span> pos = line.<span class="fn">find</span>(<span class="str">' '</span>);
+    <span class="kw">if</span> (pos == <span class="type">std</span>::<span class="type">string</span>::<span class="type">npos</span>) <span class="kw">return</span> <span class="str">""</span>;
+    <span class="kw">return</span> line.<span class="fn">substr</span>(pos + <span class="num">1</span>);
+}
+
+<span class="com">// Chuoi chi gom chu so, toi da 4 chu so (tranh tran so)</span>
+<span class="kw">bool</span> <span class="fn">isNumber</span>(<span class="type">std</span>::<span class="type">string</span> s) {
+    <span class="kw">if</span> (s.<span class="fn">length</span>() == <span class="num">0</span> || s.<span class="fn">length</span>() &gt; <span class="num">4</span>) <span class="kw">return</span> <span class="kw">false</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; s.<span class="fn">length</span>(); i++) {
+        <span class="kw">if</span> (!<span class="type">std</span>::<span class="fn">isdigit</span>(s[i])) <span class="kw">return</span> <span class="kw">false</span>;
+    }
+    <span class="kw">return</span> <span class="kw">true</span>;
+}
+
+<span class="com">// "123" -&gt; 123: moi buoc nhan 10 roi cong chu so tiep theo</span>
+<span class="kw">int</span> <span class="fn">toNumber</span>(<span class="type">std</span>::<span class="type">string</span> s) {
+    <span class="kw">int</span> value = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; s.<span class="fn">length</span>(); i++) {
+        value = value * <span class="num">10</span> + (s[i] - <span class="str">'0'</span>);
+    }
+    <span class="kw">return</span> value;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const</span> <span class="kw">int</span> MAX_HP = <span class="num">100</span>;
+    <span class="type">std</span>::<span class="type">string</span> heroName = <span class="str">"Hero"</span>;
+    <span class="kw">int</span> hp = MAX_HP;
+    <span class="type">std</span>::<span class="type">string</span> line;
+
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"=== GAME CONSOLE === (go /help de xem lenh)\n"</span>;
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"&gt; "</span>;
+        <span class="kw">if</span> (!<span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, line)) <span class="kw">break</span>;   <span class="com">// Het du lieu nhap -&gt; thoat</span>
+        <span class="kw">if</span> (line.<span class="fn">length</span>() == <span class="num">0</span>) <span class="kw">continue</span>;
+
+        <span class="kw">if</span> (line[<span class="num">0</span>] != <span class="str">'/'</span>) {                       <span class="com">// Khong phai lenh -&gt; chat thuong</span>
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; heroName &lt;&lt; <span class="str">": "</span> &lt;&lt; line &lt;&lt; <span class="str">"\n"</span>;
+            <span class="kw">continue</span>;
+        }
+
+        <span class="type">std</span>::<span class="type">string</span> cmd = <span class="fn">getCommand</span>(line);
+        <span class="type">std</span>::<span class="type">string</span> arg = <span class="fn">getArgument</span>(line);
+
+        <span class="kw">if</span> (cmd == <span class="str">"/quit"</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Tam biet!\n"</span>;
+            <span class="kw">break</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> (cmd == <span class="str">"/help"</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"/heal n | /damage n | /rename ten | /shout noi dung | /status | /quit\n"</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> (cmd == <span class="str">"/heal"</span> || cmd == <span class="str">"/damage"</span>) {
+            <span class="kw">if</span> (!<span class="fn">isNumber</span>(arg)) {
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Loi: can mot so nguyen duong (toi da 4 chu so)\n"</span>;
+                <span class="kw">continue</span>;
+            }
+            <span class="kw">int</span> amount = <span class="fn">toNumber</span>(arg);
+            <span class="kw">if</span> (cmd == <span class="str">"/heal"</span>) {
+                hp += amount;
+                <span class="kw">if</span> (hp &gt; MAX_HP) hp = MAX_HP;
+            } <span class="kw">else</span> {
+                hp -= amount;
+                <span class="kw">if</span> (hp &lt; <span class="num">0</span>) hp = <span class="num">0</span>;
+            }
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; heroName &lt;&lt; <span class="str">" HP: "</span> &lt;&lt; hp &lt;&lt; <span class="str">"/"</span> &lt;&lt; MAX_HP &lt;&lt; <span class="str">"\n"</span>;
+            <span class="kw">if</span> (hp == <span class="num">0</span>) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; heroName &lt;&lt; <span class="str">" da guc nga!\n"</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> (cmd == <span class="str">"/rename"</span>) {
+            <span class="kw">if</span> (arg.<span class="fn">length</span>() == <span class="num">0</span> || arg.<span class="fn">length</span>() &gt; <span class="num">12</span>) {
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ten phai co tu 1 den 12 ky tu\n"</span>;
+            } <span class="kw">else</span> {
+                heroName = arg;
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Doi ten thanh cong: "</span> &lt;&lt; heroName &lt;&lt; <span class="str">"\n"</span>;
+            }
+        } <span class="kw">else</span> <span class="kw">if</span> (cmd == <span class="str">"/shout"</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; heroName &lt;&lt; <span class="str">" HET LON: "</span> &lt;&lt; <span class="fn">toUpperStr</span>(arg) &lt;&lt; <span class="str">"!!!\n"</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> (cmd == <span class="str">"/status"</span>) {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ten: "</span> &lt;&lt; heroName &lt;&lt; <span class="str">" | HP: "</span> &lt;&lt; hp &lt;&lt; <span class="str">"/"</span> &lt;&lt; MAX_HP &lt;&lt; <span class="str">"\n"</span>;
+        } <span class="kw">else</span> {
+            <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Lenh khong hop le: "</span> &lt;&lt; cmd &lt;&lt; <span class="str">" (go /help)\n"</span>;
+        }
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <div class="note-box note-box--tip">
+                  <strong>💡 Kiểm thử:</strong> <code>/damage 30</code> → HP 70; <code>/heal 999</code> → HP 100 (không vượt max); <code>/damage abc</code> → báo lỗi; <code>/heal</code> (thiếu số) → báo lỗi; <code>/rename Shadow Knight</code> → tên có dấu cách vẫn được; <code>/fly</code> → lệnh không hợp lệ.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Bài tổng hợp giai đoạn -->
+        <div class="exercise-item">
+          <div class="exercise-item__header">
+            <h4 class="exercise-item__title">Bài 4 [Hard]: Dự án tổng hợp — Hệ thống quản lý &amp; thống kê điểm học viên</h4>
+            <span class="badge badge--hard">Hard (20%)</span>
+          </div>
+          <p>
+            Bài tập tổng hợp toàn bộ Giai đoạn 03 (hàm, mảng, Linear Search, Bubble Sort, chuỗi). Nhập danh sách tối đa 50 học viên gồm <strong>họ tên</strong> (có dấu cách) và <strong>điểm</strong> (0–100), lưu bằng 2 <em>mảng song song</em> <code>names[]</code> và <code>scores[]</code>. Viết menu lặp lại đến khi chọn 0:
+          </p>
+          <ol style="line-height: 1.8; padding-left: 1.25rem; margin-bottom: var(--space-4);">
+            <li><strong>Bảng điểm:</strong> in STT, điểm, xếp loại (Giỏi ≥ 85, Khá ≥ 70, Trung bình ≥ 50, Yếu).</li>
+            <li><strong>Thống kê:</strong> điểm trung bình, cao nhất/thấp nhất kèm tên, số lượng từng xếp loại, tỉ lệ đạt.</li>
+            <li><strong>Tìm học viên:</strong> Linear Search theo tên, không phân biệt hoa thường, cho phép nhập một phần tên.</li>
+            <li><strong>Xếp hạng:</strong> Bubble Sort giảm dần theo điểm — khi đổi chỗ điểm phải đổi chỗ cả tên.</li>
+          </ol>
+
+          <div class="note-box note-box--warning">
+            <strong>⚠️ Bẫy mảng song song:</strong> Nếu chỉ hoán đổi <code>scores[j]</code> mà quên hoán đổi <code>names[j]</code>, tên và điểm sẽ bị lệch nhau. Ở Giai đoạn 04, <code>struct</code> sẽ gom tên và điểm vào một đối tượng để tránh lỗi này.
+          </div>
+
+          <div class="collapse-box">
+            <button class="collapse-trigger" aria-expanded="false">
+              <span>👉 Xem mã nguồn giải mẫu</span>
+              <span class="collapse-icon">▶</span>
+            </button>
+            <div class="collapse-content">
+              <div class="collapse-inner">
+                <p><strong>Thiết kế hàm:</strong> <code>readInt</code> (nhập an toàn) · <code>grade</code> · <code>printTable</code> · <code>printStats</code> · <code>findByName</code> (Linear Search) · <code>sortByScore</code> (Bubble Sort). Hàm <code>main</code> chỉ còn nhập liệu và điều phối menu.</p>
+                <div class="code-block">
+                  <div class="code-block__header">
+                    <span class="code-block__lang">student_manager.cpp</span>
+                    <button class="code-block__copy" aria-label="Sao chép đoạn mã C++"><i class="far fa-copy"></i><span>Sao chép</span></button>
+                  </div>
+                  <pre><code><span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;string&gt;</span>
+<span class="kw">#include</span> <span class="str">&lt;cctype&gt;</span>
+
+<span class="kw">const</span> <span class="kw">int</span> MAX = <span class="num">50</span>;
+
+<span class="com">// Doc mot so nguyen trong khoang [lo, hi], nhap sai thi nhap lai</span>
+<span class="kw">int</span> <span class="fn">readInt</span>(<span class="type">std</span>::<span class="type">string</span> prompt, <span class="kw">int</span> lo, <span class="kw">int</span> hi) {
+    <span class="kw">int</span> x;
+    <span class="kw">while</span> (<span class="kw">true</span>) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; prompt;
+        <span class="kw">if</span> (<span class="type">std</span>::<span class="type">cin</span> &gt;&gt; x &amp;&amp; x &gt;= lo &amp;&amp; x &lt;= hi) {
+            <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);
+            <span class="kw">return</span> x;
+        }
+        <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">clear</span>();
+        <span class="type">std</span>::<span class="type">cin</span>.<span class="fn">ignore</span>(<span class="num">1000</span>, <span class="str">'\n'</span>);
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Gia tri khong hop le!\n"</span>;
+    }
+}
+
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">grade</span>(<span class="kw">int</span> s) {
+    <span class="kw">if</span> (s &gt;= <span class="num">85</span>) <span class="kw">return</span> <span class="str">"Gioi"</span>;
+    <span class="kw">if</span> (s &gt;= <span class="num">70</span>) <span class="kw">return</span> <span class="str">"Kha"</span>;
+    <span class="kw">if</span> (s &gt;= <span class="num">50</span>) <span class="kw">return</span> <span class="str">"Trung binh"</span>;
+    <span class="kw">return</span> <span class="str">"Yeu"</span>;
+}
+
+<span class="kw">void</span> <span class="fn">printTable</span>(<span class="type">std</span>::<span class="type">string</span> names[], <span class="kw">int</span> scores[], <span class="kw">int</span> n) {
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nSTT | Diem | Xep loai   | Ho ten\n"</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; i + <span class="num">1</span> &lt;&lt; <span class="str">"   | "</span> &lt;&lt; scores[i] &lt;&lt; <span class="str">"   | "</span> &lt;&lt; <span class="fn">grade</span>(scores[i])
+                  &lt;&lt; <span class="str">" | "</span> &lt;&lt; names[i] &lt;&lt; <span class="str">"\n"</span>;
+    }
+}
+
+<span class="com">// Linear Search: tim theo ten (khong phan biet hoa thuong), tra ve chi so hoac -1</span>
+<span class="type">std</span>::<span class="type">string</span> <span class="fn">toLowerStr</span>(<span class="type">std</span>::<span class="type">string</span> s) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; (<span class="kw">int</span>)s.<span class="fn">length</span>(); i++) s[i] = <span class="type">std</span>::<span class="fn">tolower</span>(s[i]);
+    <span class="kw">return</span> s;
+}
+
+<span class="kw">int</span> <span class="fn">findByName</span>(<span class="type">std</span>::<span class="type">string</span> names[], <span class="kw">int</span> n, <span class="type">std</span>::<span class="type">string</span> key) {
+    key = <span class="fn">toLowerStr</span>(key);
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (<span class="fn">toLowerStr</span>(names[i]).<span class="fn">find</span>(key) != <span class="type">std</span>::<span class="type">string</span>::<span class="type">npos</span>) <span class="kw">return</span> i;
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;
+}
+
+<span class="com">// Bubble Sort giam dan theo diem, hoan doi ca ten de 2 mang luon khop chi so</span>
+<span class="kw">void</span> <span class="fn">sortByScore</span>(<span class="type">std</span>::<span class="type">string</span> names[], <span class="kw">int</span> scores[], <span class="kw">int</span> n) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n - <span class="num">1</span>; i++) {
+        <span class="kw">bool</span> swapped = <span class="kw">false</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; n - <span class="num">1</span> - i; j++) {
+            <span class="kw">if</span> (scores[j] &lt; scores[j + <span class="num">1</span>]) {
+                <span class="kw">int</span> t = scores[j]; scores[j] = scores[j + <span class="num">1</span>]; scores[j + <span class="num">1</span>] = t;
+                <span class="type">std</span>::<span class="type">string</span> tn = names[j]; names[j] = names[j + <span class="num">1</span>]; names[j + <span class="num">1</span>] = tn;
+                swapped = <span class="kw">true</span>;
+            }
+        }
+        <span class="kw">if</span> (!swapped) <span class="kw">break</span>;
+    }
+}
+
+<span class="kw">void</span> <span class="fn">printStats</span>(<span class="type">std</span>::<span class="type">string</span> names[], <span class="kw">int</span> scores[], <span class="kw">int</span> n) {
+    <span class="kw">int</span> sum = <span class="num">0</span>, maxI = <span class="num">0</span>, minI = <span class="num">0</span>;
+    <span class="kw">int</span> cntGioi = <span class="num">0</span>, cntKha = <span class="num">0</span>, cntTB = <span class="num">0</span>, cntYeu = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        sum += scores[i];
+        <span class="kw">if</span> (scores[i] &gt; scores[maxI]) maxI = i;
+        <span class="kw">if</span> (scores[i] &lt; scores[minI]) minI = i;
+        <span class="type">std</span>::<span class="type">string</span> g = <span class="fn">grade</span>(scores[i]);
+        <span class="kw">if</span> (g == <span class="str">"Gioi"</span>) cntGioi++;
+        <span class="kw">else</span> <span class="kw">if</span> (g == <span class="str">"Kha"</span>) cntKha++;
+        <span class="kw">else</span> <span class="kw">if</span> (g == <span class="str">"Trung binh"</span>) cntTB++;
+        <span class="kw">else</span> cntYeu++;
+    }
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\nDiem trung binh: "</span> &lt;&lt; (<span class="kw">double</span>)sum / n &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Cao nhat: "</span> &lt;&lt; names[maxI] &lt;&lt; <span class="str">" ("</span> &lt;&lt; scores[maxI] &lt;&lt; <span class="str">")\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Thap nhat: "</span> &lt;&lt; names[minI] &lt;&lt; <span class="str">" ("</span> &lt;&lt; scores[minI] &lt;&lt; <span class="str">")\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Gioi: "</span> &lt;&lt; cntGioi &lt;&lt; <span class="str">" | Kha: "</span> &lt;&lt; cntKha
+              &lt;&lt; <span class="str">" | TB: "</span> &lt;&lt; cntTB &lt;&lt; <span class="str">" | Yeu: "</span> &lt;&lt; cntYeu &lt;&lt; <span class="str">"\n"</span>;
+    <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ti le dat (&gt;= 50): "</span> &lt;&lt; (n - cntYeu) * <span class="num">100</span> / n &lt;&lt; <span class="str">"%\n"</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="type">std</span>::<span class="type">string</span> names[MAX];
+    <span class="kw">int</span> scores[MAX];
+    <span class="kw">int</span> n = <span class="fn">readInt</span>(<span class="str">"So hoc vien (1-50): "</span>, <span class="num">1</span>, MAX);
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Ho ten hoc vien "</span> &lt;&lt; i + <span class="num">1</span> &lt;&lt; <span class="str">": "</span>;
+        <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, names[i]);
+        scores[i] = <span class="fn">readInt</span>(<span class="str">"Diem (0-100): "</span>, <span class="num">0</span>, <span class="num">100</span>);
+    }
+
+    <span class="kw">int</span> choice;
+    <span class="kw">do</span> {
+        <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"\n1. Bang diem  2. Thong ke  3. Tim hoc vien  4. Xep hang  0. Thoat\n"</span>;
+        choice = <span class="fn">readInt</span>(<span class="str">"Chon: "</span>, <span class="num">0</span>, <span class="num">4</span>);
+        <span class="kw">switch</span> (choice) {
+            <span class="kw">case</span> <span class="num">1</span>: <span class="fn">printTable</span>(names, scores, n); <span class="kw">break</span>;
+            <span class="kw">case</span> <span class="num">2</span>: <span class="fn">printStats</span>(names, scores, n); <span class="kw">break</span>;
+            <span class="kw">case</span> <span class="num">3</span>: {
+                <span class="type">std</span>::<span class="type">string</span> key;
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Nhap ten can tim: "</span>;
+                <span class="type">std</span>::<span class="fn">getline</span>(<span class="type">std</span>::<span class="type">cin</span>, key);
+                <span class="kw">int</span> pos = <span class="fn">findByName</span>(names, n, key);
+                <span class="kw">if</span> (pos == -<span class="num">1</span>) <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Khong tim thay!\n"</span>;
+                <span class="kw">else</span> <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; names[pos] &lt;&lt; <span class="str">": "</span> &lt;&lt; scores[pos]
+                               &lt;&lt; <span class="str">" diem - "</span> &lt;&lt; <span class="fn">grade</span>(scores[pos]) &lt;&lt; <span class="str">"\n"</span>;
+                <span class="kw">break</span>;
+            }
+            <span class="kw">case</span> <span class="num">4</span>:
+                <span class="fn">sortByScore</span>(names, scores, n);
+                <span class="type">std</span>::<span class="type">cout</span> &lt;&lt; <span class="str">"Da sap xep giam dan theo diem."</span>;
+                <span class="fn">printTable</span>(names, scores, n);
+                <span class="kw">break</span>;
+        }
+    } <span class="kw">while</span> (choice != <span class="num">0</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <div class="note-box note-box--tip">
+                  <strong>💡 Kiểm thử:</strong> Nhập 1 học viên (thống kê vẫn đúng, không chia cho 0); tìm <code>"an"</code> khi có <code>"Nguyen Van An"</code>; nhập điểm <code>105</code> hoặc <code>abc</code> → yêu cầu nhập lại; xếp hạng với 2 học viên bằng điểm.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION CUỐI TRANG -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); padding-top: var(--space-6); border-top: 1px solid var(--color-border-soft);">
+        <a href="lesson-03-09.html" class="btn btn--outline">← Buổi 31: Chuỗi ký tự (string)</a>
+        <a href="lesson-03-11.html" class="btn btn--primary">Buổi 33: Mini Project Tic Tac Toe →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand" style="margin-bottom: var(--space-3)">
+            <img src="../../assets/images/logo.png" alt="InnoMind Logo" class="brand__logo-img" />
+            <div>
+              <div class="brand__text">InnoMind Academy</div>
+              <div class="brand__sub">NextGen Skills for Future Innovators</div>
+            </div>
+          </div>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 400px; margin: 0;">
+            Chương trình đào tạo tư duy lập trình và phát triển Game C++ &amp; Raylib thực chiến 78 buổi.
+          </p>
+        </div>
+        <div class="footer-contact">
+          <h4>Liên hệ</h4>
+          <div class="contact-info-compact">
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>136 Nguyễn Mậu Tài, Hòa Xuân, Cẩm Lệ, Đà Nẵng</span></div>
+            <div class="contact-item"><i class="fas fa-phone"></i><span>090 198 05 69</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><span>innomindskills@gmail.com</span></div>
+            <div class="contact-item"><i class="fab fa-facebook"></i><a href="https://www.facebook.com/hocvienkynangthehemoiinnomind" target="_blank" rel="noopener">Facebook</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="site-footer__text">© 2026 <strong>InnoMind</strong> • Roadmap Lập trình Game C++ &amp; Raylib.</div>
+        <div class="site-footer__links"><a href="#" class="site-nav__link">Về đầu trang ↑</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>
